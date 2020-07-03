@@ -6,6 +6,7 @@ const handle = app.getRequestHandler();
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const dbConnect = require('./config/db');
+const errorHandler = require('./middleware/error');
 
 // load vars
 dotenv.config({ path: './config/.env' });
@@ -28,6 +29,8 @@ app.prepare().then(() => {
 
   // mount routes
   server.use('/api/v1/bootcamps', bootcamps);
+
+  server.use(errorHandler);
 
   server.all('*', (req, res) => {
     return handle(req, res);
