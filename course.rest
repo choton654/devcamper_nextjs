@@ -1,0 +1,9 @@
+# get all courses
+GET http://localhost:3000/api/v1/courses HTTP/1.1
+
+###
+
+# get courses by bootcamps
+GET http://localhost:3000/api/v1/bootcamps/:bootcampId/courses HTTP/1.1
+
+###

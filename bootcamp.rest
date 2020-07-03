@@ -1,10 +1,10 @@
 # get all bootcamps 
-GET http://localhost:3000/api/v1/bootcamps?select=name&page=4 HTTP/1.1
+GET http://localhost:3000/api/v1/bootcamps HTTP/1.1
 
 ###
 
 # get a single bootcamp
-GET http://localhost:3000/api/v1/bootcamps/  HTTP/1.1
+GET http://localhost:3000/api/v1/bootcamps/:id  HTTP/1.1
 
 ###
 
@@ -23,7 +23,7 @@ Content-Type:  application/json
 ###
 
 # delete a bootcamp
-DELETE http://localhost:3000/api/v1/bootcamps/:id HTTP/1.1
+DELETE http://localhost:3000/api/v1/bootcamps/5d725a1b7b292f5f8ceff788 HTTP/1.1
 
 ###
 

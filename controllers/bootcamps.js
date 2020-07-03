@@ -29,7 +29,7 @@ exports.getBootcamps = asyncMiddleware(async (req, res, next) => {
   );
 
   // finding resources
-  let query = BootCamp.find(JSON.parse(queryStr));
+  let query = BootCamp.find(JSON.parse(queryStr)).populate('courses');
 
   // select fields
   if (req.query.select) {
@@ -47,7 +47,7 @@ exports.getBootcamps = asyncMiddleware(async (req, res, next) => {
 
   // pagination
   const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 1;
+  const limit = parseInt(req.query.limit, 10);
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   const total = await BootCamp.countDocuments();
@@ -126,7 +126,7 @@ exports.updateBootcamp = asyncMiddleware(async (req, res, next) => {
 // route   DELETE /api/v1/bootcamps/:id
 // access  private
 exports.deleteBootcamp = asyncMiddleware(async (req, res, next) => {
-  const bootcamp = await BootCamp.findByIdAndDelete(req.params.id);
+  const bootcamp = await BootCamp.findById(req.params.id);
 
   if (!bootcamp) {
     return res.status(400).json({
@@ -134,6 +134,9 @@ exports.deleteBootcamp = asyncMiddleware(async (req, res, next) => {
       err: `Bootcamp not found with id of ${req.params.id}`,
     });
   }
+
+  bootcamp.remove();
+
   return res.status(200).json({ success: true, data: {} });
 });
 

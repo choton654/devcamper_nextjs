@@ -17,6 +17,7 @@ dbConnect();
 
 // route files
 const bootcamps = require('./routes/bootcamps');
+const courses = require('./routes/courses');
 
 app.prepare().then(() => {
   const server = express();
@@ -29,6 +30,7 @@ app.prepare().then(() => {
 
   // mount routes
   server.use('/api/v1/bootcamps', bootcamps);
+  server.use('/api/v1/courses', courses);
 
   server.use(errorHandler);
 
