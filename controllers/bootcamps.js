@@ -1,14 +1,57 @@
 const BootCamp = require('../model/BootCamp');
 const asyncMiddleware = require('../middleware/async');
+const geocoder = require('../utils/geocoder');
 
 // @desc   get all bootcamps
 // route   GET /api/v1/bootcamps
 // access  public
 exports.getBootcamps = asyncMiddleware(async (req, res, next) => {
-  const bootcamps = await BootCamp.find();
-  return res
-    .status(200)
-    .json({ success: true, count: bootcamps.length, data: bootcamps });
+  // copy req query
+  const reqQuery = {
+    ...req.query,
+  };
+
+  // removable fields
+  const removeFields = ['select', 'sort'];
+
+  // delete from reqQuery
+  removeFields.forEach((params) => delete reqQuery[params]);
+
+  console.log(reqQuery);
+
+  // select query
+  let queryStr = JSON.stringify(reqQuery);
+
+  // create operators
+  queryStr = queryStr.replace(
+    /\b(gt|gte|lt|lte|in)\b/g,
+    (match) => `$${match}`,
+  );
+
+  // finding resources
+  let query = BootCamp.find(JSON.parse(queryStr));
+
+  // select fields
+  if (req.query.select) {
+    const fields = req.query.select.split(',').join(' ');
+    console.log(fields);
+    query = query.select(fields);
+  }
+
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(',').join(' ');
+    console.log(sortBy);
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort('-createdAt');
+  }
+
+  const bootcamps = await query;
+  return res.status(200).json({
+    success: true,
+    count: bootcamps.length,
+    data: bootcamps,
+  });
 });
 
 // @desc   get single bootcamps
@@ -65,4 +108,24 @@ exports.deleteBootcamp = asyncMiddleware(async (req, res, next) => {
     });
   }
   return res.status(200).json({ success: true, data: {} });
+});
+
+// @desc   get bootcamps within a radius
+// route   GET /api/v1/bootcamps/radius/:zipcode/:distance
+// access  private
+exports.getBootcampsInRadius = asyncMiddleware(async (req, res, next) => {
+  const { zipcode, distance } = req.body;
+
+  const loc = await geocoder.geocode(zipcode);
+  const lat = loc[0].latitude;
+  const lng = loc[0].longitude;
+
+  const radius = distance / 3963;
+
+  const bootcamps = find({
+    location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+  });
+  return res
+    .status(200)
+    .json({ success: true, count: bootcamps.length, data: bootcamps });
 });

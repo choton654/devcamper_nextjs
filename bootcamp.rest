@@ -1,0 +1,31 @@
+# get all bootcamps 
+GET http://localhost:3000/api/v1/bootcamps?select=name&sort=-name HTTP/1.1
+
+###
+
+# get a single bootcamp
+GET http://localhost:3000/api/v1/bootcamps/  HTTP/1.1
+
+###
+
+# create a bootcamp
+POST http://localhost:3000/api/v1/bootcamps HTTP/1.1
+Content-Type:  application/json
+
+{}
+###
+
+# update a bootcamp
+PUT http://localhost:3000/api/v1/bootcamps/:id HTTP/1.1
+Content-Type:  application/json
+
+{}
+###
+
+# delete a bootcamp
+DELETE http://localhost:3000/api/v1/bootcamps/:id HTTP/1.1
+
+###
+
+# get bootcamps within a radius
+GET http://localhost:3000/api/v1/bootcamps/radius/02118/10 HTTP/1.1
