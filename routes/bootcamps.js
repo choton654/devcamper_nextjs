@@ -6,14 +6,22 @@ const {
   updateBootcamp,
   deleteBootcamp,
   getBootcampsInRadius,
+  bootcampPhotoUpload,
 } = require('../controllers/bootcamps');
 const courseRouter = require('./courses');
+const Bootcamp = require('../model/BootCamp');
+const advancedResults = require('../middleware/advancedResult');
 
 router.use('/:bootcampId/courses', courseRouter);
 
 router.route('/radius/:zipcode/:distance').get(getBootcampsInRadius);
 
-router.route('/').get(getBootcamps).post(createBootcamps);
+router.route('/:id/photo').put(bootcampPhotoUpload);
+
+router
+  .route('/')
+  .get(advancedResults(Bootcamp, 'courses'), getBootcamps)
+  .post(createBootcamps);
 
 router
   .route('/:id')

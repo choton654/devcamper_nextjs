@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');
+const fileUpload = require('express-fileupload');
 const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -27,6 +29,11 @@ app.prepare().then(() => {
 
   // dev logging middleware
   server.use(morgan('dev'));
+
+  // file upload
+  server.use(fileUpload());
+
+  server.use(express.static(path.join(__dirname, 'public')));
 
   // mount routes
   server.use('/api/v1/bootcamps', bootcamps);
