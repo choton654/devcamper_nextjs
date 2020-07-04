@@ -9,6 +9,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const dbConnect = require('./config/db');
 const errorHandler = require('./middleware/error');
+const cookieParser = require('cookie-parser');
 
 // load vars
 dotenv.config({ path: './config/.env' });
@@ -20,12 +21,15 @@ dbConnect();
 // route files
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
+const auth = require('./routes/auth');
 
 app.prepare().then(() => {
   const server = express();
 
   // body parser
   server.use(express.json());
+
+  server.use(cookieParser());
 
   // dev logging middleware
   server.use(morgan('dev'));
@@ -38,6 +42,7 @@ app.prepare().then(() => {
   // mount routes
   server.use('/api/v1/bootcamps', bootcamps);
   server.use('/api/v1/courses', courses);
+  server.use('/api/v1/auth', auth);
 
   server.use(errorHandler);
 
