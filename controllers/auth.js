@@ -53,6 +53,18 @@ exports.login = asyncMiddleware(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
+// @desc   logout user
+// route   GET /api/v1/auth/logout
+// access  private
+exports.logout = asyncMiddleware(async (req, res, next) => {
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+
+  res.status(200).json({ success: true, data: {} });
+});
+
 // @desc   get logged in user
 // route   GET /api/v1/auth/me
 // access  private
