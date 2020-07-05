@@ -29,6 +29,20 @@ exports.getBootcamp = asyncMiddleware(async (req, res, next) => {
 // route   POSt /api/v1/bootcamps
 // access  private
 exports.createBootcamps = asyncMiddleware(async (req, res, next) => {
+  // add user to req.body
+  req.body.user = req.user.id;
+
+  // check for published bootcamp
+  const publishedBootcamp = await BootCamp.findOne({ user: req.user.id });
+
+  // only admin can add multiple bootcamp
+  if (publishedBootcamp && req.user.role !== 'admin') {
+    return res.status(400).json({
+      success: false,
+      err: `user id of ${req.user.id} already published a bootcamp`,
+    });
+  }
+
   const bootcamp = await BootCamp.create(req.body);
   return res.status(201).json({ success: true, data: bootcamp });
 });
@@ -37,10 +51,7 @@ exports.createBootcamps = asyncMiddleware(async (req, res, next) => {
 // route   PUT /api/v1/bootcamps/:id
 // access  private
 exports.updateBootcamp = asyncMiddleware(async (req, res, next) => {
-  const bootcamp = await BootCamp.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  let bootcamp = await BootCamp.findById(req.params.id);
 
   if (!bootcamp) {
     return res.status(400).json({
@@ -48,6 +59,20 @@ exports.updateBootcamp = asyncMiddleware(async (req, res, next) => {
       err: `Bootcamp not found with id of ${req.params.id}`,
     });
   }
+
+  // check bootcamp ownership
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return res.status(400).json({
+      success: false,
+      err: `User ${req.user.id} is not authorize to update the bootcamp`,
+    });
+  }
+
+  bootcamp = await BootCamp.findOneAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
   return res.status(200).json({ success: true, data: bootcamp });
 });
 
@@ -64,9 +89,20 @@ exports.deleteBootcamp = asyncMiddleware(async (req, res, next) => {
     });
   }
 
+  // check bootcamp ownership
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return res.status(400).json({
+      success: false,
+      err: `User ${req.user.id} is not authorize to delete the bootcamp`,
+    });
+  }
+
   bootcamp.remove();
 
-  return res.status(200).json({ success: true, data: {} });
+  return res.status(200).json({
+    success: true,
+    data: {},
+  });
 });
 
 // @desc   get bootcamps within a radius
@@ -102,14 +138,20 @@ exports.bootcampPhotoUpload = asyncMiddleware(async (req, res, next) => {
     });
   }
 
+  // check bootcamp ownership
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return res.status(400).json({
+      success: false,
+      err: `User ${req.user.id} is not authorize to update the bootcamp`,
+    });
+  }
+
   if (!req.files) {
     return res.status(400).json({
       success: false,
       err: 'please upload a file',
     });
   }
-
-  console.log(req.files);
 
   const file = req.files.file;
 
@@ -139,8 +181,13 @@ exports.bootcampPhotoUpload = asyncMiddleware(async (req, res, next) => {
       });
     }
 
-    await BootCamp.findByIdAndUpdate(req.params.id, { photo: file.name });
+    await BootCamp.findByIdAndUpdate(req.params.id, {
+      photo: file.name,
+    });
 
-    res.status(200).json({ success: true, data: file.name });
+    res.status(200).json({
+      success: true,
+      data: file.name,
+    });
   });
 });

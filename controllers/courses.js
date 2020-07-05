@@ -8,7 +8,7 @@ const BootCamp = require('../model/BootCamp');
 // access  public
 exports.getCourses = asyncMiddleware(async (req, res, next) => {
   if (req.params.bootcampId) {
-    const courses = Course.find({ bootcamp: req.params.bootcampId });
+    const courses = await Course.find({ bootcamp: req.params.bootcampId });
 
     return res
       .status(200)
@@ -39,6 +39,7 @@ exports.getCourse = asyncMiddleware(async (req, res, next) => {
 // access  private
 exports.addCourse = asyncMiddleware(async (req, res, next) => {
   req.body.bootcamp = req.params.bootcampId;
+  req.body.user = req.user.id;
 
   const bootcamp = await BootCamp.findById(req.params.bootcampId);
 
@@ -49,9 +50,20 @@ exports.addCourse = asyncMiddleware(async (req, res, next) => {
     });
   }
 
+  // check bootcamp ownership
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return res.status(400).json({
+      success: false,
+      err: `User ${req.user.id} is not authorize to add a course in bootcamp ${bootcamp._id}`,
+    });
+  }
+
   const course = await Course.create(req.body);
 
-  return res.status(200).json({ success: true, data: course });
+  return res.status(200).json({
+    success: true,
+    data: course,
+  });
 });
 
 // @desc   update a course
@@ -67,12 +79,23 @@ exports.updateCourse = asyncMiddleware(async (req, res, next) => {
     });
   }
 
+  // check course ownership
+  if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return res.status(400).json({
+      success: false,
+      err: `User ${req.user.id} is not authorize to update course ${course._id}`,
+    });
+  }
+
   course = await Course.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
 
-  return res.status(200).json({ success: true, data: course });
+  return res.status(200).json({
+    success: true,
+    data: course,
+  });
 });
 
 // @desc   delete a course
@@ -88,7 +111,18 @@ exports.deleteCourse = asyncMiddleware(async (req, res, next) => {
     });
   }
 
+  // check course ownership
+  if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return res.status(400).json({
+      success: false,
+      err: `User ${req.user.id} is not authorize to delete a course ${course._id}`,
+    });
+  }
+
   await course.remove();
 
-  return res.status(200).json({ success: true, data: {} });
+  return res.status(200).json({
+    success: true,
+    data: {},
+  });
 });

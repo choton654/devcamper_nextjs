@@ -22,6 +22,8 @@ dbConnect();
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
 const auth = require('./routes/auth');
+const user = require('./routes/user');
+const reviews = require('./routes/reviews');
 
 app.prepare().then(() => {
   const server = express();
@@ -43,6 +45,8 @@ app.prepare().then(() => {
   server.use('/api/v1/bootcamps', bootcamps);
   server.use('/api/v1/courses', courses);
   server.use('/api/v1/auth', auth);
+  server.use('/api/v1/users', user);
+  server.use('/api/v1/reviews', reviews);
 
   server.use(errorHandler);
 
