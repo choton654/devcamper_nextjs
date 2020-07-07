@@ -17,7 +17,7 @@ export const getCourses = () => async (dispatch) => {
   dispatch({ type: GET_COURSE_REQUEST });
 
   try {
-    const res = await fetch('http://localhost:3000/api/v1/courses', config);
+    const res = await fetch('http://localhost:3000/api/v1/courses');
     const data = await res.json();
     console.log(data.data);
 
@@ -35,11 +35,6 @@ export const getCourses = () => async (dispatch) => {
 
 // get one Course
 export const getOneCourse = (id) => async (dispatch) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
   dispatch({ type: GET_SINGLE_COURSE_REQUEST });
 
   try {
@@ -49,7 +44,7 @@ export const getOneCourse = (id) => async (dispatch) => {
 
     dispatch({
       type: GET_SINGLE_COURSE,
-      payload: data,
+      payload: data.data,
     });
   } catch (err) {
     dispatch({

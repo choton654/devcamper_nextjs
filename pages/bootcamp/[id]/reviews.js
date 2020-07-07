@@ -1,27 +1,29 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOneCourse } from '../../../redux/actions/courseActions';
+import { getReviewsByBootcamp } from '../../../redux/actions/bootcampActions';
 
-const SingleCourse = ({ data }) => {
+const ReviewsOfBootcamp = ({ data }) => {
   const router = useRouter();
   const { id } = router.query;
   console.log(id);
 
   const dispatch = useDispatch();
-  const { course } = useSelector((state) => state.Courses);
+  const { reviews } = useSelector((state) => state.Bootcamps);
 
   useEffect(() => {
     if (id) {
-      dispatch(getOneCourse(id));
+      dispatch(getReviewsByBootcamp(id));
     }
   }, [id]);
 
   return (
     <div className='container'>
-      <h1>{course.title}</h1>
+      {reviews.map((review) => (
+        <h3 key={review._id}>{review.title}</h3>
+      ))}
     </div>
   );
 };
 
-export default SingleCourse;
+export default ReviewsOfBootcamp;

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBootcamps } from '../../redux/actions/bootcampActions';
@@ -12,10 +13,14 @@ const Bootcamp = () => {
 
   return (
     <div className='container'>
-      {bootcamps.map((bootcamp) => (
-        <h1 key={bootcamp._id}>{bootcamp.name}</h1>
-      ))}
       <h1>Bootcamp</h1>
+      {bootcamps.map((bootcamp) => (
+        <Link key={bootcamp._id} href={`/bootcamp/${bootcamp._id}`}>
+          <a>
+            <h3>{bootcamp.name}</h3>
+          </a>
+        </Link>
+      ))}
     </div>
   );
 };
