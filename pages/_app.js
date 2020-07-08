@@ -1,11 +1,17 @@
 import withRedux from 'next-redux-wrapper';
 import App from 'next/app';
-import { Provider } from 'react-redux';
+import { useEffect } from 'react';
+import { Provider, useDispatch } from 'react-redux';
 import Layout from '../components/Layout';
+import { loadUser } from '../redux/actions/authActions';
 import { store } from '../redux/store';
 
 function MyApp({ Component, pageProps }) {
-  // const store = useStore(pageProps.initialReduxState);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUser());
+  }, []);
   return (
     <Provider store={store}>
       <Layout>
