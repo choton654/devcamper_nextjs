@@ -8,6 +8,7 @@ const Course = () => {
   const { courses } = useSelector((state) => state.Courses);
 
   useEffect(() => {
+    // dispatch(loadUser());
     dispatch(getCourses());
   }, []);
 

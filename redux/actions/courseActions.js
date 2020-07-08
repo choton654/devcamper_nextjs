@@ -31,7 +31,6 @@ export const getCourses = () => async (dispatch) => {
 // get one Course
 export const getOneCourse = (id) => async (dispatch) => {
   dispatch({ type: GET_SINGLE_COURSE_REQUEST });
-
   try {
     const res = await fetch(`http://localhost:3000/api/v1/courses/${id}`);
     const data = await res.json();

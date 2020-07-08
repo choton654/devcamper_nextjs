@@ -1,4 +1,43 @@
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../../redux/actions/authActions';
+
 const Register = () => {
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [isSubmit, setIsSubmit] = useState(false);
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const { isAuthenticated } = useSelector((state) => state.Auth);
+
+  useEffect(() => {
+    if (isSubmit) {
+      dispatch(registerUser(user));
+    }
+    // if (isAuthenticated) {
+    //   router.push('/');
+    // }
+  }, [isSubmit, isAuthenticated]);
+
+  const handelChange = (e) => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handelSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmit(true);
+    console.log(user);
+  };
   return (
     <section className='form mt-5'>
       <div className='container'>
@@ -13,11 +52,13 @@ const Register = () => {
                   Register to list your bootcamp or rate, review and favorite
                   bootcamps
                 </p>
-                <form>
+                <form onSubmit={handelSubmit}>
                   <div className='form-group'>
                     <label htmlFor='name'>Name</label>
                     <input
                       type='text'
+                      value={user.name}
+                      onChange={handelChange}
                       name='name'
                       className='form-control'
                       placeholder='Enter full name'
@@ -28,6 +69,8 @@ const Register = () => {
                     <label htmlFor='email'>Email Address</label>
                     <input
                       type='email'
+                      value={user.email}
+                      onChange={handelChange}
                       name='email'
                       className='form-control'
                       placeholder='Enter email'
@@ -38,6 +81,8 @@ const Register = () => {
                     <label htmlFor='password'>Password</label>
                     <input
                       type='password'
+                      value={user.password}
+                      onChange={handelChange}
                       name='password'
                       className='form-control'
                       placeholder='Enter password'
@@ -48,7 +93,9 @@ const Register = () => {
                     <label htmlFor='password2'>Confirm Password</label>
                     <input
                       type='password'
-                      name='password2'
+                      value={user.confirmPassword}
+                      onChange={handelChange}
+                      name='confirmPassword'
                       className='form-control'
                       placeholder='Confirm password'
                       required
@@ -63,6 +110,7 @@ const Register = () => {
                         type='radio'
                         name='role'
                         value='user'
+                        onChange={handelChange}
                         checked
                       />
                       <label className='form-check-label'>
@@ -75,6 +123,7 @@ const Register = () => {
                         type='radio'
                         name='role'
                         value='publisher'
+                        onChange={handelChange}
                       />
                       <label className='form-check-label'>
                         Bootcamp Publisher

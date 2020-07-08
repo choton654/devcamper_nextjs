@@ -14,6 +14,7 @@ const SingleCourse = ({ data }) => {
   useEffect(() => {
     if (id) {
       dispatch(getOneCourse(id));
+      // dispatch(loadUser());
     }
   }, [id]);
 

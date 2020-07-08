@@ -1,10 +1,11 @@
-// import App from 'next/app'
+import withRedux from 'next-redux-wrapper';
+import App from 'next/app';
 import { Provider } from 'react-redux';
 import Layout from '../components/Layout';
-import { useStore } from '../redux/store';
+import { store } from '../redux/store';
 
 function MyApp({ Component, pageProps }) {
-  const store = useStore(pageProps.initialReduxState);
+  // const store = useStore(pageProps.initialReduxState);
   return (
     <Provider store={store}>
       <Layout>
@@ -37,11 +38,13 @@ function MyApp({ Component, pageProps }) {
 // perform automatic static optimization, causing every page in your app to
 // be server-side rendered.
 //
-// MyApp.getInitialProps = async (appContext) => {
-//   // calls page's `getInitialProps` and fills `appProps.pageProps`
-//   const appProps = await App.getInitialProps(appContext);
-//
-//   return { ...appProps }
-// }
+MyApp.getInitialProps = async (appContext) => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext);
 
-export default MyApp;
+  return { ...appProps };
+};
+
+const makeStore = () => store;
+
+export default withRedux(makeStore)(MyApp);

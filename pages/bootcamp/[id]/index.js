@@ -20,6 +20,7 @@ const SingleBootcamp = ({ data }) => {
 
   return (
     <div className='container'>
+      {JSON.stringify(data)}
       <h1>{bootcamp.name}</h1>
       <Link href={`/bootcamp/${id}/courses`}>
         <a>Get Courses</a>
