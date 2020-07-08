@@ -130,7 +130,7 @@ exports.forgotPassword = asyncMiddleware(async (req, res, next) => {
 
   // Create reset url
   const resetUrl = `${req.protocol}://${req.get(
-    'host',
+    'host'
   )}/api/v1/auth/resetpassword/${resetToken}`;
 
   const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
@@ -192,7 +192,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   const options = {
     expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
   };

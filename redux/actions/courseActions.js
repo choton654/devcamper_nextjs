@@ -9,11 +9,6 @@ import {
 
 // get all Courses
 export const getCourses = () => async (dispatch) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
   dispatch({ type: GET_COURSE_REQUEST });
 
   try {

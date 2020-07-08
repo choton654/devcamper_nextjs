@@ -33,6 +33,16 @@ const Navbar = () => (
             <a className='nav-link'>About</a>
           </Link>
         </li>
+        <li className='nav-item'>
+          <Link href='/register'>
+            <a className='nav-link'>Sign Up</a>
+          </Link>
+        </li>
+        <li className='nav-item'>
+          <Link href='/login'>
+            <a className='nav-link'>Sign In</a>
+          </Link>
+        </li>
       </ul>
     </div>
   </nav>

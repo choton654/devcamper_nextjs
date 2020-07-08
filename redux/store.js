@@ -1,3 +1,4 @@
+import Cookie from 'js-cookie';
 import { useMemo } from 'react';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -5,6 +6,8 @@ import thunkMiddleware from 'redux-thunk';
 import rootreducers from './reducers/rootreducer';
 
 let store;
+
+const userInfo = Cookie.getJSON('userInfo') || null;
 
 function initStore(initialState) {
   return createStore(

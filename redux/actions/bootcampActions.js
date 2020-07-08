@@ -15,15 +15,10 @@ import {
 
 // get all Bootcamps
 export const getBootcamps = () => async (dispatch) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
   dispatch({ type: GET_BOOTCAMP_REQUEST });
 
   try {
-    const res = await fetch('http://localhost:3000/api/v1/bootcamps', config);
+    const res = await fetch('http://localhost:3000/api/v1/bootcamps');
     const data = await res.json();
     console.log(data.data);
 
