@@ -10,6 +10,7 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
+  const [role, setrole] = useState(['user', 'publisher']);
   const [isSubmit, setIsSubmit] = useState(false);
 
   const dispatch = useDispatch();
@@ -48,10 +49,6 @@ const Register = () => {
                 <h1>
                   <i className='fas fa-user-plus'></i> Register
                 </h1>
-                <p>
-                  Register to list your bootcamp or rate, review and favorite
-                  bootcamps
-                </p>
                 <form onSubmit={handelSubmit}>
                   <div className='form-group'>
                     <label htmlFor='name'>Name</label>
@@ -101,39 +98,21 @@ const Register = () => {
                       required
                     />
                   </div>
-
                   <div className='card card-body mb-3'>
                     <h5>User Role</h5>
-                    <div className='form-check'>
-                      <input
-                        className='form-check-input'
-                        type='radio'
-                        name='role'
-                        value='user'
-                        onChange={handelChange}
-                        checked
-                      />
-                      <label className='form-check-label'>
-                        Regular User (Browse, Write reviews, etc)
-                      </label>
-                    </div>
-                    <div className='form-check'>
-                      <input
-                        className='form-check-input'
-                        type='radio'
-                        name='role'
-                        value='publisher'
-                        onChange={handelChange}
-                      />
-                      <label className='form-check-label'>
-                        Bootcamp Publisher
-                      </label>
-                    </div>
+                    {role.map((r) => (
+                      <div className='form-check' key={r}>
+                        <input
+                          className='form-check-input'
+                          type='radio'
+                          name='role'
+                          value={r}
+                          onChange={handelChange}
+                        />
+                        <label className='form-check-label'>{r}</label>
+                      </div>
+                    ))}
                   </div>
-                  <p className='text-danger'>
-                    * You must be affiliated with the bootcamp in some way in
-                    order to add it to DevCamper.
-                  </p>
                   <div className='form-group'>
                     <input
                       type='submit'
