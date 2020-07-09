@@ -8,13 +8,16 @@ import {
   LOGIN_ERROR,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
+  LOGOUT_ERROR,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
   REGISTER_ERROR,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
 } from '../types/authtypes';
 
 // load user via token
-export const loadUser = () => async (dispatch, getState) => {
+const loadUser = () => async (dispatch) => {
   dispatch({ type: LOAD_USER_REQUEST });
 
   try {
@@ -45,7 +48,7 @@ export const loadUser = () => async (dispatch, getState) => {
 };
 
 // login user
-export const loginUser = (user) => async (dispatch) => {
+const loginUser = (user) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
 
   try {
@@ -65,7 +68,6 @@ export const loginUser = (user) => async (dispatch) => {
 
     Cookie.set('userInfo', JSON.stringify(data.token));
 
-    loadUser();
     router.push('/');
   } catch (err) {
     dispatch({
@@ -76,7 +78,7 @@ export const loginUser = (user) => async (dispatch) => {
 };
 
 // register user
-export const registerUser = (user) => async (dispatch) => {
+const registerUser = (user) => async (dispatch) => {
   dispatch({ type: REGISTER_REQUEST });
 
   try {
@@ -96,7 +98,6 @@ export const registerUser = (user) => async (dispatch) => {
 
     Cookie.set('userInfo', JSON.stringify(data.token));
 
-    loadUser();
     router.push('/');
   } catch (err) {
     dispatch({
@@ -105,3 +106,31 @@ export const registerUser = (user) => async (dispatch) => {
     });
   }
 };
+
+// logout user
+const logOut = () => async (dispatch) => {
+  dispatch({ type: LOGOUT_REQUEST });
+
+  try {
+    const { data } = await axios.get(
+      'http://localhost:3000/api/v1/auth/logout'
+    );
+    console.log('logout data', data);
+
+    dispatch({
+      type: LOGOUT_SUCCESS,
+      payload: data,
+    });
+
+    Cookie.remove('userInfo');
+
+    router.push('/');
+  } catch (err) {
+    dispatch({
+      type: LOGOUT_ERROR,
+      payload: err,
+    });
+  }
+};
+
+export { loadUser, loginUser, registerUser, logOut };

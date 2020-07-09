@@ -1,9 +1,4 @@
-const Home = ({ data }) => {
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   dispatch(loadUser());
-  // }, []);
+const Home = () => {
   return <h1>Home</h1>;
 };
 

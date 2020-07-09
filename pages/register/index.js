@@ -21,9 +21,9 @@ const Register = () => {
     if (isSubmit) {
       dispatch(registerUser(user));
     }
-    // if (isAuthenticated) {
-    //   router.push('/');
-    // }
+    if (isAuthenticated) {
+      router.push('/');
+    }
   }, [isSubmit, isAuthenticated]);
 
   const handelChange = (e) => {

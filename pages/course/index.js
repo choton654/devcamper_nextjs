@@ -6,10 +6,13 @@ import { getCourses } from '../../redux/actions/courseActions';
 const Course = () => {
   const dispatch = useDispatch();
   const { courses } = useSelector((state) => state.Courses);
+  const { isAuthenticated } = useSelector((state) => state.Auth);
 
   useEffect(() => {
-    // dispatch(loadUser());
     dispatch(getCourses());
+    // if (!isAuthenticated) {
+    //   router.push('/login');
+    // }
   }, []);
 
   return (

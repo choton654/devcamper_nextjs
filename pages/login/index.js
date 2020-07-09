@@ -19,9 +19,9 @@ const Login = () => {
     if (isSubmit) {
       dispatch(loginUser(user));
     }
-    // if (isAuthenticated) {
-    //   router.push('/');
-    // }
+    if (isAuthenticated) {
+      router.push('/');
+    }
   }, [isSubmit, isAuthenticated]);
 
   const handelChange = (e) => {

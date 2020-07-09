@@ -1,17 +1,21 @@
 import withRedux from 'next-redux-wrapper';
 import App from 'next/app';
 import { useEffect } from 'react';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import { loadUser } from '../redux/actions/authActions';
 import { store } from '../redux/store';
 
 function MyApp({ Component, pageProps }) {
+  const { isAuthenticated, token } = useSelector((state) => state.Auth);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadUser());
-  }, []);
+    if (token) {
+      dispatch(loadUser());
+    }
+  }, [token]);
   return (
     <Provider store={store}>
       <Layout>
@@ -47,6 +51,13 @@ function MyApp({ Component, pageProps }) {
 MyApp.getInitialProps = async (appContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
+
+  // console.log(appContext);
+  // const cookie = appContext.req.headers.cookie;
+
+  // const res = await axios.get('http://localhost:3000/api/v1/auth/me', {
+  //   headers: { cookie },
+  // });
 
   return { ...appProps };
 };
