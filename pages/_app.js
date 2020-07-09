@@ -19,6 +19,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <Layout>
+        <script src='https://kit.fontawesome.com/3da1a747b2.js'></script>
         <link
           rel='stylesheet'
           href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'

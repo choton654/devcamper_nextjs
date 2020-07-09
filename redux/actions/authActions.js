@@ -124,7 +124,7 @@ const logOut = () => async (dispatch) => {
 
     Cookie.remove('userInfo');
 
-    router.push('/');
+    router.push('/login');
   } catch (err) {
     dispatch({
       type: LOGOUT_ERROR,

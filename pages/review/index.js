@@ -15,11 +15,13 @@ const Review = () => {
   }, []);
 
   return (
-    <div className='container'>
-      <h1>Reviews</h1>
-      {reviews.map((review) => (
-        <h3 key={review._id}>{review.title}</h3>
-      ))}
+    <div>
+      <div classNameName='container'>
+        <h1>Reviews</h1>
+        {reviews.map((review) => (
+          <h3 key={review._id}>{review.title}</h3>
+        ))}
+      </div>
     </div>
   );
 };
