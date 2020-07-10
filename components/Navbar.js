@@ -45,8 +45,11 @@ const Navbar = () => {
                 <Link href='/course/add'>
                   <a className='dropdown-item'>Manage Courses</a>
                 </Link>
-                <Link href='/user/update'>
-                  <a className='dropdown-item'>Manage Account</a>
+                <Link href='/user'>
+                  <a className='dropdown-item'>Manage Accounts</a>
+                </Link>
+                <Link href='/user'>
+                  <a className='dropdown-item'>Get all Users</a>
                 </Link>
                 <div className='dropdown-divider'></div>
                 <Link href='/login'>

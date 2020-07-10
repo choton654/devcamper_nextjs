@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   GET_BOOTCAMP,
   GET_BOOTCAMP_ERROR,
@@ -18,13 +19,11 @@ export const getBootcamps = () => async (dispatch) => {
   dispatch({ type: GET_BOOTCAMP_REQUEST });
 
   try {
-    const res = await fetch('http://localhost:3000/api/v1/bootcamps');
-    const data = await res.json();
-    console.log(data.data);
+    const { data } = await axios.get('http://localhost:3000/api/v1/bootcamps');
 
     dispatch({
       type: GET_BOOTCAMP,
-      payload: data.data,
+      payload: data,
     });
   } catch (err) {
     dispatch({
@@ -39,13 +38,13 @@ export const getOneBootcamp = (id) => async (dispatch) => {
   dispatch({ type: GET_SINGLE_BOOTCAMP_REQUEST });
 
   try {
-    const res = await fetch(`http://localhost:3000/api/v1/bootcamps/${id}`);
-    const data = await res.json();
-    console.log(data);
+    const { data } = await axios.get(
+      `http://localhost:3000/api/v1/bootcamps/${id}`
+    );
 
     dispatch({
       type: GET_SINGLE_BOOTCAMP,
-      payload: data.data,
+      payload: data,
     });
   } catch (err) {
     dispatch({
@@ -60,15 +59,13 @@ export const getCoursesByBootcamp = (id) => async (dispatch) => {
   dispatch({ type: GET_SINGLE_BOOTCAMP_COURSE_REQUEST });
 
   try {
-    const res = await fetch(
+    const { data } = await axios.get(
       `http://localhost:3000/api/v1/bootcamps/${id}/courses`
     );
-    const data = await res.json();
-    console.log(data);
 
     dispatch({
       type: GET_SINGLE_BOOTCAMP_COURSE,
-      payload: data.data,
+      payload: data,
     });
   } catch (err) {
     dispatch({
@@ -83,15 +80,13 @@ export const getReviewsByBootcamp = (id) => async (dispatch) => {
   dispatch({ type: GET_SINGLE_BOOTCAMP_REVIEW_REQUEST });
 
   try {
-    const res = await fetch(
+    const { data } = await axios.get(
       `http://localhost:3000/api/v1/bootcamps/${id}/reviews`
     );
-    const data = await res.json();
-    console.log(data);
 
     dispatch({
       type: GET_SINGLE_BOOTCAMP_REVIEW,
-      payload: data.data,
+      payload: data,
     });
   } catch (err) {
     dispatch({

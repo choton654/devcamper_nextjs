@@ -31,44 +31,50 @@ const SingleBootcamp = ({ data }) => {
           <div className='row'>
             {/* <!-- Main col --> */}
             <div className='col-md-8'>
-              <h1>{bootcamp.name}</h1>
+              <h1>{bootcamp ? bootcamp.data.name : <h3>loading</h3>}</h1>
               {/* <!-- Description --> */}
-              <p>{bootcamp.description}</p>
+              <p>{bootcamp ? bootcamp.data.description : <h3>loading</h3>}</p>
               {/* <!-- Avg cost --> */}
               <p className='lead mb-4'>
                 Average Course Cost:{' '}
-                <span className='text-primary'>${bootcamp.averageCost}</span>
+                <span className='text-primary'>
+                  ${bootcamp ? bootcamp.data.averageCost : <h3>loading</h3>}
+                </span>
               </p>
               {/* <!-- Courses --> */}
-              {courses.map((course) => (
-                <div className='card mb-3' key={course._id}>
-                  <h5 className='card-header bg-primary text-white'>
-                    {course.title}
-                  </h5>
-                  <div className='card-body'>
-                    <h5 className='card-title'>
-                      Duration: {course.weeks} Weeks
+              {courses ? (
+                courses.data.map((course) => (
+                  <div className='card mb-3' key={course._id}>
+                    <h5 className='card-header bg-primary text-white'>
+                      {course.title}
                     </h5>
-                    <p className='card-text'>{course.description}</p>
-                    <ul className='list-group mb-3'>
-                      <li className='list-group-item'>
-                        Cost: ${course.tuition} USD
-                      </li>
-                      <li className='list-group-item'>
-                        Skill Required: {course.minimumSkill}
-                      </li>
-                      <li className='list-group-item'>
-                        Scholarship Available:
-                        {course.scholarshipAvailable ? (
-                          <i className='fas fa-check text-success'></i>
-                        ) : (
-                          <i className='fas fa-times text-danger'></i>
-                        )}{' '}
-                      </li>
-                    </ul>
+                    <div className='card-body'>
+                      <h5 className='card-title'>
+                        Duration: {course.weeks} Weeks
+                      </h5>
+                      <p className='card-text'>{course.description}</p>
+                      <ul className='list-group mb-3'>
+                        <li className='list-group-item'>
+                          Cost: ${course.tuition} USD
+                        </li>
+                        <li className='list-group-item'>
+                          Skill Required: {course.minimumSkill}
+                        </li>
+                        <li className='list-group-item'>
+                          Scholarship Available:
+                          {course.scholarshipAvailable ? (
+                            <i className='fas fa-check text-success'></i>
+                          ) : (
+                            <i className='fas fa-times text-danger'></i>
+                          )}{' '}
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <h3>loading...</h3>
+              )}
             </div>
             {/* <!-- Sidebar --> */}
             <div className='col-md-4'>
@@ -100,40 +106,44 @@ const SingleBootcamp = ({ data }) => {
               {/* <!-- Map --> */}
               <div id='map' style={{ width: '100%', height: '300px' }}></div>
               {/* <!-- Perks --> */}
-              <ul className='list-group list-group-flush mt-4'>
-                <li className='list-group-item'>
-                  {bootcamp.housing ? (
-                    <i className='fas fa-check text-success'></i>
-                  ) : (
-                    <i className='fas fa-check text-danger'></i>
-                  )}{' '}
-                  Housing
-                </li>
-                <li className='list-group-item'>
-                  {bootcamp.jobAssistance ? (
-                    <i className='fas fa-check text-success'></i>
-                  ) : (
-                    <i className='fas fa-check text-danger'></i>
-                  )}{' '}
-                  Job Assistance
-                </li>
-                <li className='list-group-item'>
-                  {bootcamp.jobGuarantee ? (
-                    <i className='fas fa-check text-success'></i>
-                  ) : (
-                    <i className='fas fa-check text-danger'></i>
-                  )}{' '}
-                  Job Guarantee
-                </li>
-                <li className='list-group-item'>
-                  {bootcamp.acceptGi ? (
-                    <i className='fas fa-check text-success'></i>
-                  ) : (
-                    <i className='fas fa-check text-danger'></i>
-                  )}{' '}
-                  Accepts GI Bill
-                </li>
-              </ul>
+              {bootcamp ? (
+                <ul className='list-group list-group-flush mt-4'>
+                  <li className='list-group-item'>
+                    {bootcamp.data.housing ? (
+                      <i className='fas fa-check text-success'></i>
+                    ) : (
+                      <i className='fas fa-check text-danger'></i>
+                    )}{' '}
+                    Housing
+                  </li>
+                  <li className='list-group-item'>
+                    {bootcamp.data.jobAssistance ? (
+                      <i className='fas fa-check text-success'></i>
+                    ) : (
+                      <i className='fas fa-check text-danger'></i>
+                    )}{' '}
+                    Job Assistance
+                  </li>
+                  <li className='list-group-item'>
+                    {bootcamp.data.jobGuarantee ? (
+                      <i className='fas fa-check text-success'></i>
+                    ) : (
+                      <i className='fas fa-check text-danger'></i>
+                    )}{' '}
+                    Job Guarantee
+                  </li>
+                  <li className='list-group-item'>
+                    {bootcamp.data.acceptGi ? (
+                      <i className='fas fa-check text-success'></i>
+                    ) : (
+                      <i className='fas fa-check text-danger'></i>
+                    )}{' '}
+                    Accepts GI Bill
+                  </li>
+                </ul>
+              ) : (
+                <h3>loading...</h3>
+              )}
             </div>
           </div>
         </div>

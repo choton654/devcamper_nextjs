@@ -35,23 +35,29 @@ const ReviewsOfBootcamp = ({ data }) => {
                 className='btn btn-secondary my-3'>
                 <i className='fas fa-chevron-left'></i> Bootcamp Info
               </a>
-              <h1 className='mb-4'>{bootcamp.name} Reviews</h1>
+              <h1 className='mb-4'>
+                {bootcamp ? bootcamp.name : <h3>loading...</h3>} Reviews
+              </h1>
               {/* <!-- Reviews --> */}
-              {reviews.map((review) => (
-                <div className='card mb-3' key={review._id}>
-                  <h5 className='card-header bg-dark text-white'>
-                    {review.title}
-                  </h5>
-                  <div className='card-body'>
-                    <h5 className='card-title'>
-                      Rating:{' '}
-                      <span className='text-success'>{review.rating}</span>
+              {reviews ? (
+                reviews.data.map((review) => (
+                  <div className='card mb-3' key={review._id}>
+                    <h5 className='card-header bg-dark text-white'>
+                      {review.title}
                     </h5>
-                    <p className='card-text'>{review.text}</p>
-                    <p className='text-muted'>Writtern By Kevin Smith</p>
+                    <div className='card-body'>
+                      <h5 className='card-title'>
+                        Rating:{' '}
+                        <span className='text-success'>{review.rating}</span>
+                      </h5>
+                      <p className='card-text'>{review.text}</p>
+                      <p className='text-muted'>Writtern By Kevin Smith</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <h3>loading...</h3>
+              )}
             </div>
             {/* <!-- Sidebar --> */}
             <div className='col-md-4'>

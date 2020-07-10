@@ -14,10 +14,10 @@ import {
 } from '../types/bootcamptypes';
 
 const initialState = {
-  bootcamps: [],
-  bootcamp: {},
-  courses: [],
-  reviews: [],
+  bootcamps: null,
+  bootcamp: null,
+  courses: null,
+  reviews: null,
   loading: false,
   error: null,
 };

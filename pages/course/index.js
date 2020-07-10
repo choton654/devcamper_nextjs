@@ -18,13 +18,17 @@ const Course = () => {
   return (
     <div className='container'>
       <h1>Courses</h1>
-      {courses.map((course) => (
-        <h3 key={course._id}>
-          <Link href={`/course/${course._id}`}>
-            <a>{course.title}</a>
-          </Link>
-        </h3>
-      ))}
+      {courses.length ? (
+        courses.map((course) => (
+          <h3 key={course._id}>
+            <Link href={`/course/${course._id}`}>
+              <a>{course.title}</a>
+            </Link>
+          </h3>
+        ))
+      ) : (
+        <h3> loading...</h3>
+      )}
     </div>
   );
 };

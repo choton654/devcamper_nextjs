@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../../redux/actions/authActions';
+import { createUser } from '../../redux/actions/userActions';
 
-const Register = () => {
+const CreateUser = () => {
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -20,12 +20,9 @@ const Register = () => {
 
   useEffect(() => {
     if (isSubmit) {
-      dispatch(registerUser(user));
+      dispatch(createUser(user));
     }
-    if (isAuthenticated) {
-      router.push('/');
-    }
-  }, [isSubmit, isAuthenticated]);
+  }, [isSubmit]);
 
   const handelChange = (e) => {
     setUser({
@@ -46,7 +43,7 @@ const Register = () => {
             <div className='card bg-white p-4 mb-4'>
               <div className='card-body'>
                 <h1>
-                  <i className='fas fa-user-plus'></i> Register
+                  <i className='fas fa-user-plus'></i> Create new User
                 </h1>
                 <form onSubmit={handelSubmit}>
                   <div className='form-group'>
@@ -129,4 +126,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default CreateUser;

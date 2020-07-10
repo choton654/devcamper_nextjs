@@ -113,41 +113,39 @@ const Bootcamp = () => {
             {/* <!-- Main col --> */}
             <div class='col-md-8'>
               {/* <!-- Bootcamps --> */}
-              {bootcamps.map((bootcamp) => (
-                <Link key={bootcamp._id} href={`/bootcamp/${bootcamp._id}`}>
-                  <a>
-                    <div class='card mb-3'>
-                      <div class='row no-gutters'>
-                        <div class='col-md-4'>
-                          <img
-                            src='img/image_1.jpg'
-                            class='card-img'
-                            alt='...'
-                          />
-                        </div>
-                        <div class='col-md-8'>
-                          <div class='card-body'>
-                            <h5 class='card-title'>
-                              <a href='bootcamp.html'>
-                                {bootcamp.name}
-                                <span class='float-right badge badge-success'>
-                                  8.8
-                                </span>
-                              </a>
-                            </h5>
-                            <span class='badge badge-dark mb-2'>
-                              {bootcamp.location.city}
-                            </span>
-                            {bootcamp.careers.map((career) => (
-                              <p class='card-text'>{career}</p>
-                            ))}
-                          </div>
+              {bootcamps ? (
+                bootcamps.data.map((bootcamp) => (
+                  <div class='card mb-3' key={bootcamp._id}>
+                    <div class='row no-gutters'>
+                      <div class='col-md-4'>
+                        <img src='img/image_1.jpg' class='card-img' alt='...' />
+                      </div>
+                      <div class='col-md-8'>
+                        <div class='card-body'>
+                          <h5 class='card-title'>
+                            <a href='bootcamp.html'>
+                              <Link href={`/bootcamp/${bootcamp._id}`}>
+                                <a>{bootcamp.name}</a>
+                              </Link>
+                              <span class='float-right badge badge-success'>
+                                8.8
+                              </span>
+                            </a>
+                          </h5>
+                          <span class='badge badge-dark mb-2'>
+                            {bootcamp.location.city}
+                          </span>
+                          {bootcamp.careers.map((career) => (
+                            <p class='card-text'>{career}</p>
+                          ))}
                         </div>
                       </div>
                     </div>
-                  </a>
-                </Link>
-              ))}
+                  </div>
+                ))
+              ) : (
+                <h2>loading...</h2>
+              )}
 
               {/* <!-- Pagination --> */}
               <nav aria-label='Page navigation example'>
