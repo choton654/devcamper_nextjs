@@ -108,7 +108,7 @@ const BootCampSchema = new mongoose.Schema(
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  },
+  }
 );
 
 // slugify name field
@@ -136,7 +136,7 @@ BootCampSchema.pre('save', async function (next) {
   next();
 });
 
-// cascade delete course whwn bootcamp is deleted
+// cascade delete course when bootcamp is deleted
 BootCampSchema.pre('remove', async function (next) {
   console.log(`courses deleted from bootcamp ${this._id}`);
 

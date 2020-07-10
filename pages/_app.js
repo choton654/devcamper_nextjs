@@ -1,5 +1,6 @@
 import withRedux from 'next-redux-wrapper';
 import App from 'next/app';
+import Router from 'next/router';
 import { useEffect } from 'react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import Layout from '../components/Layout';
@@ -14,6 +15,8 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     if (token) {
       dispatch(loadUser());
+    } else {
+      Router.replace('/login');
     }
   }, [token]);
   return (
@@ -52,13 +55,15 @@ function MyApp({ Component, pageProps }) {
 MyApp.getInitialProps = async (appContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
+  // if (appContext.ctx.req) {
+  //   const token = appContext.ctx.req.headers.cookie.split('=')[1];
+  //   console.log(token);
 
-  // console.log(appContext);
-  // const cookie = appContext.req.headers.cookie;
-
-  // const res = await axios.get('http://localhost:3000/api/v1/auth/me', {
-  //   headers: { cookie },
-  // });
+  //   if (!token) {
+  //     Router.replace('/login');
+  //   }
+  //   return;
+  // }
 
   return { ...appProps };
 };

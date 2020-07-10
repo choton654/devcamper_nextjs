@@ -1,7 +1,11 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getReviewsByBootcamp } from '../../../redux/actions/bootcampActions';
+import {
+  getOneBootcamp,
+  getReviewsByBootcamp,
+} from '../../../redux/actions/bootcampActions';
 
 const ReviewsOfBootcamp = ({ data }) => {
   const router = useRouter();
@@ -9,21 +13,17 @@ const ReviewsOfBootcamp = ({ data }) => {
   console.log(id);
 
   const dispatch = useDispatch();
-  const { reviews } = useSelector((state) => state.Bootcamps);
+  const { reviews, bootcamp } = useSelector((state) => state.Bootcamps);
 
   useEffect(() => {
     if (id) {
       dispatch(getReviewsByBootcamp(id));
+      dispatch(getOneBootcamp(id));
     }
   }, [id]);
 
   return (
     <div>
-      <div className='container'>
-        {reviews.map((review) => (
-          <h3 key={review._id}>{review.title}</h3>
-        ))}
-      </div>
       <section className='bootcamp mt-5'>
         <div className='container'>
           <div className='row'>
@@ -35,47 +35,23 @@ const ReviewsOfBootcamp = ({ data }) => {
                 className='btn btn-secondary my-3'>
                 <i className='fas fa-chevron-left'></i> Bootcamp Info
               </a>
-              <h1 className='mb-4'>DevWorks Bootcamp Reviews</h1>
+              <h1 className='mb-4'>{bootcamp.name} Reviews</h1>
               {/* <!-- Reviews --> */}
-              <div className='card mb-3'>
-                <h5 className='card-header bg-dark text-white'>
-                  Fantastic Bootcamp
-                </h5>
-                <div className='card-body'>
-                  <h5 className='card-title'>
-                    Rating: <span className='text-success'>10</span>
+              {reviews.map((review) => (
+                <div className='card mb-3' key={review._id}>
+                  <h5 className='card-header bg-dark text-white'>
+                    {review.title}
                   </h5>
-                  <p className='card-text'>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Commodi similique mollitia, praesentium, animi harum officia
-                    dolores corporis ex tempore consequuntur dolorem ullam
-                    dolorum magnam corrupti quaerat tempora repudiandae!
-                    Similique, molestiae. Iste, blanditiis recusandae unde
-                    tenetur eius exercitationem rerum a fuga.
-                  </p>
-                  <p className='text-muted'>Writtern By Kevin Smith</p>
+                  <div className='card-body'>
+                    <h5 className='card-title'>
+                      Rating:{' '}
+                      <span className='text-success'>{review.rating}</span>
+                    </h5>
+                    <p className='card-text'>{review.text}</p>
+                    <p className='text-muted'>Writtern By Kevin Smith</p>
+                  </div>
                 </div>
-              </div>
-
-              <div className='card mb-3'>
-                <h5 className='card-header bg-dark text-white'>
-                  Learned a Lot
-                </h5>
-                <div className='card-body'>
-                  <h5 className='card-title'>
-                    Rating: <span className='text-success'>9</span>
-                  </h5>
-                  <p className='card-text'>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Commodi similique mollitia, praesentium, animi harum officia
-                    dolores corporis ex tempore consequuntur dolorem ullam
-                    dolorum magnam corrupti quaerat tempora repudiandae!
-                    Similique, molestiae. Iste, blanditiis recusandae unde
-                    tenetur eius exercitationem rerum a fuga.
-                  </p>
-                  <p className='text-muted'>Writtern By Jill Samson</p>
-                </div>
-              </div>
+              ))}
             </div>
             {/* <!-- Sidebar --> */}
             <div className='col-md-4'>
@@ -87,11 +63,11 @@ const ReviewsOfBootcamp = ({ data }) => {
                 Rating
               </h1>
               {/* <!-- Buttons --> */}
-              <a
-                href='add-review.html'
-                className='btn btn-primary btn-block my-3'>
-                <i className='fas fa-pencil-alt'></i> Review This Bootcamp
-              </a>
+              <Link href='/review/add'>
+                <a className='btn btn-primary btn-block my-3'>
+                  <i className='fas fa-pencil-alt'></i> Review This Bootcamp
+                </a>
+              </Link>
             </div>
           </div>
         </div>

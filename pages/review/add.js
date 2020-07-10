@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const AddReview = () => {
   return (
     <section className='container mt-5'>
@@ -15,7 +17,7 @@ const AddReview = () => {
               <p>
                 You must have attended and graduated this bootcamp to review
               </p>
-              <form action='reviews.html'>
+              <form>
                 <div className='form-group'>
                   <label for='rating'>
                     Rating: <span className='text-primary'>8</span>
@@ -46,11 +48,13 @@ const AddReview = () => {
                     placeholder='Your review'></textarea>
                 </div>
                 <div className='form-group'>
-                  <input
-                    type='submit'
-                    value='Submit Review'
-                    className='btn btn-dark btn-block'
-                  />
+                  <Link href='/bootcamp'>
+                    <input
+                      type='submit'
+                      value='Submit Review'
+                      className='btn btn-dark btn-block'
+                    />
+                  </Link>
                 </div>
               </form>
             </div>
