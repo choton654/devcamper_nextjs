@@ -152,4 +152,12 @@ BootCampSchema.virtual('courses', {
   justOne: false,
 });
 
+// reverse populate with virtuals
+BootCampSchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'bootcamp',
+  justOne: false,
+});
+
 module.exports = mongoose.model('Bootcamp', BootCampSchema);

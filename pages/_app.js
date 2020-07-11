@@ -1,11 +1,11 @@
 import App from 'next/app';
-import Router from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import { loadUser } from '../redux/actions/authActions';
 import { getBootcamps } from '../redux/actions/bootcampActions';
 import { getCourses } from '../redux/actions/courseActions';
+import { getReviews } from '../redux/actions/reviewActions';
 import { wrapper } from '../redux/store';
 
 function MyApp({ Component, pageProps }) {
@@ -18,9 +18,12 @@ function MyApp({ Component, pageProps }) {
       dispatch(loadUser());
       dispatch(getBootcamps());
       dispatch(getCourses());
-    } else {
-      Router.replace('/login');
+      dispatch(getReviews());
     }
+    // else
+    // {
+    //   Router.replace('/login');
+    // }
   }, [token]);
   return (
     <Layout>

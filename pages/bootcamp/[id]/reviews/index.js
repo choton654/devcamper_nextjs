@@ -12,8 +12,7 @@ const ReviewsOfBootcamp = ({ data }) => {
   const { id } = router.query;
 
   const dispatch = useDispatch();
-  const { reviews, bootcamp } = useSelector((state) => state.Bootcamps);
-
+  const { bootcamp, userReviews } = useSelector((state) => state.Bootcamps);
   useEffect(() => {
     if (id) {
       dispatch(getReviewsByBootcamp(id));
@@ -37,8 +36,8 @@ const ReviewsOfBootcamp = ({ data }) => {
                 {bootcamp ? bootcamp.name : <h3>loading...</h3>} Reviews
               </h1>
               {/* <!-- Reviews --> */}
-              {reviews ? (
-                reviews.data.map((review) => (
+              {userReviews ? (
+                userReviews.data.map((review) => (
                   <div className='card mb-3' key={review._id}>
                     <h5 className='card-header bg-dark text-white'>
                       {review.title}

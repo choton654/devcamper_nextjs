@@ -1,9 +1,46 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneBootcamp } from '../../../../redux/actions/bootcampActions';
+import { createReview } from '../../../../redux/actions/reviewActions';
 
 const AddReview = () => {
+  const [review, setReview] = useState({
+    title: '',
+    text: '',
+    rating: '',
+  });
+
+  const [isSubmit, setIsSubmit] = useState(false);
+
   const router = useRouter();
   const { id } = router.query;
+
+  const { bootcamp } = useSelector((state) => state.Bootcamps);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getOneBootcamp(id));
+    }
+    if (isSubmit) {
+      dispatch(createReview(id, review));
+    }
+  }, [id, isSubmit]);
+
+  const handelSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmit(true);
+  };
+
+  const handelChange = (e) => {
+    setReview({
+      ...review,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <section className='container mt-5'>
       <div className='row'>
@@ -15,15 +52,24 @@ const AddReview = () => {
                   <i className='fas fa-chevron-left'></i> Bootcamp Info
                 </a>
               </Link>
-              <h1 className='mb-2'>DevWorks Bootcamp</h1>
+              {bootcamp ? (
+                <h1 className='mb-2'>{bootcamp.data.name}</h1>
+              ) : (
+                <h3>loading...</h3>
+              )}
+
               <h3 className='text-primary mb-4'>Write a Review</h3>
               <p>
                 You must have attended and graduated this bootcamp to review
               </p>
-              <form>
+              <form onSubmit={handelSubmit}>
                 <div className='form-group'>
                   <label> Rating</label>
-                  <select className='custom-select mb-2'>
+                  <select
+                    className='custom-select mb-2'
+                    name='rating'
+                    defaultValue={review.rating}
+                    onChange={handelChange}>
                     <option value='10'>10</option>
                     <option value='9'>9</option>
                     <option value='8'>8</option>
@@ -42,25 +88,29 @@ const AddReview = () => {
                   <input
                     type='text'
                     name='title'
+                    onChange={handelChange}
+                    value={review.title}
                     className='form-control'
                     placeholder='Review title'
                   />
                 </div>
                 <div className='form-group'>
                   <textarea
-                    name='review'
+                    name='text'
+                    onChange={handelChange}
+                    value={review.text}
                     rows='10'
                     className='form-control'
                     placeholder='Your review'></textarea>
                 </div>
                 <div className='form-group'>
-                  <Link href='/bootcamp'>
-                    <input
-                      type='submit'
-                      value='Submit Review'
-                      className='btn btn-dark btn-block'
-                    />
-                  </Link>
+                  <input
+                    type='submit'
+                    value='Submit Review'
+                    className='btn btn-dark btn-block'
+                  />
+                  {/* <Link href='/bootcamp'>
+                  </Link> */}
                 </div>
               </form>
             </div>

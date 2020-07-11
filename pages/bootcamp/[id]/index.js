@@ -7,22 +7,39 @@ import {
   getOneBootcamp,
 } from '../../../redux/actions/bootcampActions';
 
-const SingleBootcamp = ({ data }) => {
+const SingleBootcamp = () => {
   const router = useRouter();
   const { id } = router.query;
   console.log(id);
 
   const dispatch = useDispatch();
-  const { bootcamp, courses, reviews } = useSelector(
+  const { bootcamp, userCourses, userReviews } = useSelector(
     (state) => state.Bootcamps
   );
+
+  // const [userReviewed, setuserReviewed] = useState(false);
+  // const { reviews } = useSelector((state) => state.Reviews);
+  // const { user } = useSelector((state) => state.Auth);
 
   useEffect(() => {
     if (id) {
       dispatch(getOneBootcamp(id));
       dispatch(getCoursesByBootcamp(id));
+      // findUser(reviews, user);
     }
   }, [id]);
+
+  // function findUser(reviews, user) {
+  //   if ((user, reviews)) {
+  //     reviews.data.find((review) => {
+  //       if (review.user === user.data._id) {
+  //         setuserReviewed(true);
+  //       } else {
+  //         setuserReviewed(false);
+  //       }
+  //     });
+  //   }
+  // }
 
   return (
     <div>
@@ -42,8 +59,8 @@ const SingleBootcamp = ({ data }) => {
                 </span>
               </p>
               {/* <!-- Courses --> */}
-              {courses ? (
-                courses.data.map((course) => (
+              {userCourses ? (
+                userCourses.data.map((course) => (
                   <div className='card mb-3' key={course._id}>
                     <h5 className='card-header bg-primary text-white'>
                       {course.title}
@@ -93,6 +110,15 @@ const SingleBootcamp = ({ data }) => {
                   <i className='fas fa-comments'></i> Read Reviews
                 </a>
               </Link>
+
+              {/* {userReviewed ? (
+                <input
+                  className='btn btn-danger btn-block my-3'
+                  type='button'
+                  value='you already reviewed this bootcamp'
+                />
+              ) : (
+              )} */}
               <Link
                 href='/bootcamp/[id]/reviews/add'
                 as={`/bootcamp/${id}/reviews/add`}>
@@ -100,6 +126,7 @@ const SingleBootcamp = ({ data }) => {
                   <i className='fas fa-pencil-alt'></i> Write a Review
                 </a>
               </Link>
+
               <Link href='/'>
                 <a target='_blank' className='btn btn-secondary btn-block my-3'>
                   <i className='fas fa-globe'></i> Visit Website

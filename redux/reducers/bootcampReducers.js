@@ -16,8 +16,8 @@ import {
 const initialState = {
   bootcamps: null,
   bootcamp: null,
-  courses: null,
-  reviews: null,
+  userCourses: null,
+  userReviews: null,
   loading: false,
   error: null,
 };
@@ -56,13 +56,13 @@ export const bootcampReducer = (state = initialState, action) => {
     case GET_SINGLE_BOOTCAMP_COURSE:
       return {
         ...state,
-        courses: action.payload,
+        userCourses: action.payload,
         loading: false,
       };
     case GET_SINGLE_BOOTCAMP_REVIEW:
       return {
         ...state,
-        reviews: action.payload,
+        userReviews: action.payload,
         loading: false,
       };
     default:

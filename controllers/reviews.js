@@ -8,7 +8,18 @@ const BootCamp = require('../model/BootCamp');
 // access  public
 exports.getReviews = asyncMiddleware(async (req, res, next) => {
   if (req.params.bootcampId) {
-    const reviews = await Review.find({ bootcamp: req.params.bootcampId });
+    const reviews = await Review.find({
+      bootcamp: req.params.bootcampId,
+    }).populate([
+      {
+        path: 'bootcamp',
+        select: 'name description',
+      },
+      {
+        path: 'user',
+        select: 'name',
+      },
+    ]);
 
     return res
       .status(200)
@@ -22,10 +33,21 @@ exports.getReviews = asyncMiddleware(async (req, res, next) => {
 // route   GET /api/v1/reviews/:id
 // access  public
 exports.getReview = asyncMiddleware(async (req, res, next) => {
-  const review = await Review.findById(req.params.id).populate({
-    path: 'bootcamp',
-    select: 'name description',
-  });
+  const review = await Review.findById(req.params.id).populate([
+    {
+      path: 'bootcamp',
+      select: 'name description',
+    },
+    {
+      path: 'user',
+      select: 'name',
+    },
+  ]);
+
+  // {
+  //   path: 'bootcamp',
+  //   select: 'name description',
+  // }
 
   if (!review) {
     return res.status(404).json({

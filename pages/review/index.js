@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReviews } from '../../redux/actions/reviewActions';
@@ -18,9 +19,17 @@ const Review = () => {
     <div>
       <div classNameName='container'>
         <h1>Reviews</h1>
-        {reviews.map((review) => (
-          <h3 key={review._id}>{review.title}</h3>
-        ))}
+        {reviews ? (
+          reviews.data.map((review) => (
+            <h3 key={review._id}>
+              <Link href='/review/[id]' as={`/review/${review._id}`}>
+                {review.title}
+              </Link>
+            </h3>
+          ))
+        ) : (
+          <h3>loading...</h3>
+        )}
       </div>
     </div>
   );
