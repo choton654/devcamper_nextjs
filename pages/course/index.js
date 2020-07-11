@@ -1,20 +1,7 @@
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { getCourses } from '../../redux/actions/courseActions';
 
-const Course = () => {
-  const dispatch = useDispatch();
-  const { courses } = useSelector((state) => state.Courses);
-  const { isAuthenticated } = useSelector((state) => state.Auth);
-
-  useEffect(() => {
-    dispatch(getCourses());
-    // if (!isAuthenticated) {
-    //   router.push('/login');
-    // }
-  }, []);
-
+const Course = ({ courses }) => {
   return (
     <div className='container'>
       <h1>Courses</h1>
@@ -31,6 +18,14 @@ const Course = () => {
       )}
     </div>
   );
+};
+
+Course.getInitialProps = async ({ store }) => {
+  await store.dispatch(getCourses());
+
+  const { courses } = store.getState().Courses;
+
+  return { courses };
 };
 
 export default Course;

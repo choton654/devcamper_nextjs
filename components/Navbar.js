@@ -36,7 +36,7 @@ const Navbar = () => {
                 <i className='fas fa-user'></i> Account
               </a>
               <div className='dropdown-menu'>
-                <Link href='/bootcamp/add'>
+                <Link href='/bootcamp/manage'>
                   <a className='dropdown-item'>Manage Bootcamps</a>
                 </Link>
                 <Link href='/review/manage'>
@@ -46,10 +46,7 @@ const Navbar = () => {
                   <a className='dropdown-item'>Manage Courses</a>
                 </Link>
                 <Link href='/user'>
-                  <a className='dropdown-item'>Manage Accounts</a>
-                </Link>
-                <Link href='/user'>
-                  <a className='dropdown-item'>Get all Users</a>
+                  <a className='dropdown-item'>Manage Users</a>
                 </Link>
                 <div className='dropdown-divider'></div>
                 <Link href='/login'>

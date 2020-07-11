@@ -1,11 +1,9 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { getOneBootcamp } from '../../../../redux/actions/bootcampActions';
 import { createReview } from '../../../../redux/actions/reviewActions';
 
-const AddReview = () => {
+const AddReview = ({ bootcamp, id }) => {
   const [review, setReview] = useState({
     title: '',
     text: '',
@@ -14,20 +12,11 @@ const AddReview = () => {
 
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const router = useRouter();
-  const { id } = router.query;
-
-  const { bootcamp } = useSelector((state) => state.Bootcamps);
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    if (id) {
-      dispatch(getOneBootcamp(id));
-    }
     if (isSubmit) {
       dispatch(createReview(id, review));
     }
-  }, [id, isSubmit]);
+  }, [isSubmit]);
 
   const handelSubmit = (e) => {
     e.preventDefault();
@@ -79,9 +68,7 @@ const AddReview = () => {
                     <option value='4'>4</option>
                     <option value='3'>3</option>
                     <option value='2'>2</option>
-                    <option value='1' selected>
-                      1
-                    </option>
+                    <option value='1'>1</option>
                   </select>
                 </div>
                 <div className='form-group'>
@@ -119,6 +106,14 @@ const AddReview = () => {
       </div>
     </section>
   );
+};
+
+AddReview.getInitialProps = async ({ query: { id }, store }) => {
+  if (id) {
+    await store.dispatch(getOneBootcamp(id));
+  }
+  const { bootcamp } = store.getState().Bootcamps;
+  return { bootcamp, id };
 };
 
 export default AddReview;

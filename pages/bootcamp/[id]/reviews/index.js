@@ -1,25 +1,10 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   getOneBootcamp,
   getReviewsByBootcamp,
 } from '../../../../redux/actions/bootcampActions';
 
-const ReviewsOfBootcamp = ({ data }) => {
-  const router = useRouter();
-  const { id } = router.query;
-
-  const dispatch = useDispatch();
-  const { bootcamp, userReviews } = useSelector((state) => state.Bootcamps);
-  useEffect(() => {
-    if (id) {
-      dispatch(getReviewsByBootcamp(id));
-      dispatch(getOneBootcamp(id));
-    }
-  }, [id]);
-
+const ReviewsOfBootcamp = ({ bootcamp, userReviews, id }) => {
   return (
     <div>
       <section className='bootcamp mt-5'>
@@ -48,7 +33,9 @@ const ReviewsOfBootcamp = ({ data }) => {
                         <span className='text-success'>{review.rating}</span>
                       </h5>
                       <p className='card-text'>{review.text}</p>
-                      <p className='text-muted'>Writtern By Kevin Smith</p>
+                      <p className='text-muted'>
+                        Writtern By {review.user.name}
+                      </p>
                     </div>
                   </div>
                 ))
@@ -79,6 +66,15 @@ const ReviewsOfBootcamp = ({ data }) => {
       </section>
     </div>
   );
+};
+
+ReviewsOfBootcamp.getInitialProps = async ({ query: { id }, store }) => {
+  if (id) {
+    await store.dispatch(getReviewsByBootcamp(id));
+    await store.dispatch(getOneBootcamp(id));
+  }
+  const { bootcamp, userReviews } = store.getState().Bootcamps;
+  return { bootcamp, userReviews, id };
 };
 
 export default ReviewsOfBootcamp;

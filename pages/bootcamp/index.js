@@ -1,16 +1,7 @@
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { getBootcamps } from '../../redux/actions/bootcampActions';
 
-const Bootcamp = () => {
-  const dispatch = useDispatch();
-  const { bootcamps } = useSelector((state) => state.Bootcamps);
-
-  useEffect(() => {
-    dispatch(getBootcamps());
-  }, []);
-
+const Bootcamp = ({ bootcamps }) => {
   return (
     <div>
       {/* <!-- Latest bootcamps --> */}
@@ -187,6 +178,27 @@ const Bootcamp = () => {
       </section>
     </div>
   );
+};
+
+Bootcamp.getInitialProps = async ({ store, req, res }) => {
+  await store.dispatch(getBootcamps());
+  const { bootcamps } = store.getState().Bootcamps;
+  // const { isAuthenticated } = store.getState().Auth;
+
+  // if (isAuthenticated) {
+  //   if (!req) {
+  //     Router.replace('/login');
+  //     return {};
+  //   }
+  //   if (req) {
+  //     res.writeHead(302, {
+  //       Location: 'http://localhost:3000/login',
+  //     });
+  //     res.end();
+  //     return;
+  //   }
+  // }
+  return { bootcamps };
 };
 
 export default Bootcamp;

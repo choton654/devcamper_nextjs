@@ -1,4 +1,23 @@
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneBootcamp } from '../../../../redux/actions/bootcampActions';
+
 const manage = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const dispatch = useDispatch();
+  const { bootcamp } = useSelector((state) => state.Bootcamps);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getOneBootcamp(id));
+      // dispatch(getCoursesByBootcamp(id));
+      // findUser(reviews, user);
+    }
+  }, [id]);
+
   return (
     <section class='container mt-5'>
       <div class='row'>
@@ -6,29 +25,33 @@ const manage = () => {
           <div class='card bg-white py-2 px-4'>
             <div class='card-body'>
               <h1 class='mb-4'>Manage Bootcamp</h1>
-              <div class='card mb-3'>
-                <div class='row no-gutters'>
-                  <div class='col-md-4'>
-                    <img src='img/image_1.jpg' class='card-img' alt='...' />
-                  </div>
-                  <div class='col-md-8'>
-                    <div class='card-body'>
-                      <h5 class='card-title'>
-                        <a href='bootcamp.html'>
-                          Devworks Bootcamp
-                          <span class='float-right badge badge-success'>
-                            8.8
-                          </span>
-                        </a>
-                      </h5>
-                      <span class='badge badge-dark mb-2'>Boston, MA</span>
-                      <p class='card-text'>
-                        Web Development, UI/UX, Mobile Development
-                      </p>
+              {bootcamp ? (
+                <div class='card mb-3'>
+                  <div class='row no-gutters'>
+                    <div class='col-md-4'>
+                      <img src='img/image_1.jpg' class='card-img' alt='...' />
+                    </div>
+                    <div class='col-md-8'>
+                      <div class='card-body'>
+                        <h5 class='card-title'>
+                          <a>{bootcamp.data.name}</a>
+                        </h5>
+                        <span class='badge badge-dark mb-2'>
+                          {bootcamp.data.location.city}
+                        </span>
+                        {bootcamp.data.careers.map((career) => (
+                          <p class='card-text' key={career}>
+                            {career}
+                          </p>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <h3>loading...</h3>
+              )}
+
               <form class='mb-4'>
                 <div class='form-group'>
                   <div class='custom-file'>

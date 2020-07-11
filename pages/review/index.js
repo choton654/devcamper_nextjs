@@ -1,20 +1,7 @@
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { getReviews } from '../../redux/actions/reviewActions';
 
-const Review = () => {
-  const dispatch = useDispatch();
-  const { reviews } = useSelector((state) => state.Reviews);
-  const { isAuthenticated } = useSelector((state) => state.Auth);
-
-  useEffect(() => {
-    dispatch(getReviews());
-    // if (!isAuthenticated) {
-    //   router.push('/login');
-    // }
-  }, []);
-
+const Review = ({ reviews }) => {
   return (
     <div>
       <div classNameName='container'>
@@ -33,6 +20,14 @@ const Review = () => {
       </div>
     </div>
   );
+};
+
+Review.getInitialProps = async ({ store }) => {
+  await store.dispatch(getReviews());
+
+  const { reviews } = store.getState().Reviews;
+
+  return { reviews };
 };
 
 export default Review;

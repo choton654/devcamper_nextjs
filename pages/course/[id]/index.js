@@ -1,34 +1,17 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { getOneCourse } from '../../../redux/actions/courseActions';
 
-const SingleCourse = ({ data }) => {
-  const router = useRouter();
-  const { id } = router.query;
-
-  const dispatch = useDispatch();
-  const { course } = useSelector((state) => state.Courses);
-
-  useEffect(() => {
-    if (id) {
-      dispatch(getOneCourse(id));
-    }
-  }, [id]);
-
+const SingleCourse = ({ course, id }) => {
   return (
     <>
       <div className='container'>
-        <h1>{course ? course.title : <h3>loading...</h3>}</h1>
+        {course ? <h1>{course.data.title}</h1> : <h3>loading...</h3>}
       </div>
       <section className='container mt-5'>
         <div className='row'>
           <div className='col-md-8 m-auto'>
             <div className='card bg-white py-2 px-4'>
               <div className='card-body'>
-                <a
-                  href='manage-bootcamp.html'
-                  className='btn btn-link text-secondary my-3'>
+                <a className='btn btn-link text-secondary my-3'>
                   <i className='fas fa-chevron-left'></i> Manage Bootcamp
                 </a>
                 <h1 className='mb-4'>Manage Courses</h1>
@@ -106,6 +89,15 @@ const SingleCourse = ({ data }) => {
       </section>
     </>
   );
+};
+
+SingleCourse.getInitialProps = async ({ query: { id }, store }) => {
+  if (id) {
+    await store.dispatch(getOneCourse(id));
+  }
+  const { course } = store.getState().Courses;
+
+  return { course, id };
 };
 
 export default SingleCourse;

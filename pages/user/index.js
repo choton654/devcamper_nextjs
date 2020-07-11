@@ -1,20 +1,17 @@
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../redux/actions/userActions';
 
-const Users = () => {
-  const { isAuthenticated, token } = useSelector((state) => state.Auth);
-  const { users } = useSelector((state) => state.Users);
+const Users = ({ users }) => {
+  // const { isAuthenticated, token } = useSelector((state) => state.Auth);
+  // const { users } = useSelector((state) => state.Users);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (token) {
-      dispatch(getUsers());
-    }
-  }, [token]);
-
+  // useEffect(() => {
+  //   // if (token) {
+  //   // }
+  //   dispatch(getUsers());
+  // }, []);
   return (
     <div>
       {users ? (
@@ -34,6 +31,20 @@ const Users = () => {
       )}
     </div>
   );
+};
+
+Users.getInitialProps = async ({ store, req }) => {
+  if (req) {
+    const { token } = req.cookies;
+    console.log(token);
+    if (token) {
+      await store.dispatch(getUsers(token));
+    }
+  }
+
+  const { users } = store.getState().Users;
+
+  return { users };
 };
 
 export default Users;

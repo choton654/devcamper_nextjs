@@ -1,45 +1,29 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   getCoursesByBootcamp,
   getOneBootcamp,
 } from '../../../redux/actions/bootcampActions';
 
-const SingleBootcamp = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  console.log(id);
-
-  const dispatch = useDispatch();
-  const { bootcamp, userCourses, userReviews } = useSelector(
-    (state) => state.Bootcamps
-  );
-
+const SingleBootcamp = ({ bootcamp, userCourses, id }) => {
   // const [userReviewed, setuserReviewed] = useState(false);
   // const { reviews } = useSelector((state) => state.Reviews);
   // const { user } = useSelector((state) => state.Auth);
 
-  useEffect(() => {
-    if (id) {
-      dispatch(getOneBootcamp(id));
-      dispatch(getCoursesByBootcamp(id));
-      // findUser(reviews, user);
-    }
-  }, [id]);
-
-  // function findUser(reviews, user) {
-  //   if ((user, reviews)) {
-  //     reviews.data.find((review) => {
-  //       if (review.user === user.data._id) {
-  //         setuserReviewed(true);
-  //       } else {
-  //         setuserReviewed(false);
-  //       }
-  //     });
+  // useEffect(() => {
+  //   function findUser(reviews, user) {
+  //     if ((user, reviews)) {
+  //       console.log(review.user, user.data._id);
+  //       reviews.data.find((review) => {
+  //         if (review.user === user.data._id) {
+  //           setuserReviewed(true);
+  //         } else {
+  //           setuserReviewed(false);
+  //         }
+  //       });
+  //     }
   //   }
-  // }
+  //   findUser(reviews, user);
+  // }, []);
 
   return (
     <div>
@@ -181,8 +165,14 @@ const SingleBootcamp = () => {
   );
 };
 
-SingleBootcamp.getInitialProps = () => {
-  return {};
+SingleBootcamp.getInitialProps = async ({ query: { id }, store }) => {
+  if (id) {
+    await store.dispatch(getOneBootcamp(id));
+    await store.dispatch(getCoursesByBootcamp(id));
+  }
+  const bootcamp = store.getState().Bootcamps.bootcamp;
+  const userCourses = store.getState().Bootcamps.userCourses;
+  return { bootcamp, userCourses, id };
 };
 
 export default SingleBootcamp;

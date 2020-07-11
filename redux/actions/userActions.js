@@ -17,11 +17,15 @@ import {
 } from '../types/usertypes';
 
 //  get all users
-const getUsers = () => async (dispatch) => {
+const getUsers = (token) => async (dispatch) => {
   dispatch({ type: GET_USERS_REQUEST });
 
   try {
-    const { data } = await axios.get('http://localhost:3000/api/v1/users');
+    const { data } = await axios.get('http://localhost:3000/api/v1/users', {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
     dispatch({
       type: GET_USERS_SUCCESS,
       payload: data,
@@ -35,12 +39,17 @@ const getUsers = () => async (dispatch) => {
 };
 
 //  get single user
-const getOneUser = (id) => async (dispatch) => {
+const getOneUser = (id, token) => async (dispatch) => {
   dispatch({ type: GET_ONE_USER_REQUEST });
 
   try {
     const { data } = await axios.get(
-      `http://localhost:3000/api/v1/users/${id}`
+      `http://localhost:3000/api/v1/users/${id}`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }
     );
     dispatch({
       type: GET_ONE_USER_SUCCESS,
