@@ -1,11 +1,12 @@
-import withRedux from 'next-redux-wrapper';
 import App from 'next/app';
 import Router from 'next/router';
 import { useEffect } from 'react';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import { loadUser } from '../redux/actions/authActions';
-import { store } from '../redux/store';
+import { getBootcamps } from '../redux/actions/bootcampActions';
+import { getCourses } from '../redux/actions/courseActions';
+import { wrapper } from '../redux/store';
 
 function MyApp({ Component, pageProps }) {
   const { isAuthenticated, token } = useSelector((state) => state.Auth);
@@ -15,59 +16,42 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     if (token) {
       dispatch(loadUser());
+      dispatch(getBootcamps());
+      dispatch(getCourses());
     } else {
       Router.replace('/login');
     }
   }, [token]);
   return (
-    <Provider store={store}>
-      <Layout>
-        <script src='https://kit.fontawesome.com/3da1a747b2.js'></script>
-        <link
-          rel='stylesheet'
-          href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
-          integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm'
-          crossOrigin='anonymous'
-        />
-        <Component {...pageProps} />
-        <script
-          src='https://code.jquery.com/jquery-3.2.1.slim.min.js'
-          integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN'
-          crossOrigin='anonymous'></script>
-        <script
-          src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js'
-          integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q'
-          crossOrigin='anonymous'></script>
-        <script
-          src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'
-          integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl'
-          crossOrigin='anonymous'></script>
-      </Layout>
-    </Provider>
+    <Layout>
+      <script src='https://kit.fontawesome.com/3da1a747b2.js'></script>
+      <link
+        rel='stylesheet'
+        href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
+        integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm'
+        crossOrigin='anonymous'
+      />
+      <Component {...pageProps} />
+      <script
+        src='https://code.jquery.com/jquery-3.2.1.slim.min.js'
+        integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN'
+        crossOrigin='anonymous'></script>
+      <script
+        src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js'
+        integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q'
+        crossOrigin='anonymous'></script>
+      <script
+        src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'
+        integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl'
+        crossOrigin='anonymous'></script>
+    </Layout>
   );
 }
 
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
 MyApp.getInitialProps = async (appContext) => {
-  // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
-  // if (appContext.ctx.req) {
-  //   const token = appContext.ctx.req.headers.cookie.split('=')[1];
-  //   console.log(token);
-
-  //   if (!token) {
-  //     Router.replace('/login');
-  //   }
-  //   return;
-  // }
 
   return { ...appProps };
 };
 
-const makeStore = () => store;
-
-export default withRedux(makeStore)(MyApp);
+export default wrapper.withRedux(MyApp);

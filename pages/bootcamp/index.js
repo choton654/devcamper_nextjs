@@ -14,30 +14,30 @@ const Bootcamp = () => {
   return (
     <div>
       {/* <!-- Latest bootcamps --> */}
-      <section class='browse my-5'>
-        <div class='container'>
-          <div class='row'>
+      <section className='browse my-5'>
+        <div className='container'>
+          <div className='row'>
             {/* <!-- Sidebar --> */}
-            <div class='col-md-4'>
-              <div class='card card-body mb-4'>
-                <h4 class='mb-3'>By Location</h4>
+            <div className='col-md-4'>
+              <div className='card card-body mb-4'>
+                <h4 className='mb-3'>By Location</h4>
                 <form>
-                  <div class='row'>
-                    <div class='col-md-6'>
-                      <div class='form-group'>
+                  <div className='row'>
+                    <div className='col-md-6'>
+                      <div className='form-group'>
                         <input
                           type='text'
-                          class='form-control'
+                          className='form-control'
                           name='miles'
                           placeholder='Miles From'
                         />
                       </div>
                     </div>
-                    <div class='col-md-6'>
-                      <div class='form-group'>
+                    <div className='col-md-6'>
+                      <div className='form-group'>
                         <input
                           type='text'
-                          class='form-control'
+                          className='form-control'
                           name='zipcode'
                           placeholder='Enter Zipcode'
                         />
@@ -47,16 +47,16 @@ const Bootcamp = () => {
                   <input
                     type='submit'
                     value='Find Bootcamps'
-                    class='btn btn-primary btn-block'
+                    className='btn btn-primary btn-block'
                   />
                 </form>
               </div>
 
               <h4>Filter</h4>
               <form>
-                <div class='form-group'>
+                <div className='form-group'>
                   <label> Career</label>
-                  <select class='custom-select mb-2'>
+                  <select className='custom-select mb-2'>
                     <option value='any' selected>
                       Any
                     </option>
@@ -71,9 +71,9 @@ const Bootcamp = () => {
                   </select>
                 </div>
 
-                <div class='form-group'>
+                <div className='form-group'>
                   <label> Rating</label>
-                  <select class='custom-select mb-2'>
+                  <select className='custom-select mb-2'>
                     <option value='any' selected>
                       Any
                     </option>
@@ -88,9 +88,9 @@ const Bootcamp = () => {
                   </select>
                 </div>
 
-                <div class='form-group'>
+                <div className='form-group'>
                   <label> Budget</label>
-                  <select class='custom-select mb-2'>
+                  <select className='custom-select mb-2' defaultValue=''>
                     <option value='any' selected>
                       Any
                     </option>
@@ -106,37 +106,41 @@ const Bootcamp = () => {
                 <input
                   type='submit'
                   value='Find Bootcamps'
-                  class='btn btn-primary btn-block'
+                  className='btn btn-primary btn-block'
                 />
               </form>
             </div>
             {/* <!-- Main col --> */}
-            <div class='col-md-8'>
+            <div className='col-md-8'>
               {/* <!-- Bootcamps --> */}
               {bootcamps ? (
                 bootcamps.data.map((bootcamp) => (
-                  <div class='card mb-3' key={bootcamp._id}>
-                    <div class='row no-gutters'>
-                      <div class='col-md-4'>
-                        <img src='img/image_1.jpg' class='card-img' alt='...' />
+                  <div className='card mb-3' key={bootcamp._id}>
+                    <div className='row no-gutters'>
+                      <div className='col-md-4'>
+                        <img
+                          src='img/image_1.jpg'
+                          className='card-img'
+                          alt='...'
+                        />
                       </div>
-                      <div class='col-md-8'>
-                        <div class='card-body'>
-                          <h5 class='card-title'>
-                            <a href='bootcamp.html'>
-                              <Link href={`/bootcamp/${bootcamp._id}`}>
-                                <a>{bootcamp.name}</a>
-                              </Link>
-                              <span class='float-right badge badge-success'>
-                                8.8
-                              </span>
-                            </a>
+                      <div className='col-md-8'>
+                        <div className='card-body'>
+                          <h5 className='card-title'>
+                            <Link href={`/bootcamp/${bootcamp._id}`}>
+                              <a>{bootcamp.name}</a>
+                            </Link>
+                            <span className='float-right badge badge-success'>
+                              8.8
+                            </span>
                           </h5>
-                          <span class='badge badge-dark mb-2'>
+                          <span className='badge badge-dark mb-2'>
                             {bootcamp.location.city}
                           </span>
                           {bootcamp.careers.map((career) => (
-                            <p class='card-text'>{career}</p>
+                            <p className='card-text' key={career}>
+                              {career}
+                            </p>
                           ))}
                         </div>
                       </div>
@@ -149,29 +153,29 @@ const Bootcamp = () => {
 
               {/* <!-- Pagination --> */}
               <nav aria-label='Page navigation example'>
-                <ul class='pagination'>
-                  <li class='page-item'>
-                    <a class='page-link' href='#'>
+                <ul className='pagination'>
+                  <li className='page-item'>
+                    <a className='page-link' href='#'>
                       Previous
                     </a>
                   </li>
-                  <li class='page-item'>
-                    <a class='page-link' href='#'>
+                  <li className='page-item'>
+                    <a className='page-link' href='#'>
                       1
                     </a>
                   </li>
-                  <li class='page-item'>
-                    <a class='page-link' href='#'>
+                  <li className='page-item'>
+                    <a className='page-link' href='#'>
                       2
                     </a>
                   </li>
-                  <li class='page-item'>
-                    <a class='page-link' href='#'>
+                  <li className='page-item'>
+                    <a className='page-link' href='#'>
                       3
                     </a>
                   </li>
-                  <li class='page-item'>
-                    <a class='page-link' href='#'>
+                  <li className='page-item'>
+                    <a className='page-link' href='#'>
                       Next
                     </a>
                   </li>

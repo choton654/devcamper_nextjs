@@ -2,7 +2,9 @@ const Home = () => {
   return <h1>Home</h1>;
 };
 
-Home.getInitialProps = async (ctx) => {
+Home.getInitialProps = ({ store }) => {
+  // console.log(query);
+  // store.dispatch(getBootcamps());
   // console.log(ctx.req.headers.cookie);
   // const cookie = ctx.req.headers.cookie;
   // console.log(cookie);

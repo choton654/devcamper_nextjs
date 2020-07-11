@@ -93,7 +93,9 @@ const SingleBootcamp = ({ data }) => {
                   <i className='fas fa-comments'></i> Read Reviews
                 </a>
               </Link>
-              <Link href='/review/add'>
+              <Link
+                href='/bootcamp/[id]/reviews/add'
+                as={`/bootcamp/${id}/reviews/add`}>
                 <a className='btn btn-light btn-block my-3'>
                   <i className='fas fa-pencil-alt'></i> Write a Review
                 </a>
@@ -150,6 +152,10 @@ const SingleBootcamp = ({ data }) => {
       </section>
     </div>
   );
+};
+
+SingleBootcamp.getInitialProps = () => {
+  return {};
 };
 
 export default SingleBootcamp;

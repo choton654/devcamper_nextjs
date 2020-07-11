@@ -18,8 +18,8 @@ const Course = () => {
   return (
     <div className='container'>
       <h1>Courses</h1>
-      {courses.length ? (
-        courses.map((course) => (
+      {courses ? (
+        courses.data.map((course) => (
           <h3 key={course._id}>
             <Link href={`/course/${course._id}`}>
               <a>{course.title}</a>

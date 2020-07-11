@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getOneBootcamp,
   getReviewsByBootcamp,
-} from '../../../redux/actions/bootcampActions';
+} from '../../../../redux/actions/bootcampActions';
 
 const ReviewsOfBootcamp = ({ data }) => {
   const router = useRouter();
   const { id } = router.query;
-  console.log(id);
 
   const dispatch = useDispatch();
   const { reviews, bootcamp } = useSelector((state) => state.Bootcamps);
@@ -29,12 +28,11 @@ const ReviewsOfBootcamp = ({ data }) => {
           <div className='row'>
             {/* <!-- Main col --> */}
             <div className='col-md-8'>
-              <a
-                href='bootcamp.html'
-                target='_blank'
-                className='btn btn-secondary my-3'>
-                <i className='fas fa-chevron-left'></i> Bootcamp Info
-              </a>
+              <Link href={`/bootcamp/${id}`}>
+                <a target='_blank' className='btn btn-secondary my-3'>
+                  <i className='fas fa-chevron-left'></i> Bootcamp Info
+                </a>
+              </Link>
               <h1 className='mb-4'>
                 {bootcamp ? bootcamp.name : <h3>loading...</h3>} Reviews
               </h1>
@@ -69,7 +67,9 @@ const ReviewsOfBootcamp = ({ data }) => {
                 Rating
               </h1>
               {/* <!-- Buttons --> */}
-              <Link href='/review/add'>
+              <Link
+                href='/bootcamp/[id]/reviews/add'
+                as={`/bootcamp/${id}/reviews/add`}>
                 <a className='btn btn-primary btn-block my-3'>
                   <i className='fas fa-pencil-alt'></i> Review This Bootcamp
                 </a>

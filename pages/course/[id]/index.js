@@ -6,7 +6,6 @@ import { getOneCourse } from '../../../redux/actions/courseActions';
 const SingleCourse = ({ data }) => {
   const router = useRouter();
   const { id } = router.query;
-  console.log(id);
 
   const dispatch = useDispatch();
   const { course } = useSelector((state) => state.Courses);
@@ -20,36 +19,42 @@ const SingleCourse = ({ data }) => {
   return (
     <>
       <div className='container'>
-        <h1>{course.title}</h1>
+        <h1>{course ? course.title : <h3>loading...</h3>}</h1>
       </div>
-      <section class='container mt-5'>
-        <div class='row'>
-          <div class='col-md-8 m-auto'>
-            <div class='card bg-white py-2 px-4'>
-              <div class='card-body'>
+      <section className='container mt-5'>
+        <div className='row'>
+          <div className='col-md-8 m-auto'>
+            <div className='card bg-white py-2 px-4'>
+              <div className='card-body'>
                 <a
                   href='manage-bootcamp.html'
-                  class='btn btn-link text-secondary my-3'>
-                  <i class='fas fa-chevron-left'></i> Manage Bootcamp
+                  className='btn btn-link text-secondary my-3'>
+                  <i className='fas fa-chevron-left'></i> Manage Bootcamp
                 </a>
-                <h1 class='mb-4'>Manage Courses</h1>
-                <div class='card mb-3'>
-                  <div class='row no-gutters'>
-                    <div class='col-md-4'>
-                      <img src='img/image_1.jpg' class='card-img' alt='...' />
+                <h1 className='mb-4'>Manage Courses</h1>
+                <div className='card mb-3'>
+                  <div className='row no-gutters'>
+                    <div className='col-md-4'>
+                      <img
+                        src='img/image_1.jpg'
+                        className='card-img'
+                        alt='...'
+                      />
                     </div>
-                    <div class='col-md-8'>
-                      <div class='card-body'>
-                        <h5 class='card-title'>
+                    <div className='col-md-8'>
+                      <div className='card-body'>
+                        <h5 className='card-title'>
                           <a href='bootcamp.html'>
                             Devworks Bootcamp
-                            <span class='float-right badge badge-success'>
+                            <span className='float-right badge badge-success'>
                               4.9
                             </span>
                           </a>
                         </h5>
-                        <span class='badge badge-dark mb-2'>Boston, MA</span>
-                        <p class='card-text'>
+                        <span className='badge badge-dark mb-2'>
+                          Boston, MA
+                        </span>
+                        <p className='card-text'>
                           Web Development, UI/UX, Mobile Development
                         </p>
                       </div>
@@ -59,10 +64,10 @@ const SingleCourse = ({ data }) => {
 
                 <a
                   href='add-course.html'
-                  class='btn btn-primary btn-block mb-4'>
+                  className='btn btn-primary btn-block mb-4'>
                   Add Bootcamp Course
                 </a>
-                <table class='table table-striped'>
+                <table className='table table-striped'>
                   <thead>
                     <tr>
                       <th scope='col'>Title</th>
@@ -73,22 +78,22 @@ const SingleCourse = ({ data }) => {
                     <tr>
                       <td>Front End Web Development</td>
                       <td>
-                        <a href='add-course.html' class='btn btn-secondary'>
-                          <i class='fas fa-pencil-alt'></i>
+                        <a href='add-course.html' className='btn btn-secondary'>
+                          <i className='fas fa-pencil-alt'></i>
                         </a>
-                        <button class='btn btn-danger'>
-                          <i class='fas fa-times'></i>
+                        <button className='btn btn-danger'>
+                          <i className='fas fa-times'></i>
                         </button>
                       </td>
                     </tr>
                     <tr>
                       <td>Full Stack Web Development</td>
                       <td>
-                        <a href='add-course.html' class='btn btn-secondary'>
-                          <i class='fas fa-pencil-alt'></i>
+                        <a href='add-course.html' className='btn btn-secondary'>
+                          <i className='fas fa-pencil-alt'></i>
                         </a>
-                        <button class='btn btn-danger'>
-                          <i class='fas fa-times'></i>
+                        <button className='btn btn-danger'>
+                          <i className='fas fa-times'></i>
                         </button>
                       </td>
                     </tr>

@@ -8,8 +8,8 @@ import {
 } from '../types/coursetypes';
 
 const initialState = {
-  courses: [],
-  course: {},
+  courses: null,
+  course: null,
   loading: false,
   error: null,
 };

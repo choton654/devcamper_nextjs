@@ -1,15 +1,18 @@
-import Cookie from 'js-cookie';
+import { createWrapper } from 'next-redux-wrapper';
 import { applyMiddleware, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import rootreducers from './reducers/rootreducer';
 
-const userInfo = Cookie.getJSON('userInfo') || null;
+const bindMiddleware = (middleware) => {
+  if (process.env.NODE_ENV !== 'production') {
+    const { composeWithDevTools } = require('redux-devtools-extension');
+    return composeWithDevTools(applyMiddleware(...middleware));
+  }
+  return applyMiddleware(...middleware);
+};
 
-const initialState = {};
+const initStore = () => {
+  return createStore(rootreducers, bindMiddleware([thunkMiddleware]));
+};
 
-export const store = createStore(
-  rootreducers,
-  initialState,
-  composeWithDevTools(applyMiddleware(thunkMiddleware))
-);
+export const wrapper = createWrapper(initStore);

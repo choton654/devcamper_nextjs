@@ -1,3 +1,4 @@
+import Axios from 'axios';
 import {
   GET_COURSE,
   GET_COURSE_ERROR,
@@ -12,13 +13,11 @@ export const getCourses = () => async (dispatch) => {
   dispatch({ type: GET_COURSE_REQUEST });
 
   try {
-    const res = await fetch('http://localhost:3000/api/v1/courses');
-    const data = await res.json();
-    console.log(data.data);
+    const { data } = await Axios.get('http://localhost:3000/api/v1/courses');
 
     dispatch({
       type: GET_COURSE,
-      payload: data.data,
+      payload: data,
     });
   } catch (err) {
     dispatch({
@@ -32,13 +31,13 @@ export const getCourses = () => async (dispatch) => {
 export const getOneCourse = (id) => async (dispatch) => {
   dispatch({ type: GET_SINGLE_COURSE_REQUEST });
   try {
-    const res = await fetch(`http://localhost:3000/api/v1/courses/${id}`);
-    const data = await res.json();
-    console.log(data);
+    const { data } = await Axios.get(
+      `http://localhost:3000/api/v1/courses/${id}`
+    );
 
     dispatch({
       type: GET_SINGLE_COURSE,
-      payload: data.data,
+      payload: data,
     });
   } catch (err) {
     dispatch({
