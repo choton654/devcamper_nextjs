@@ -37,7 +37,7 @@ const loadUser = (token) => async (dispatch) => {
 
     dispatch({
       type: LOAD_USER_SUCCESS,
-      payload: { data, token },
+      payload: data.data,
     });
   } catch (err) {
     dispatch({

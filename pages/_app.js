@@ -6,14 +6,7 @@ import { loadUser } from '../redux/actions/authActions';
 import { wrapper } from '../redux/store';
 
 function MyApp({ Component, pageProps, token }) {
-  // console.log(token);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (token) {
-      dispatch(loadUser(token));
-    }
-  }, [token]);
+  newFunction();
   return (
     <Layout>
       <script src='https://kit.fontawesome.com/3da1a747b2.js'></script>
@@ -38,6 +31,15 @@ function MyApp({ Component, pageProps, token }) {
         crossOrigin='anonymous'></script>
     </Layout>
   );
+
+  function newFunction() {
+    const dispatch = useDispatch();
+    useEffect(() => {
+      if (token) {
+        dispatch(loadUser(token));
+      }
+    }, [token]);
+  }
 }
 
 MyApp.getInitialProps = async (appContext) => {
@@ -47,15 +49,11 @@ MyApp.getInitialProps = async (appContext) => {
   let token;
   // verify if req exists(needed for client side routing)
   if (appContext.ctx.req) {
-    // console.log(appContext.ctx.req.cookies.token);
-    token = appContext.ctx.req.cookies.token;
     // bring token from req cookies
-    if (token) {
-      await store.dispatch(loadUser(token));
-    }
-
-    console.log(store.getState());
+    token = appContext.ctx.req.cookies.token;
   }
+
+  console.log(store.getState());
 
   return { ...appProps, token };
 };

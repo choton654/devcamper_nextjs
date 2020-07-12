@@ -40,6 +40,7 @@ export const authReducers = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         loading: false,
+        user: action.payload.user,
         token: action.payload.token,
       };
     case LOGIN_ERROR:
@@ -55,8 +56,7 @@ export const authReducers = (state = initialState, action) => {
     case LOAD_USER_SUCCESS:
       return {
         ...state,
-        user: action.payload.data,
-        token: action.payload.token,
+        user: action.payload,
         loading: false,
         isAuthenticated: true,
       };

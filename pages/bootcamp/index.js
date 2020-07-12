@@ -180,10 +180,9 @@ const Bootcamp = ({ bootcamps }) => {
   );
 };
 
-Bootcamp.getInitialProps = async ({ store, req, res }) => {
-  await store.dispatch(getBootcamps());
-  const { bootcamps } = store.getState().Bootcamps;
-
+Bootcamp.getInitialProps = async (ctx) => {
+  await ctx.store.dispatch(getBootcamps());
+  const { bootcamps } = ctx.store.getState().Bootcamps;
   return { bootcamps };
 };
 

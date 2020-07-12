@@ -42,7 +42,7 @@ const Navbar = () => {
                 <Link href='/review/manage'>
                   <a className='dropdown-item'>Manage Reviews</a>
                 </Link>
-                <Link href='/course/add'>
+                <Link href='/course'>
                   <a className='dropdown-item'>Manage Courses</a>
                 </Link>
                 <Link href='/user'>

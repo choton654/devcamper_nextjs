@@ -1,17 +1,9 @@
+import Cookie from 'js-cookie';
 import Link from 'next/link';
+import Router from 'next/router';
+import { loadUser } from '../../redux/actions/authActions';
 import { getUsers } from '../../redux/actions/userActions';
-
-const Users = ({ users }) => {
-  // const { isAuthenticated, token } = useSelector((state) => state.Auth);
-  // const { users } = useSelector((state) => state.Users);
-
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   // if (token) {
-  //   // }
-  //   dispatch(getUsers());
-  // }, []);
+const Users = ({ users, token }) => {
   return (
     <div>
       {users ? (
@@ -27,24 +19,53 @@ const Users = ({ users }) => {
           </div>
         ))
       ) : (
-        <h1>loading...</h1>
+        <h1>You are not Authorize</h1>
       )}
     </div>
   );
 };
 
 Users.getInitialProps = async (ctx) => {
+  let token;
+  let role;
+  token = Cookie.getJSON('userInfo') || null;
+
   if (ctx.req) {
-    const { token } = ctx.req.cookies;
-    console.log(token);
-    if (token) {
-      await ctx.store.dispatch(getUsers(token));
-    }
+    token = ctx.req.cookies.token;
   }
+  if (token) {
+    const newLocal = await ctx.store.dispatch(loadUser(token));
+    await ctx.store.dispatch(getUsers(token));
+    role = ctx.store.getState().Auth.user.role;
+  }
+
+  console.log(role);
 
   const { users } = ctx.store.getState().Users;
 
-  return { users };
+  if (!token && !ctx.req) {
+    Router.replace('/login');
+    return {};
+  }
+  if (!token && ctx.res) {
+    ctx.res.writeHead(302, {
+      Location: 'http://localhost:3000/login',
+    });
+    ctx.res.end();
+    return;
+  }
+  if (role !== 'admin' && !ctx.req) {
+    Router.replace('/');
+    return {};
+  }
+  if (role !== 'admin' && ctx.res) {
+    ctx.res.writeHead(302, {
+      Location: 'http://localhost:3000',
+    });
+    ctx.res.end();
+    return;
+  }
+  return { users, token };
 };
 
 export default Users;
