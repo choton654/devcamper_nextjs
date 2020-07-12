@@ -47,14 +47,10 @@ MyApp.getInitialProps = async (appContext) => {
   let token;
   // verify if req exists(needed for client side routing)
   if (appContext.ctx.req) {
+    // console.log(appContext.ctx.req.cookies.token);
     token = appContext.ctx.req.cookies.token;
     // bring token from req cookies
     if (token) {
-      // await fetch('http://localhost:3000/api/v1', {
-      //   headers: {
-      //     cookie: token,
-      //   },
-      // });
       await store.dispatch(loadUser(token));
     }
 

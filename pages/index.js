@@ -1,28 +1,24 @@
-import Router from 'next/router';
-
+import { ProtectRoute } from '../components/ProtectRoute';
 const Home = () => {
   return <h1>Home</h1>;
 };
 
-Home.getInitialProps = (ctx) => {
-  const { isAuthenticated } = ctx.store.getState().Auth;
-  if (ctx.req) {
-    console.log(ctx.req.headers.cookie);
-  }
+// Home.getInitialProps = async (ctx) => {
+//   const { isAuthenticated, token } = ctx.store.getState().Auth;
 
-  if (!isAuthenticated && !ctx.req) {
-    Router.replace('/login');
-    return {};
-  }
-  if (!isAuthenticated && ctx.req) {
-    ctx.res.writeHead(302, {
-      Location: 'http://localhost:3000/login',
-    });
-    ctx.res.end();
-    return;
-  }
+//   if (!isAuthenticated && !ctx.req) {
+//     Router.replace('/login');
+//     return {};
+//   }
+//   if (!isAuthenticated && ctx.req) {
+//     ctx.res.writeHead(302, {
+//       Location: '/login',
+//     });
+//     ctx.res.end();
+//     return;
+//   }
 
-  return {};
-};
+//   return {};
+// };
 
-export default Home;
+export default ProtectRoute(Home);

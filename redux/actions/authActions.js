@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookie from 'js-cookie';
 import router from 'next/router';
 import {
   LOAD_USER_ERROR,
@@ -65,7 +66,7 @@ const loginUser = (user) => async (dispatch) => {
       payload: data,
     });
 
-    // Cookie.set('userInfo', JSON.stringify(data.token));
+    Cookie.set('userInfo', JSON.stringify(data.token));
     router.push('/');
   } catch (err) {
     dispatch({
@@ -94,7 +95,7 @@ const registerUser = (user) => async (dispatch) => {
       payload: data,
     });
 
-    // Cookie.set('userInfo', JSON.stringify(data.token));
+    Cookie.set('userInfo', JSON.stringify(data.token));
     router.push('/');
   } catch (err) {
     dispatch({
@@ -119,7 +120,7 @@ const logOut = () => async (dispatch) => {
       payload: data,
     });
 
-    // Cookie.remove('userInfo');
+    Cookie.remove('userInfo');
 
     router.push('/login');
   } catch (err) {

@@ -1,9 +1,7 @@
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
+import { getBootcamps } from '../../../redux/actions/bootcampActions';
 
-const ManageBootcamp = () => {
-  const { bootcamps } = useSelector((state) => state.Bootcamps);
-
+const ManageBootcamp = ({ bootcamps }) => {
   return (
     <div>
       {bootcamps ? (
@@ -21,6 +19,13 @@ const ManageBootcamp = () => {
       )}
     </div>
   );
+};
+
+ManageBootcamp.getInitialProps = async ({ store }) => {
+  await store.dispatch(getBootcamps());
+  const { bootcamps } = store.getState().Bootcamps;
+
+  return { bootcamps };
 };
 
 export default ManageBootcamp;

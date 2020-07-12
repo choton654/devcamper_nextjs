@@ -183,21 +183,7 @@ const Bootcamp = ({ bootcamps }) => {
 Bootcamp.getInitialProps = async ({ store, req, res }) => {
   await store.dispatch(getBootcamps());
   const { bootcamps } = store.getState().Bootcamps;
-  // const { isAuthenticated } = store.getState().Auth;
 
-  // if (isAuthenticated) {
-  //   if (!req) {
-  //     Router.replace('/login');
-  //     return {};
-  //   }
-  //   if (req) {
-  //     res.writeHead(302, {
-  //       Location: 'http://localhost:3000/login',
-  //     });
-  //     res.end();
-  //     return;
-  //   }
-  // }
   return { bootcamps };
 };
 
