@@ -1,3 +1,7 @@
+import Cookie from 'js-cookie';
+import Router from 'next/router';
+import { loadUser } from '../../redux/actions/authActions';
+
 const ManageReviews = () => {
   return (
     <section className='container mt-5'>
@@ -47,6 +51,46 @@ const ManageReviews = () => {
       </div>
     </section>
   );
+};
+
+ManageReviews.getInitialProps = async (ctx) => {
+  let role;
+
+  const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
+
+  if (token) {
+    // ****** need to sent token from server to api ******
+    await ctx.store.dispatch(loadUser(token));
+    role = ctx.store.getState().Auth.user.role;
+  }
+
+  console.log(role);
+
+  // client side route protection
+  if (!token && !ctx.req) {
+    Router.replace('/login');
+    return {};
+  } else if (role !== 'admin' && role !== 'user' && !ctx.req) {
+    Router.replace('/');
+    return {};
+  }
+
+  // server side route protection
+  if (!token && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000/login',
+    });
+    ctx.res?.end();
+    return;
+  } else if (role !== 'admin' && role !== 'user' && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000',
+    });
+    ctx.res?.end();
+    return;
+  }
+
+  return {};
 };
 
 export default ManageReviews;

@@ -3,7 +3,8 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { loadUser } from '../../redux/actions/authActions';
 import { getUsers } from '../../redux/actions/userActions';
-const Users = ({ users, token }) => {
+
+const Users = ({ users }) => {
   return (
     <div>
       {users ? (
@@ -26,15 +27,13 @@ const Users = ({ users, token }) => {
 };
 
 Users.getInitialProps = async (ctx) => {
-  let token;
   let role;
-  token = Cookie.getJSON('userInfo') || null;
 
-  if (ctx.req) {
-    token = ctx.req.cookies.token;
-  }
+  const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
+
   if (token) {
-    const newLocal = await ctx.store.dispatch(loadUser(token));
+    // ****** need to sent token from server to api ******
+    await ctx.store.dispatch(loadUser(token));
     await ctx.store.dispatch(getUsers(token));
     role = ctx.store.getState().Auth.user.role;
   }
@@ -43,29 +42,31 @@ Users.getInitialProps = async (ctx) => {
 
   const { users } = ctx.store.getState().Users;
 
+  // client side route protection
   if (!token && !ctx.req) {
     Router.replace('/login');
     return {};
-  }
-  if (!token && ctx.res) {
-    ctx.res.writeHead(302, {
-      Location: 'http://localhost:3000/login',
-    });
-    ctx.res.end();
-    return;
-  }
-  if (role !== 'admin' && !ctx.req) {
+  } else if (role !== 'admin' && !ctx.req) {
     Router.replace('/');
     return {};
   }
-  if (role !== 'admin' && ctx.res) {
-    ctx.res.writeHead(302, {
+
+  // server side route protection
+  if (!token && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000/login',
+    });
+    ctx.res?.end();
+    return;
+  } else if (role !== 'admin' && ctx.req) {
+    ctx.res?.writeHead(302, {
       Location: 'http://localhost:3000',
     });
-    ctx.res.end();
+    ctx.res?.end();
     return;
   }
-  return { users, token };
+
+  return { users };
 };
 
 export default Users;

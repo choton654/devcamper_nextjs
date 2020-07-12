@@ -1,3 +1,6 @@
+import Cookie from 'js-cookie';
+import Router from 'next/router';
+import { loadUser } from '../../redux/actions/authActions';
 const AddCourse = () => {
   return (
     <section className='container mt-5'>
@@ -47,9 +50,7 @@ const AddCourse = () => {
                 <div className='form-group'>
                   <label>Minimum Skill Required</label>
                   <select name='minimumSkill' className='form-control'>
-                    <option value='beginner' selected>
-                      Beginner (Any)
-                    </option>
+                    <option value='beginner'>Beginner (Any)</option>
                     <option value='intermediate'>Intermediate</option>
                     <option value='advanced'>Advanced</option>
                   </select>
@@ -60,7 +61,7 @@ const AddCourse = () => {
                     rows='5'
                     className='form-control'
                     placeholder='Course description summary'
-                    maxlength='500'></textarea>
+                    maxLength='500'></textarea>
                   <small className='form-text text-muted'>
                     No more than 500 characters
                   </small>
@@ -74,7 +75,7 @@ const AddCourse = () => {
                   />
                   <label
                     className='form-check-label'
-                    for='scholarshipAvailable'>
+                    htmlFor='scholarshipAvailable'>
                     Scholarship Available
                   </label>
                 </div>
@@ -92,6 +93,46 @@ const AddCourse = () => {
       </div>
     </section>
   );
+};
+
+AddCourse.getInitialProps = async (ctx) => {
+  let role;
+
+  const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
+
+  if (token) {
+    // ****** need to sent token from server to api ******
+    await ctx.store.dispatch(loadUser(token));
+    role = ctx.store.getState().Auth.user.role;
+  }
+
+  console.log(role);
+
+  // client side route protection
+  if (!token && !ctx.req) {
+    Router.replace('/login');
+    return {};
+  } else if (role !== 'admin' && role !== 'publisher' && !ctx.req) {
+    Router.replace('/');
+    return {};
+  }
+
+  // server side route protection
+  if (!token && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000/login',
+    });
+    ctx.res?.end();
+    return;
+  } else if (role !== 'admin' && role !== 'publisher' && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000',
+    });
+    ctx.res?.end();
+    return;
+  }
+
+  return {};
 };
 
 export default AddCourse;

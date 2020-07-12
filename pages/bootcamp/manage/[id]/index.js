@@ -61,7 +61,7 @@ const manage = () => {
                       class='custom-file-input'
                       id='photo'
                     />
-                    <label class='custom-file-label' for='photo'>
+                    <label class='custom-file-label' htmlFor='photo'>
                       Add Bootcamp Image
                     </label>
                   </div>

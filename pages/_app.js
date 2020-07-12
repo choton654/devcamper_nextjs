@@ -1,3 +1,4 @@
+import Cookie from 'js-cookie';
 import App from 'next/app';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -45,13 +46,9 @@ function MyApp({ Component, pageProps, token }) {
 MyApp.getInitialProps = async (appContext) => {
   const appProps = await App.getInitialProps(appContext);
   const { store } = appContext.ctx;
+  const { ctx } = appContext;
 
-  let token;
-  // verify if req exists(needed for client side routing)
-  if (appContext.ctx.req) {
-    // bring token from req cookies
-    token = appContext.ctx.req.cookies.token;
-  }
+  const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
 
   console.log(store.getState());
 
