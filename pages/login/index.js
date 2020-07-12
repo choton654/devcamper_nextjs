@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/actions/authActions';
 
 const Login = () => {
@@ -13,16 +13,11 @@ const Login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { isAuthenticated } = useSelector((state) => state.Auth);
-
   useEffect(() => {
     if (isSubmit) {
       dispatch(loginUser(user));
     }
-    if (isAuthenticated) {
-      router.push('/');
-    }
-  }, [isSubmit, isAuthenticated]);
+  }, [isSubmit]);
 
   const handelChange = (e) => {
     setUser({

@@ -66,7 +66,6 @@ const loginUser = (user) => async (dispatch) => {
     });
 
     // Cookie.set('userInfo', JSON.stringify(data.token));
-
     router.push('/');
   } catch (err) {
     dispatch({
@@ -96,7 +95,6 @@ const registerUser = (user) => async (dispatch) => {
     });
 
     // Cookie.set('userInfo', JSON.stringify(data.token));
-
     router.push('/');
   } catch (err) {
     dispatch({

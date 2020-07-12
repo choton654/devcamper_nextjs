@@ -1,12 +1,19 @@
 import App from 'next/app';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Layout from '../components/Layout';
 import { loadUser } from '../redux/actions/authActions';
-import { getBootcamps } from '../redux/actions/bootcampActions';
-import { getCourses } from '../redux/actions/courseActions';
-import { getReviews } from '../redux/actions/reviewActions';
 import { wrapper } from '../redux/store';
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, token }) {
+  // console.log(token);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (token) {
+      dispatch(loadUser(token));
+    }
+  }, [token]);
   return (
     <Layout>
       <script src='https://kit.fontawesome.com/3da1a747b2.js'></script>
@@ -37,21 +44,24 @@ MyApp.getInitialProps = async (appContext) => {
   const appProps = await App.getInitialProps(appContext);
   const { store } = appContext.ctx;
 
+  let token;
   // verify if req exists(needed for client side routing)
   if (appContext.ctx.req) {
+    token = appContext.ctx.req.cookies.token;
     // bring token from req cookies
-    const token = appContext.ctx.req.cookies.token;
-    // console.log(token);
     if (token) {
+      // await fetch('http://localhost:3000/api/v1', {
+      //   headers: {
+      //     cookie: token,
+      //   },
+      // });
       await store.dispatch(loadUser(token));
     }
-    await store.dispatch(getBootcamps());
-    await store.dispatch(getCourses());
-    await store.dispatch(getReviews());
+
     console.log(store.getState());
   }
 
-  return { ...appProps };
+  return { ...appProps, token };
 };
 
 export default wrapper.withRedux(MyApp);

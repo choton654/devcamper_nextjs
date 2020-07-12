@@ -33,16 +33,16 @@ const Users = ({ users }) => {
   );
 };
 
-Users.getInitialProps = async ({ store, req }) => {
-  if (req) {
-    const { token } = req.cookies;
+Users.getInitialProps = async (ctx) => {
+  if (ctx.req) {
+    const { token } = ctx.req.cookies;
     console.log(token);
     if (token) {
-      await store.dispatch(getUsers(token));
+      await ctx.store.dispatch(getUsers(token));
     }
   }
 
-  const { users } = store.getState().Users;
+  const { users } = ctx.store.getState().Users;
 
   return { users };
 };
