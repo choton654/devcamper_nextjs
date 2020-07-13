@@ -50,8 +50,6 @@ MyApp.getInitialProps = async (appContext) => {
 
   const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
 
-  console.log(store.getState());
-
   return { ...appProps, token };
 };
 

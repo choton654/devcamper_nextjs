@@ -1,16 +1,17 @@
 import Cookie from 'js-cookie';
 import Link from 'next/link';
 import Router from 'next/router';
-import { loadUser } from '../../../redux/actions/authActions';
-import { getBootcamps } from '../../../redux/actions/bootcampActions';
+import { loadUser } from '../../redux/actions/authActions';
+import { getBootcamps } from '../../redux/actions/bootcampActions';
 const ManageBootcamp = ({ bootcamps }) => {
   return (
     <div>
       {bootcamps ? (
         bootcamps.data.map((bootcamp) => (
           <Link
-            href='/bootcamp/manage/[id]'
-            as={`/bootcamp/manage/${bootcamp._id}`}>
+            key={bootcamp._id}
+            href='/bootcamp/[id]/manage'
+            as={`/bootcamp/${bootcamp._id}/manage`}>
             <a>
               <h1 key={bootcamp._id}>{bootcamp.name}</h1>
             </a>

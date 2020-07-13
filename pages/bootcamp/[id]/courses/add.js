@@ -1,18 +1,21 @@
 import Cookie from 'js-cookie';
+import Link from 'next/link';
 import Router from 'next/router';
-import { loadUser } from '../../redux/actions/authActions';
-const AddCourse = () => {
+import { loadUser } from '../../../../redux/actions/authActions';
+const AddCourse = ({ id }) => {
   return (
     <section className='container mt-5'>
       <div className='row'>
         <div className='col-md-8 m-auto'>
           <div className='card bg-white py-2 px-4'>
             <div className='card-body'>
-              <a
-                href='manage-courses.html'
-                className='btn btn-link text-secondary my-3'>
-                <i className='fas fa-chevron-left'></i> Manage Courses
-              </a>
+              <Link
+                href='/bootcamp/[id]/courses/manage'
+                as={`/bootcamp/${id}/courses/manage`}>
+                <a className='btn btn-link text-secondary my-3'>
+                  <i className='fas fa-chevron-left'></i> Manage Courses
+                </a>
+              </Link>
               <h1 className='mb-2'>DevWorks Bootcamp</h1>
               <h3 className='text-primary mb-4'>Add Course</h3>
               <form action='manage-bootcamp.html'>
@@ -96,6 +99,10 @@ const AddCourse = () => {
 };
 
 AddCourse.getInitialProps = async (ctx) => {
+  const {
+    query: { id },
+  } = ctx;
+
   let role;
 
   const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
@@ -132,7 +139,7 @@ AddCourse.getInitialProps = async (ctx) => {
     return;
   }
 
-  return {};
+  return { id };
 };
 
 export default AddCourse;

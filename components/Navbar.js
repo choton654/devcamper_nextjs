@@ -39,10 +39,10 @@ const Navbar = () => {
                 <Link href='/bootcamp/manage'>
                   <a className='dropdown-item'>Manage Bootcamps</a>
                 </Link>
-                <Link href='/review/manage'>
+                <Link href='/bootcamp/review'>
                   <a className='dropdown-item'>Manage Reviews</a>
                 </Link>
-                <Link href='/course'>
+                <Link href='/bootcamp/course'>
                   <a className='dropdown-item'>Manage Courses</a>
                 </Link>
                 <Link href='/user'>
@@ -62,11 +62,6 @@ const Navbar = () => {
             <li className='nav-item'>
               <Link href='/bootcamp'>
                 <a className='nav-link'>Browse Bootcamp</a>
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link href='/course'>
-                <a className='nav-link'>Course</a>
               </Link>
             </li>
             <li className='nav-item'>
