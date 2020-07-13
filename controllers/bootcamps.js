@@ -32,19 +32,27 @@ exports.createBootcamps = asyncMiddleware(async (req, res, next) => {
   // add user to req.body
   req.body.user = req.user.id;
 
-  // check for published bootcamp
-  const publishedBootcamp = await BootCamp.findOne({ user: req.user.id });
+  try {
+    // check for published bootcamp
+    const publishedBootcamp = await BootCamp.findOne({ user: req.user.id });
 
-  // only admin can add multiple bootcamp
-  if (publishedBootcamp && req.user.role !== 'admin') {
-    return res.status(400).json({
+    // only admin can add multiple bootcamp
+    if (publishedBootcamp && req.user.role !== 'admin') {
+      return res.status(400).json({
+        success: false,
+        err: `user id of ${req.user.id} already published a bootcamp`,
+      });
+    }
+
+    const bootcamp = await BootCamp.create(req.body);
+    return res.status(201).json({ success: true, data: bootcamp });
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).send({
       success: false,
-      err: `user id of ${req.user.id} already published a bootcamp`,
+      err: error.message,
     });
   }
-
-  const bootcamp = await BootCamp.create(req.body);
-  return res.status(201).json({ success: true, data: bootcamp });
 });
 
 // @desc   update a bootcamps

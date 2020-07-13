@@ -1,6 +1,5 @@
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { createUser } from '../../redux/actions/userActions';
 
 const CreateUser = () => {
@@ -14,9 +13,6 @@ const CreateUser = () => {
   const [isSubmit, setIsSubmit] = useState(false);
 
   const dispatch = useDispatch();
-  const router = useRouter();
-
-  const { isAuthenticated } = useSelector((state) => state.Auth);
 
   useEffect(() => {
     if (isSubmit) {

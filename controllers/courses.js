@@ -38,7 +38,7 @@ exports.getCourse = asyncMiddleware(async (req, res, next) => {
 });
 
 // @desc   create a course
-// route   GET /api/v1/bootcamps/:bootcampId/courses
+// route   POST /api/v1/bootcamps/:bootcampId/courses
 // access  private
 exports.addCourse = asyncMiddleware(async (req, res, next) => {
   req.body.bootcamp = req.params.bootcampId;

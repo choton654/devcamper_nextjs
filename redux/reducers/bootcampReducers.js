@@ -1,4 +1,7 @@
 import {
+  CREATE_BOOTCAMP_ERROR,
+  CREATE_BOOTCAMP_REQUEST,
+  CREATE_BOOTCAMP_SUCCESS,
   GET_BOOTCAMP,
   GET_BOOTCAMP_ERROR,
   GET_BOOTCAMP_REQUEST,
@@ -28,6 +31,7 @@ export const bootcampReducer = (state = initialState, action) => {
     case GET_SINGLE_BOOTCAMP_REQUEST:
     case GET_SINGLE_BOOTCAMP_COURSE_REQUEST:
     case GET_SINGLE_BOOTCAMP_REVIEW_REQUEST:
+    case CREATE_BOOTCAMP_REQUEST:
       return {
         ...state,
         loading: true,
@@ -42,12 +46,14 @@ export const bootcampReducer = (state = initialState, action) => {
     case GET_SINGLE_BOOTCAMP_ERROR:
     case GET_SINGLE_BOOTCAMP_COURSE_ERROR:
     case GET_SINGLE_BOOTCAMP_REVIEW_ERROR:
+    case CREATE_BOOTCAMP_ERROR:
       return {
         ...state,
         error: action.payload,
         loading: false,
       };
     case GET_SINGLE_BOOTCAMP:
+    case CREATE_BOOTCAMP_SUCCESS:
       return {
         ...state,
         bootcamp: action.payload,

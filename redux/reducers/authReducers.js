@@ -18,7 +18,7 @@ const userInfo = Cookie.getJSON('userInfo') || null;
 
 const initialState = {
   user: null,
-  token: userInfo || null,
+  token: userInfo,
   loading: false,
   error: null,
   isAuthenticated: false,

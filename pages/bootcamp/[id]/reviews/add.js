@@ -1,8 +1,11 @@
+import Cookie from 'js-cookie';
 import Link from 'next/link';
+import Router from 'next/router';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { loadUser } from '../../../../redux/actions/authActions';
 import { getOneBootcamp } from '../../../../redux/actions/bootcampActions';
 import { createReview } from '../../../../redux/actions/reviewActions';
-
 const AddReview = ({ bootcamp, id }) => {
   const [review, setReview] = useState({
     title: '',
@@ -11,6 +14,8 @@ const AddReview = ({ bootcamp, id }) => {
   });
 
   const [isSubmit, setIsSubmit] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isSubmit) {
@@ -108,11 +113,50 @@ const AddReview = ({ bootcamp, id }) => {
   );
 };
 
-AddReview.getInitialProps = async ({ query: { id }, store }) => {
-  if (id) {
-    await store.dispatch(getOneBootcamp(id));
+AddReview.getInitialProps = async (ctx) => {
+  let role;
+
+  const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
+
+  const {
+    query: { id },
+  } = ctx;
+
+  if (token) {
+    // ****** need to sent token from server to api ******
+    await ctx.store.dispatch(loadUser(token));
+    await ctx.store.dispatch(getOneBootcamp(id));
+    role = ctx.store.getState().Auth.user.role;
   }
-  const { bootcamp } = store.getState().Bootcamps;
+
+  console.log(role);
+
+  const { bootcamp } = ctx.store.getState().Bootcamps;
+
+  // client side route protection
+  if (!token && !ctx.req) {
+    Router.replace('/login');
+    return {};
+  } else if (role !== 'admin' && role !== 'user' && !ctx.req) {
+    Router.replace('/');
+    return {};
+  }
+
+  // server side route protection
+  if (!token && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000/login',
+    });
+    ctx.res?.end();
+    return;
+  } else if (role !== 'admin' && role !== 'user' && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000',
+    });
+    ctx.res?.end();
+    return;
+  }
+
   return { bootcamp, id };
 };
 

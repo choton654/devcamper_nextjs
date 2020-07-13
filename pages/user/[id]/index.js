@@ -1,5 +1,6 @@
 import Cookie from 'js-cookie';
 import Link from 'next/link';
+import Router from 'next/router';
 import { loadUser } from '../../../redux/actions/authActions';
 import { getOneUser } from '../../../redux/actions/userActions';
 

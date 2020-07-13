@@ -21,17 +21,18 @@ const loadUser = (token) => async (dispatch) => {
   dispatch({ type: LOAD_USER_REQUEST });
 
   try {
+    const newLocal = {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    };
     // const token = Cookie.getJSON('userInfo') || null;
 
     const { data } = await axios.get(
       'http://localhost:3000/api/v1/auth/me',
 
-      {
-        headers: {
-          Authorization: 'Bearer ' + token,
-          'Content-Type': 'application/json',
-        },
-      }
+      newLocal
     );
     // console.log(data);
 
