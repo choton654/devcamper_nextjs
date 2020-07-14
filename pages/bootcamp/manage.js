@@ -20,6 +20,9 @@ const ManageBootcamp = ({ bootcamps }) => {
       ) : (
         <h3>loading...</h3>
       )}
+      <Link href='/bootcamp/add'>
+        <a className='btn btn-primary'>Add Bootcamp</a>
+      </Link>
     </div>
   );
 };

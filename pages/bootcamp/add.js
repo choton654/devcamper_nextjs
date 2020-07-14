@@ -4,9 +4,12 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Select from 'react-select';
 import { loadUser } from '../../redux/actions/authActions';
-import { createBootcamp } from '../../redux/actions/bootcampActions';
+import {
+  createBootcamp,
+  updateBootcamp,
+} from '../../redux/actions/bootcampActions';
 
-const AddBootcamp = ({ token }) => {
+const AddBootcamp = ({ token, id }) => {
   const [bootcamp, setBootcamp] = useState({
     name: '',
     address: '',
@@ -37,6 +40,23 @@ const AddBootcamp = ({ token }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (isSubmit && id) {
+      dispatch(
+        updateBootcamp(
+          id,
+          {
+            ...bootcamp,
+            housing,
+            jobAssistance,
+            jobGuarantee,
+            acceptGi,
+            careers: careers.map((career) => career.value),
+          },
+          token
+        )
+      );
+      return;
+    }
     if (isSubmit) {
       dispatch(
         createBootcamp(
@@ -51,8 +71,9 @@ const AddBootcamp = ({ token }) => {
           token
         )
       );
+      return;
     }
-  }, [isSubmit]);
+  }, [isSubmit, id]);
 
   const handelChange = (e) => {
     setBootcamp({
@@ -76,7 +97,7 @@ const AddBootcamp = ({ token }) => {
 
   return (
     <section className='container mt-5'>
-      <h1 className='mb-2'>Add Bootcamp</h1>
+      <h1 className='mb-2'>{id ? 'Update Bootcamp' : 'Add Bootcamp'}</h1>
       <p>
         Important: You must be affiliated with a bootcamp to add to DevCamper
       </p>
@@ -244,7 +265,7 @@ const AddBootcamp = ({ token }) => {
         <div className='form-group'>
           <input
             type='submit'
-            value='Submit Bootcamp'
+            value={id ? 'Update Bootcamp' : 'Submit Bootcamp'}
             className='btn btn-success btn-block my-4'
           />
           <a
@@ -260,6 +281,10 @@ const AddBootcamp = ({ token }) => {
 
 AddBootcamp.getInitialProps = async (ctx) => {
   let role;
+
+  const {
+    query: { id },
+  } = ctx;
 
   const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
 
@@ -295,7 +320,7 @@ AddBootcamp.getInitialProps = async (ctx) => {
     return;
   }
 
-  return { token };
+  return { token, id };
 };
 
 export default AddBootcamp;

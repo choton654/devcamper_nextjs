@@ -1,10 +1,16 @@
 import Cookie from 'js-cookie';
 import Link from 'next/link';
 import Router from 'next/router';
+import { useDispatch } from 'react-redux';
 import { loadUser } from '../../../redux/actions/authActions';
-import { getOneBootcamp } from '../../../redux/actions/bootcampActions';
+import {
+  deleteBootcamp,
+  getOneBootcamp,
+} from '../../../redux/actions/bootcampActions';
 
-const manage = ({ bootcamp, id }) => {
+const manage = ({ bootcamp, id, token }) => {
+  const dispatch = useDispatch();
+
   return (
     <section className='container mt-5'>
       <div className='row'>
@@ -68,15 +74,28 @@ const manage = ({ bootcamp, id }) => {
                   value='Upload Image'
                 />
               </form>
-              <a className='btn btn-primary btn-block'>Edit Bootcamp Details</a>
+              <a
+                className='btn btn-primary btn-block'
+                onClick={() =>
+                  Router.push({
+                    pathname: '/bootcamp/add',
+                    query: { id },
+                  })
+                }>
+                Edit Bootcamp Details
+              </a>
               <Link
                 href='/bootcamp/[id]/courses/manage'
                 as={`/bootcamp/${id}/courses/manage`}>
                 <a className='btn btn-secondary btn-block'>Manage Courses</a>
               </Link>
-              <a href='#' className='btn btn-danger btn-block'>
-                Remove Bootcamp
-              </a>
+              <Link href='/bootcamp/manage'>
+                <a
+                  className='btn btn-danger btn-block'
+                  onClick={() => dispatch(deleteBootcamp(id, token))}>
+                  Remove Bootcamp
+                </a>
+              </Link>
               <p className='text-muted mt-5'>
                 * You can only add one bootcamp per account.
               </p>
@@ -136,7 +155,7 @@ manage.getInitialProps = async (ctx) => {
     return;
   }
 
-  return { bootcamp, id };
+  return { bootcamp, id, token };
 };
 
 export default manage;

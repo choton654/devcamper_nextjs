@@ -3,6 +3,9 @@ import {
   CREATE_BOOTCAMP_ERROR,
   CREATE_BOOTCAMP_REQUEST,
   CREATE_BOOTCAMP_SUCCESS,
+  DELETE_BOOTCAMP_ERROR,
+  DELETE_BOOTCAMP_REQUEST,
+  DELETE_BOOTCAMP_SUCCESS,
   GET_BOOTCAMP,
   GET_BOOTCAMP_ERROR,
   GET_BOOTCAMP_REQUEST,
@@ -15,6 +18,9 @@ import {
   GET_SINGLE_BOOTCAMP_REVIEW,
   GET_SINGLE_BOOTCAMP_REVIEW_ERROR,
   GET_SINGLE_BOOTCAMP_REVIEW_REQUEST,
+  UPDATE_BOOTCAMP_ERROR,
+  UPDATE_BOOTCAMP_REQUEST,
+  UPDATE_BOOTCAMP_SUCCESS,
 } from '../types/bootcamptypes';
 
 // get all Bootcamps
@@ -99,7 +105,7 @@ export const getReviewsByBootcamp = (id) => async (dispatch) => {
   }
 };
 
-// get one Bootcamp's reviews
+// create a Bootcamp
 export const createBootcamp = (bootcamp, token) => async (dispatch) => {
   dispatch({ type: CREATE_BOOTCAMP_REQUEST });
 
@@ -117,12 +123,70 @@ export const createBootcamp = (bootcamp, token) => async (dispatch) => {
 
     dispatch({
       type: CREATE_BOOTCAMP_SUCCESS,
-      payload: data,
+      payload: data.data,
     });
   } catch (err) {
     console.log(err);
     dispatch({
       type: CREATE_BOOTCAMP_ERROR,
+      payload: err,
+    });
+  }
+};
+
+// update a  Bootcamp
+export const updateBootcamp = (id, bootcamp, token) => async (dispatch) => {
+  dispatch({ type: UPDATE_BOOTCAMP_REQUEST });
+
+  try {
+    const { data } = await axios.put(
+      `http://localhost:3000/api/v1/bootcamps/${id}`,
+      bootcamp,
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    dispatch({
+      type: UPDATE_BOOTCAMP_SUCCESS,
+      payload: data.data,
+    });
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: UPDATE_BOOTCAMP_ERROR,
+      payload: err,
+    });
+  }
+};
+
+// delete a Bootcamp
+export const deleteBootcamp = (id, token) => async (dispatch) => {
+  dispatch({ type: DELETE_BOOTCAMP_REQUEST });
+
+  try {
+    const { data } = await axios.delete(
+      `http://localhost:3000/api/v1/bootcamps/${id}`,
+
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    dispatch({
+      type: DELETE_BOOTCAMP_SUCCESS,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: DELETE_BOOTCAMP_ERROR,
       payload: err,
     });
   }

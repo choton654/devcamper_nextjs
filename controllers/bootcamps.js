@@ -76,7 +76,7 @@ exports.updateBootcamp = asyncMiddleware(async (req, res, next) => {
     });
   }
 
-  bootcamp = await BootCamp.findOneAndUpdate(req.params.id, req.body, {
+  bootcamp = await BootCamp.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });

@@ -1,13 +1,18 @@
 import Cookie from 'js-cookie';
 import Link from 'next/link';
 import Router from 'next/router';
+import { useDispatch } from 'react-redux';
 import { loadUser } from '../../../../redux/actions/authActions';
 import {
   getCoursesByBootcamp,
   getOneBootcamp,
 } from '../../../../redux/actions/bootcampActions';
-const SingleCourse = ({ userCourses, bootcamp, id }) => {
+import { deleteCourse } from '../../../../redux/actions/courseActions';
+const SingleCourse = ({ userCourses, bootcamp, id, token }) => {
   console.log(userCourses, bootcamp, id);
+
+  const dispatch = useDispatch();
+
   return (
     <>
       <section className='container mt-5'>
@@ -78,14 +83,30 @@ const SingleCourse = ({ userCourses, bootcamp, id }) => {
                         <tr key={course._id}>
                           <td>{course.title}</td>
                           <td>
-                            <Link
-                              href='/bootcamp/[id]/courses/add'
-                              as={`/bootcamp/${id}/courses/add`}>
-                              <a className='btn btn-secondary'>
-                                <i className='fas fa-pencil-alt'></i>
-                              </a>
-                            </Link>
-                            <button className='btn btn-danger'>
+                            <a
+                              className='btn btn-secondary'
+                              onClick={() =>
+                                Router.push({
+                                  pathname: `/bootcamp/${id}/courses/add`,
+                                  query: {
+                                    _courseId: course._id,
+                                    get courseId() {
+                                      return this._courseId;
+                                    },
+                                    set courseId(value) {
+                                      this._courseId = value;
+                                    },
+                                  },
+                                })
+                              }>
+                              <i className='fas fa-pencil-alt'></i>
+                            </a>
+                            <button
+                              className='btn btn-danger'
+                              onClick={() => {
+                                dispatch(deleteCourse(token, course._id)),
+                                  Router.reload();
+                              }}>
                               <i className='fas fa-times'></i>
                             </button>
                           </td>
@@ -150,7 +171,7 @@ SingleCourse.getInitialProps = async (ctx) => {
     return;
   }
 
-  return { userCourses, bootcamp, id };
+  return { userCourses, bootcamp, id, token };
 };
 
 export default SingleCourse;
