@@ -28,7 +28,7 @@ const manage = ({ bootcamp, id, token }) => {
                   <div className='row no-gutters'>
                     <div className='col-md-4'>
                       <img
-                        src='img/image_1.jpg'
+                        src={bootcamp.data.photo}
                         className='card-img'
                         alt='...'
                       />

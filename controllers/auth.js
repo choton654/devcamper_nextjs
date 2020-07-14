@@ -2,7 +2,7 @@ const asyncMiddleware = require('../middleware/async');
 const User = require('../model/User');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
-
+const cookie = require('cookie');
 // @desc   register a user
 // route   POST /api/v1/auth/register
 // access  public
@@ -202,6 +202,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true;
   }
 
+  // res.setHeader('Set-Cookie', cookie.serialize('auth', token, options));
   res
     .status(200)
     .cookie('token', token, options)

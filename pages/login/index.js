@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/actions/authActions';
@@ -11,7 +10,6 @@ const Login = () => {
   const [isSubmit, setIsSubmit] = useState(false);
 
   const dispatch = useDispatch();
-  const router = useRouter();
 
   useEffect(() => {
     if (isSubmit) {
@@ -46,43 +44,41 @@ const Login = () => {
                   Log in to list your bootcamp or rate, review and favorite
                   bootcamps
                 </p>
-                {isSubmit ? (
-                  <h2>loading...</h2>
-                ) : (
-                  <form onSubmit={handelSubmit}>
-                    <div className='form-group'>
-                      <label htmlFor='email'>Email Address</label>
-                      <input
-                        type='email'
-                        value={user.email}
-                        onChange={handelChange}
-                        name='email'
-                        className='form-control'
-                        placeholder='Enter email'
-                        required
-                      />
-                    </div>
-                    <div className='form-group mb-4'>
-                      <label htmlFor='password'>Password</label>
-                      <input
-                        type='password'
-                        value={user.password}
-                        onChange={handelChange}
-                        name='password'
-                        className='form-control'
-                        placeholder='Enter password'
-                        required
-                      />
-                    </div>
-                    <div className='form-group'>
-                      <input
-                        type='submit'
-                        value='Login'
-                        className='btn btn-primary btn-block'
-                      />
-                    </div>
-                  </form>
-                )}
+
+                <form onSubmit={handelSubmit}>
+                  <div className='form-group'>
+                    <label htmlFor='email'>Email Address</label>
+                    <input
+                      type='email'
+                      value={user.email}
+                      onChange={handelChange}
+                      name='email'
+                      className='form-control'
+                      placeholder='Enter email'
+                      required
+                    />
+                  </div>
+                  <div className='form-group mb-4'>
+                    <label htmlFor='password'>Password</label>
+                    <input
+                      type='password'
+                      value={user.password}
+                      onChange={handelChange}
+                      name='password'
+                      className='form-control'
+                      placeholder='Enter password'
+                      required
+                    />
+                  </div>
+                  <div className='form-group'>
+                    <input
+                      type='submit'
+                      value='Login'
+                      className='btn btn-primary btn-block'
+                    />
+                  </div>
+                </form>
+
                 <p>
                   {' '}
                   Forgot Password? <a href='/login'>Reset Password</a>

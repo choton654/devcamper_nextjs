@@ -6,10 +6,9 @@ const Bootcamp = ({ bootcamps }) => {
     <div>
       {/* <!-- Latest bootcamps --> */}
       <section className='browse my-5'>
-        <div className='container'>
-          <div className='row'>
-            {/* <!-- Sidebar --> */}
-            <div className='col-md-4'>
+        {/* <div className='row'> */}
+        {/* <!-- Sidebar --> */}
+        {/* <div className='col-md-4'>
               <div className='card card-body mb-4'>
                 <h4 className='mb-3'>By Location</h4>
                 <form>
@@ -100,80 +99,75 @@ const Bootcamp = ({ bootcamps }) => {
                   className='btn btn-primary btn-block'
                 />
               </form>
-            </div>
-            {/* <!-- Main col --> */}
-            <div className='col-md-8'>
-              {/* <!-- Bootcamps --> */}
-              {bootcamps ? (
-                bootcamps.data.map((bootcamp) => (
-                  <div className='card mb-3' key={bootcamp._id}>
-                    <div className='row no-gutters'>
-                      <div className='col-md-4'>
-                        <img
-                          src='img/image_1.jpg'
-                          className='card-img'
-                          alt='...'
-                        />
-                      </div>
-                      <div className='col-md-8'>
-                        <div className='card-body'>
-                          <h5 className='card-title'>
-                            <Link href={`/bootcamp/${bootcamp._id}`}>
-                              <a>{bootcamp.name}</a>
-                            </Link>
-                            <span className='float-right badge badge-success'>
-                              8.8
-                            </span>
-                          </h5>
-                          <span className='badge badge-dark mb-2'>
-                            {bootcamp.location.city}
-                          </span>
-                          {bootcamp.careers.map((career) => (
-                            <p className='card-text' key={career}>
-                              {career}
-                            </p>
-                          ))}
-                        </div>
-                      </div>
+            </div> */}
+        {/* <!-- Main col --> */}
+        {/* <div className='col-md-8'> */}
+        {/* <!-- Bootcamps --> */}
+        <div className='container'>
+          {bootcamps ? (
+            bootcamps.data.map((bootcamp) => (
+              <div className='card mb-3' key={bootcamp._id}>
+                <div className='row no-gutters'>
+                  <div className='col-md-4'>
+                    <img src={bootcamp.photo} className='card-img' alt='...' />
+                  </div>
+                  <div className='col-md-8'>
+                    <div className='card-body'>
+                      <h5 className='card-title'>
+                        <Link href={`/bootcamp/${bootcamp._id}`}>
+                          <a>{bootcamp.name}</a>
+                        </Link>
+                        <span className='float-right badge badge-success'>
+                          8.8
+                        </span>
+                      </h5>
+                      <span className='badge badge-dark mb-2'>
+                        {bootcamp.location.city}
+                      </span>
+                      {bootcamp.careers.map((career) => (
+                        <p className='card-text' key={career}>
+                          {career}
+                        </p>
+                      ))}
                     </div>
                   </div>
-                ))
-              ) : (
-                <h2>loading...</h2>
-              )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <h2>loading...</h2>
+          )}
 
-              {/* <!-- Pagination --> */}
-              <nav aria-label='Page navigation example'>
-                <ul className='pagination'>
-                  <li className='page-item'>
-                    <a className='page-link' href='#'>
-                      Previous
-                    </a>
-                  </li>
-                  <li className='page-item'>
-                    <a className='page-link' href='#'>
-                      1
-                    </a>
-                  </li>
-                  <li className='page-item'>
-                    <a className='page-link' href='#'>
-                      2
-                    </a>
-                  </li>
-                  <li className='page-item'>
-                    <a className='page-link' href='#'>
-                      3
-                    </a>
-                  </li>
-                  <li className='page-item'>
-                    <a className='page-link' href='#'>
-                      Next
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
+          {/* <!-- Pagination --> */}
+          {/* <nav aria-label='Page navigation example'>
+            <ul className='pagination'>
+              <li className='page-item'>
+                <a className='page-link' href='#'>
+                  Previous
+                </a>
+              </li>
+              <li className='page-item'>
+                <a className='page-link' href='#'>
+                  1
+                </a>
+              </li>
+              <li className='page-item'>
+                <a className='page-link' href='#'>
+                  2
+                </a>
+              </li>
+              <li className='page-item'>
+                <a className='page-link' href='#'>
+                  3
+                </a>
+              </li>
+              <li className='page-item'>
+                <a className='page-link' href='#'>
+                  Next
+                </a>
+              </li>
+            </ul>
+          </nav> */}
         </div>
       </section>
     </div>

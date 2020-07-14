@@ -71,51 +71,59 @@ const SingleCourse = ({ userCourses, bootcamp, id, token }) => {
                   </a>
                 </Link>
                 <table className='table table-striped'>
-                  <thead>
-                    <tr>
-                      <th scope='col'>Title</th>
-                      <th scope='col'></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userCourses ? (
+                  {userCourses ? (
+                    userCourses.data.length ? (
                       userCourses.data.map((course) => (
-                        <tr key={course._id}>
-                          <td>{course.title}</td>
-                          <td>
-                            <a
-                              className='btn btn-secondary'
-                              onClick={() =>
-                                Router.push({
-                                  pathname: `/bootcamp/${id}/courses/add`,
-                                  query: {
-                                    _courseId: course._id,
-                                    get courseId() {
-                                      return this._courseId;
-                                    },
-                                    set courseId(value) {
-                                      this._courseId = value;
-                                    },
-                                  },
-                                })
-                              }>
-                              <i className='fas fa-pencil-alt'></i>
-                            </a>
-                            <button
-                              className='btn btn-danger'
-                              onClick={() => {
-                                dispatch(deleteCourse(token, course._id)),
-                                  Router.reload();
-                              }}>
-                              <i className='fas fa-times'></i>
-                            </button>
-                          </td>
-                        </tr>
+                        <>
+                          <thead>
+                            <tr>
+                              <th scope='col'>Title</th>
+                              <th scope='col'></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr key={course._id}>
+                              <td>{course.title}</td>
+                              <td>
+                                <a
+                                  className='btn btn-secondary'
+                                  onClick={() =>
+                                    Router.push({
+                                      pathname: `/bootcamp/${id}/courses/add`,
+                                      query: {
+                                        _courseId: course._id,
+                                        get courseId() {
+                                          return this._courseId;
+                                        },
+                                        set courseId(value) {
+                                          this._courseId = value;
+                                        },
+                                      },
+                                    })
+                                  }>
+                                  <i className='fas fa-pencil-alt'></i>
+                                </a>
+                                <button
+                                  className='btn btn-danger'
+                                  onClick={() => {
+                                    dispatch(deleteCourse(token, course._id)),
+                                      Router.reload();
+                                  }}>
+                                  <i className='fas fa-times'></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </>
                       ))
                     ) : (
-                      <h3>loading...</h3>
-                    )}
-                  </tbody>
+                      <div className='card-body'>
+                        <h3>You have not yet added any courses</h3>
+                      </div>
+                    )
+                  ) : (
+                    <h3>loading...</h3>
+                  )}
                 </table>
               </div>
             </div>

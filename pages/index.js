@@ -2,7 +2,8 @@ import Cookie from 'js-cookie';
 import Router from 'next/router';
 import { loadUser } from '../redux/actions/authActions';
 
-const Home = () => {
+const Home = ({ token }) => {
+  console.log(token);
   return <h1>Home</h1>;
 };
 
@@ -28,7 +29,7 @@ Home.getInitialProps = async (ctx) => {
     return;
   }
 
-  return {};
+  return { token };
 };
 
 export default Home;

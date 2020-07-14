@@ -68,7 +68,7 @@ const loginUser = (user) => async (dispatch) => {
     });
 
     Cookie.set('userInfo', JSON.stringify(data.token));
-    router.push('/');
+    router.replace('/');
   } catch (err) {
     dispatch({
       type: LOGIN_ERROR,

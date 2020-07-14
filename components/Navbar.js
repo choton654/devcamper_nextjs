@@ -48,15 +48,6 @@ const Navbar = () => {
                 <Link href='/user'>
                   <a className='dropdown-item'>Manage Users</a>
                 </Link>
-                <div className='dropdown-divider'></div>
-                <Link href='/login'>
-                  <a
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => dispatch(logOut())}
-                    className='dropdown-item'>
-                    Log out
-                  </a>
-                </Link>
               </div>
             </li>
             <li className='nav-item'>
@@ -77,6 +68,13 @@ const Navbar = () => {
             <li className='nav-item'>
               <Link href='/login'>
                 <a className='nav-link'>Sign In</a>
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link href='/login'>
+                <a onClick={() => dispatch(logOut())} className='nav-link'>
+                  Log out
+                </a>
               </Link>
             </li>
           </ul>

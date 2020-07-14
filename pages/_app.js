@@ -7,7 +7,7 @@ import { loadUser } from '../redux/actions/authActions';
 import { wrapper } from '../redux/store';
 
 function MyApp({ Component, pageProps, token }) {
-  newFunction();
+  newFunction(token);
   return (
     <Layout>
       <script src='https://kit.fontawesome.com/3da1a747b2.js'></script>
@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps, token }) {
     </Layout>
   );
 
-  function newFunction() {
+  function newFunction(token) {
     const dispatch = useDispatch();
     useEffect(() => {
       if (token) {

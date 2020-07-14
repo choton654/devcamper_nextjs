@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../redux/actions/authActions';
@@ -14,7 +14,6 @@ const Register = () => {
   const [isSubmit, setIsSubmit] = useState(false);
 
   const dispatch = useDispatch();
-  const router = useRouter();
 
   useEffect(() => {
     if (isSubmit) {
@@ -109,6 +108,7 @@ const Register = () => {
                   </div>
                   <div className='form-group'>
                     <input
+                      onClick={() => Router.push('/')}
                       type='submit'
                       value='Register'
                       className='btn btn-primary btn-block'
