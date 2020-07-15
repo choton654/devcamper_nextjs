@@ -1,4 +1,3 @@
-import Cookie from 'js-cookie';
 import App from 'next/app';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -48,7 +47,7 @@ MyApp.getInitialProps = async (appContext) => {
   const { store } = appContext.ctx;
   const { ctx } = appContext;
 
-  const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
+  const token = ctx.req?.cookies.token || store.getState().Auth.token;
 
   return { ...appProps, token };
 };

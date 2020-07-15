@@ -1,8 +1,8 @@
-import Cookie from 'js-cookie';
 import Link from 'next/link';
 import Router from 'next/router';
 import { loadUser } from '../../redux/actions/authActions';
 import { getBootcamps } from '../../redux/actions/bootcampActions';
+
 const ManageBootcamp = ({ bootcamps }) => {
   return (
     <div>
@@ -59,13 +59,13 @@ const ManageBootcamp = ({ bootcamps }) => {
 ManageBootcamp.getInitialProps = async (ctx) => {
   let role;
 
-  const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
+  const token = ctx.req?.cookies.token || ctx.store.getState().Auth.token;
 
   if (token) {
     // ****** need to sent token from server to api ******
     await ctx.store.dispatch(loadUser(token));
     await ctx.store.dispatch(getBootcamps());
-    role = ctx.store.getState().Auth.user.role;
+    role = ctx.store.getState().Auth.user.data.role;
   }
 
   console.log(role);
@@ -76,7 +76,8 @@ ManageBootcamp.getInitialProps = async (ctx) => {
   if (!token && !ctx.req) {
     Router.replace('/login');
     return {};
-  } else if (role !== 'admin' && role !== 'publisher' && !ctx.req) {
+  }
+  if (role !== 'admin' && role !== 'publisher' && !ctx.req) {
     Router.replace('/');
     return {};
   }
@@ -88,7 +89,8 @@ ManageBootcamp.getInitialProps = async (ctx) => {
     });
     ctx.res?.end();
     return;
-  } else if (role !== 'admin' && role !== 'publisher' && ctx.req) {
+  }
+  if (role !== 'admin' && role !== 'publisher' && ctx.req) {
     ctx.res?.writeHead(302, {
       Location: 'http://localhost:3000',
     });

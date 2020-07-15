@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import Router from 'next/router';
+import { loadUser } from '../../redux/actions/authActions';
 import { getCourses } from '../../redux/actions/courseActions';
 
 const Course = ({ courses }) => {
@@ -23,10 +25,49 @@ const Course = ({ courses }) => {
   );
 };
 
-Course.getInitialProps = async ({ store }) => {
-  await store.dispatch(getCourses());
+Course.getInitialProps = async (ctx) => {
+  let role;
 
-  const { courses } = store.getState().Courses;
+  const token = ctx.req?.cookies.token || ctx.store.getState().Auth.token;
+
+  const {
+    query: { id },
+  } = ctx;
+
+  if (token) {
+    // ****** need to sent token from server to api ******
+    await ctx.store.dispatch(loadUser(token));
+    await ctx.store.dispatch(getCourses());
+    role = ctx.store.getState().Auth.user.data.role;
+  }
+
+  console.log(role);
+
+  const { courses } = ctx.store.getState().Courses;
+
+  // client side route protection
+  if (!token && !ctx.req) {
+    Router.replace('/login');
+    return {};
+  } else if (role !== 'admin' && role !== 'publisher' && !ctx.req) {
+    Router.replace('/');
+    return {};
+  }
+
+  // server side route protection
+  if (!token && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000/login',
+    });
+    ctx.res?.end();
+    return;
+  } else if (role !== 'admin' && role !== 'publisher' && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000',
+    });
+    ctx.res?.end();
+    return;
+  }
 
   return { courses };
 };

@@ -1,14 +1,12 @@
-import Cookie from 'js-cookie';
 import Router from 'next/router';
 import { loadUser } from '../redux/actions/authActions';
 
 const Home = ({ token }) => {
-  console.log(token);
   return <h1>Home</h1>;
 };
 
 Home.getInitialProps = async (ctx) => {
-  const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
+  const token = ctx.req?.cookies.token || ctx.store.getState().Auth.token;
 
   if (token) {
     // ****** need to sent token from server to api ******
@@ -18,7 +16,7 @@ Home.getInitialProps = async (ctx) => {
   // client side route protection
   if (!token && !ctx.req) {
     Router.replace('/login');
-    return {};
+    return { token };
   }
   // server side route protection
   if (!token && ctx.req) {

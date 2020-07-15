@@ -1,4 +1,3 @@
-import Cookie from 'js-cookie';
 import Link from 'next/link';
 import Router from 'next/router';
 import { useDispatch } from 'react-redux';
@@ -28,18 +27,18 @@ const SingleCourse = ({ userCourses, bootcamp, id, token }) => {
                   </a>
                 </Link>
                 <h1 className='mb-4'>Manage Courses</h1>
-                <div className='card mb-3'>
-                  <div className='row no-gutters'>
-                    <div className='col-md-4'>
-                      <img
-                        src='img/image_1.jpg'
-                        className='card-img'
-                        alt='...'
-                      />
-                    </div>
-                    {bootcamp ? (
+                {bootcamp ? (
+                  <div className='card mb-3'>
+                    <div className='row no-gutters'>
                       <div className='col-md-8'>
                         <div className='card-body'>
+                          <div className='col-md-4'>
+                            <img
+                              src={bootcamp.data.photo}
+                              className='card-img-top'
+                              alt='...'
+                            />
+                          </div>
                           <h5 className='card-title'>
                             <a href='bootcamp.html'>
                               {bootcamp.data.name}
@@ -58,11 +57,11 @@ const SingleCourse = ({ userCourses, bootcamp, id, token }) => {
                           ))}
                         </div>
                       </div>
-                    ) : (
-                      <h3>loading...</h3>
-                    )}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <h3>loading...</h3>
+                )}
                 <Link
                   href='/bootcamp/[id]/courses/add'
                   as={`/bootcamp/${id}/courses/add`}>
@@ -70,61 +69,59 @@ const SingleCourse = ({ userCourses, bootcamp, id, token }) => {
                     Add Bootcamp Course
                   </a>
                 </Link>
-                <table className='table table-striped'>
-                  {userCourses ? (
-                    userCourses.data.length ? (
-                      userCourses.data.map((course) => (
-                        <>
-                          <thead>
-                            <tr>
-                              <th scope='col'>Title</th>
-                              <th scope='col'></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr key={course._id}>
-                              <td>{course.title}</td>
-                              <td>
-                                <a
-                                  className='btn btn-secondary'
-                                  onClick={() =>
-                                    Router.push({
-                                      pathname: `/bootcamp/${id}/courses/add`,
-                                      query: {
-                                        _courseId: course._id,
-                                        get courseId() {
-                                          return this._courseId;
-                                        },
-                                        set courseId(value) {
-                                          this._courseId = value;
-                                        },
+                {userCourses ? (
+                  userCourses.data.length ? (
+                    userCourses.data.map((course) => (
+                      <table className='table table-striped' key={course._id}>
+                        <thead>
+                          <tr>
+                            <th scope='col'>Title</th>
+                            <th scope='col'></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{course.title}</td>
+                            <td>
+                              <a
+                                className='btn btn-secondary'
+                                onClick={() =>
+                                  Router.push({
+                                    pathname: `/bootcamp/${id}/courses/add`,
+                                    query: {
+                                      _courseId: course._id,
+                                      get courseId() {
+                                        return this._courseId;
                                       },
-                                    })
-                                  }>
-                                  <i className='fas fa-pencil-alt'></i>
-                                </a>
-                                <button
-                                  className='btn btn-danger'
-                                  onClick={() => {
-                                    dispatch(deleteCourse(token, course._id)),
-                                      Router.reload();
-                                  }}>
-                                  <i className='fas fa-times'></i>
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </>
-                      ))
-                    ) : (
-                      <div className='card-body'>
-                        <h3>You have not yet added any courses</h3>
-                      </div>
-                    )
+                                      set courseId(value) {
+                                        this._courseId = value;
+                                      },
+                                    },
+                                  })
+                                }>
+                                <i className='fas fa-pencil-alt'></i>
+                              </a>
+                              <button
+                                className='btn btn-danger'
+                                onClick={() => {
+                                  dispatch(deleteCourse(token, course._id)),
+                                    Router.reload();
+                                }}>
+                                <i className='fas fa-times'></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    ))
                   ) : (
-                    <h3>loading...</h3>
-                  )}
-                </table>
+                    <div className='card-body'>
+                      <h3>You have not yet added any courses</h3>
+                    </div>
+                  )
+                ) : (
+                  <h3>loading...</h3>
+                )}
               </div>
             </div>
           </div>
@@ -137,7 +134,7 @@ const SingleCourse = ({ userCourses, bootcamp, id, token }) => {
 SingleCourse.getInitialProps = async (ctx) => {
   let role;
 
-  const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
+  const token = ctx.req?.cookies.token || ctx.store.getState().Auth.token;
 
   const {
     query: { id },
@@ -148,7 +145,7 @@ SingleCourse.getInitialProps = async (ctx) => {
     await ctx.store.dispatch(loadUser(token));
     await ctx.store.dispatch(getCoursesByBootcamp(id));
     await ctx.store.dispatch(getOneBootcamp(id));
-    role = ctx.store.getState().Auth.user.role;
+    role = ctx.store.getState().Auth.user.data.role;
   }
 
   console.log(role);

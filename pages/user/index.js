@@ -1,4 +1,3 @@
-import Cookie from 'js-cookie';
 import Link from 'next/link';
 import Router from 'next/router';
 import { loadUser } from '../../redux/actions/authActions';
@@ -29,13 +28,13 @@ const Users = ({ users }) => {
 Users.getInitialProps = async (ctx) => {
   let role;
 
-  const token = Cookie.getJSON('userInfo') || ctx.req?.cookies.token;
+  const token = ctx.req?.cookies.token || ctx.store.getState().Auth.token;
 
   if (token) {
     // ****** need to sent token from server to api ******
     await ctx.store.dispatch(loadUser(token));
     await ctx.store.dispatch(getUsers(token));
-    role = ctx.store.getState().Auth.user.role;
+    role = ctx.store.getState().Auth.user.data.role;
   }
 
   console.log(role);

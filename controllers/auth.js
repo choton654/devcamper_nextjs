@@ -58,7 +58,7 @@ exports.login = asyncMiddleware(async (req, res, next) => {
 // access  private
 exports.logout = asyncMiddleware(async (req, res, next) => {
   res.cookie('token', 'none', {
-    expires: new Date(Date.now() + 10 * 1000),
+    expires: new Date(Date.now() + 0 * 0),
     httpOnly: true,
   });
 
@@ -202,7 +202,6 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true;
   }
 
-  // res.setHeader('Set-Cookie', cookie.serialize('auth', token, options));
   res
     .status(200)
     .cookie('token', token, options)

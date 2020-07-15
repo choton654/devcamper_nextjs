@@ -1,30 +1,12 @@
 import Link from 'next/link';
+import { loadUser } from '../../../redux/actions/authActions';
 import {
   getCoursesByBootcamp,
   getOneBootcamp,
 } from '../../../redux/actions/bootcampActions';
+import { getReviews } from '../../../redux/actions/reviewActions';
 
-const SingleBootcamp = ({ bootcamp, userCourses, id }) => {
-  // const [userReviewed, setuserReviewed] = useState(false);
-  // const { reviews } = useSelector((state) => state.Reviews);
-  // const { user } = useSelector((state) => state.Auth);
-
-  // useEffect(() => {
-  //   function findUser(reviews, user) {
-  //     if ((user, reviews)) {
-  //       console.log(review.user, user.data._id);
-  //       reviews.data.find((review) => {
-  //         if (review.user === user.data._id) {
-  //           setuserReviewed(true);
-  //         } else {
-  //           setuserReviewed(false);
-  //         }
-  //       });
-  //     }
-  //   }
-  //   findUser(reviews, user);
-  // }, []);
-
+const SingleBootcamp = ({ bootcamp, userCourses, id, userReviewed }) => {
   return (
     <div>
       <section className='bootcamp mt-5'>
@@ -101,21 +83,21 @@ const SingleBootcamp = ({ bootcamp, userCourses, id }) => {
                 </a>
               </Link>
 
-              {/* {userReviewed ? (
+              {userReviewed ? (
                 <input
                   className='btn btn-danger btn-block my-3'
                   type='button'
                   value='you already reviewed this bootcamp'
                 />
               ) : (
-              )} */}
-              <Link
-                href='/bootcamp/[id]/reviews/add'
-                as={`/bootcamp/${id}/reviews/add`}>
-                <a className='btn btn-light btn-block my-3'>
-                  <i className='fas fa-pencil-alt'></i> Write a Review
-                </a>
-              </Link>
+                <Link
+                  href='/bootcamp/[id]/reviews/add'
+                  as={`/bootcamp/${id}/reviews/add`}>
+                  <a className='btn btn-light btn-block my-3'>
+                    <i className='fas fa-pencil-alt'></i> Write a Review
+                  </a>
+                </Link>
+              )}
 
               <Link href='/'>
                 <a target='_blank' className='btn btn-secondary btn-block my-3'>
@@ -171,14 +153,38 @@ const SingleBootcamp = ({ bootcamp, userCourses, id }) => {
   );
 };
 
-SingleBootcamp.getInitialProps = async ({ query: { id }, store }) => {
-  if (id) {
+SingleBootcamp.getInitialProps = async (ctx) => {
+  let userReviewed = false;
+  const {
+    query: { id },
+    store,
+  } = ctx;
+
+  const token = ctx.req?.cookies.token || ctx.store.getState().Auth.token;
+
+  if (token && id) {
+    await store.dispatch(loadUser(token));
     await store.dispatch(getOneBootcamp(id));
     await store.dispatch(getCoursesByBootcamp(id));
+    await store.dispatch(getReviews());
   }
-  const bootcamp = store.getState().Bootcamps.bootcamp;
-  const userCourses = store.getState().Bootcamps.userCourses;
-  return { bootcamp, userCourses, id };
+  const { bootcamp } = store.getState().Bootcamps;
+  const { userCourses } = store.getState().Bootcamps;
+  const { reviews } = store.getState().Reviews;
+  const { user } = store.getState().Auth;
+
+  // console.log(user, reviews);
+
+  function findUser(reviews, user) {
+    reviews.data.find((review) => {
+      if (review.user === user.data._id) {
+        userReviewed = true;
+      }
+    });
+  }
+  findUser(reviews, user);
+
+  return { bootcamp, userCourses, id, userReviewed };
 };
 
 export default SingleBootcamp;

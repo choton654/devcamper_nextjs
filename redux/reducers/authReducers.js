@@ -1,4 +1,3 @@
-import Cookie from 'js-cookie';
 import {
   LOAD_USER_ERROR,
   LOAD_USER_REQUEST,
@@ -14,11 +13,11 @@ import {
   REGISTER_SUCCESS,
 } from '../types/authtypes';
 
-const userInfo = Cookie.getJSON('userInfo') || null;
+// const userInfo = Cookie.getJSON('userInfo') || null;
 
 const initialState = {
   user: null,
-  token: userInfo,
+  token: null,
   loading: false,
   error: null,
   isAuthenticated: false,
@@ -56,7 +55,8 @@ export const authReducers = (state = initialState, action) => {
     case LOAD_USER_SUCCESS:
       return {
         ...state,
-        user: action.payload,
+        user: action.payload.data,
+        token: action.payload.token,
         loading: false,
         isAuthenticated: true,
       };
