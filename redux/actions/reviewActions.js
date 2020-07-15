@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Cookie from 'js-cookie';
 import {
   CREATE_REVIEW_ERROR,
   CREATE_REVIEW_REQUEST,
@@ -52,10 +51,10 @@ export const getOneReview = (id) => async (dispatch) => {
 };
 
 // create review
-export const createReview = (id, review) => async (dispatch) => {
+export const createReview = (id, review, token) => async (dispatch) => {
   dispatch({ type: CREATE_REVIEW_REQUEST });
   try {
-    const token = Cookie.getJSON('userInfo');
+    // const token = Cookie.getJSON('userInfo');
 
     const { data } = await axios.post(
       `http://localhost:3000/api/v1/bootcamps/${id}/reviews`,

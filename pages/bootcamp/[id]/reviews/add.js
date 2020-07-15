@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { loadUser } from '../../../../redux/actions/authActions';
 import { getOneBootcamp } from '../../../../redux/actions/bootcampActions';
 import { createReview } from '../../../../redux/actions/reviewActions';
-const AddReview = ({ bootcamp, id }) => {
+const AddReview = ({ bootcamp, id, token }) => {
   const [review, setReview] = useState({
     title: '',
     text: '',
@@ -18,7 +18,7 @@ const AddReview = ({ bootcamp, id }) => {
 
   useEffect(() => {
     if (isSubmit) {
-      dispatch(createReview(id, review));
+      dispatch(createReview(id, review, token));
     }
   }, [isSubmit]);
 
@@ -156,7 +156,7 @@ AddReview.getInitialProps = async (ctx) => {
     return;
   }
 
-  return { bootcamp, id };
+  return { bootcamp, id, token };
 };
 
 export default AddReview;

@@ -69,7 +69,7 @@ ManageReviews.getInitialProps = async (ctx) => {
   }
 
   const { reviews } = ctx.store.getState().Reviews;
-
+  console.log(reviews);
   // client side route protection
   if (!token && !ctx.req) {
     Router.replace('/login');

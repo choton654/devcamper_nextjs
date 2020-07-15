@@ -3,8 +3,8 @@ import { loadUser } from '../../../redux/actions/authActions';
 import {
   getCoursesByBootcamp,
   getOneBootcamp,
+  getReviewsByBootcamp,
 } from '../../../redux/actions/bootcampActions';
-import { getReviews } from '../../../redux/actions/reviewActions';
 
 const SingleBootcamp = ({ bootcamp, userCourses, id, userReviewed }) => {
   return (
@@ -99,11 +99,10 @@ const SingleBootcamp = ({ bootcamp, userCourses, id, userReviewed }) => {
                 </Link>
               )}
 
-              <Link href='/'>
-                <a target='_blank' className='btn btn-secondary btn-block my-3'>
-                  <i className='fas fa-globe'></i> Visit Website
-                </a>
-              </Link>
+              <a target='_blank' className='btn btn-secondary btn-block my-3'>
+                <i className='fas fa-globe'></i> Visit Website
+              </a>
+
               {/* <!-- Map --> */}
               <div id='map' style={{ width: '100%', height: '300px' }}></div>
               {/* <!-- Perks --> */}
@@ -166,23 +165,26 @@ SingleBootcamp.getInitialProps = async (ctx) => {
     await store.dispatch(loadUser(token));
     await store.dispatch(getOneBootcamp(id));
     await store.dispatch(getCoursesByBootcamp(id));
-    await store.dispatch(getReviews());
+    await store.dispatch(getReviewsByBootcamp(id));
   }
-  const { bootcamp } = store.getState().Bootcamps;
-  const { userCourses } = store.getState().Bootcamps;
-  const { reviews } = store.getState().Reviews;
+  const {
+    bootcamp,
+    userCourses,
+    userReviews: { data },
+  } = store.getState().Bootcamps;
+
   const { user } = store.getState().Auth;
 
-  // console.log(user, reviews);
+  // console.log(user, data);
 
-  function findUser(reviews, user) {
-    reviews.data.find((review) => {
-      if (review.user === user.data._id) {
+  function findUser(data, user) {
+    data.find((review) => {
+      if (review.user._id === user.data._id) {
         userReviewed = true;
       }
     });
   }
-  findUser(reviews, user);
+  findUser(data, user);
 
   return { bootcamp, userCourses, id, userReviewed };
 };
