@@ -20,14 +20,13 @@ const loadUser = (token) => async (dispatch) => {
   dispatch({ type: LOAD_USER_REQUEST });
 
   try {
-    // const token = Cookie.getJSON('userInfo') || null;
-
     const { data } = await axios.get('http://localhost:3000/api/v1/auth/me', {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
     });
+
     // console.log(data);
 
     dispatch({
@@ -61,7 +60,6 @@ const loginUser = (user) => async (dispatch) => {
       payload: data,
     });
 
-    // Cookie.set('userInfo', JSON.stringify(data.token), options);
     router.push('/');
   } catch (err) {
     dispatch({
@@ -90,7 +88,6 @@ const registerUser = (user) => async (dispatch) => {
       payload: data,
     });
 
-    // Cookie.set('userInfo', JSON.stringify(data.token), options);
     router.push('/');
   } catch (err) {
     dispatch({
@@ -108,17 +105,11 @@ const logOut = () => async (dispatch) => {
     const { data } = await axios.get(
       'http://localhost:3000/api/v1/auth/logout'
     );
-    // console.log('logout data', data);
 
     dispatch({
       type: LOGOUT_SUCCESS,
       payload: data,
     });
-
-    // Cookie.remove('userInfo');
-
-    // router.reload();
-    // router.push('/login');
   } catch (err) {
     dispatch({
       type: LOGOUT_ERROR,

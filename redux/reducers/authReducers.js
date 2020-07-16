@@ -13,8 +13,6 @@ import {
   REGISTER_SUCCESS,
 } from '../types/authtypes';
 
-// const userInfo = Cookie.getJSON('userInfo') || null;
-
 const initialState = {
   user: null,
   token: null,
@@ -53,6 +51,7 @@ export const authReducers = (state = initialState, action) => {
         isAuthenticated: false,
       };
     case LOAD_USER_SUCCESS:
+      console.log(action.payload.data);
       return {
         ...state,
         user: action.payload.data,

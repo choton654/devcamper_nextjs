@@ -1,4 +1,7 @@
 import {
+  BOOTCAMP_PHOTO_UPLOAD_ERROR,
+  BOOTCAMP_PHOTO_UPLOAD_REQUEST,
+  BOOTCAMP_PHOTO_UPLOAD_SUCCESS,
   CREATE_BOOTCAMP_ERROR,
   CREATE_BOOTCAMP_REQUEST,
   CREATE_BOOTCAMP_SUCCESS,
@@ -40,6 +43,7 @@ export const bootcampReducer = (state = initialState, action) => {
     case CREATE_BOOTCAMP_REQUEST:
     case UPDATE_BOOTCAMP_REQUEST:
     case DELETE_BOOTCAMP_REQUEST:
+    case BOOTCAMP_PHOTO_UPLOAD_REQUEST:
       return {
         ...state,
         loading: true,
@@ -57,6 +61,7 @@ export const bootcampReducer = (state = initialState, action) => {
     case CREATE_BOOTCAMP_ERROR:
     case UPDATE_BOOTCAMP_ERROR:
     case DELETE_BOOTCAMP_ERROR:
+    case BOOTCAMP_PHOTO_UPLOAD_ERROR:
       return {
         ...state,
         error: action.payload,
@@ -66,6 +71,7 @@ export const bootcampReducer = (state = initialState, action) => {
     case CREATE_BOOTCAMP_SUCCESS:
     case UPDATE_BOOTCAMP_SUCCESS:
     case DELETE_BOOTCAMP_SUCCESS:
+    case BOOTCAMP_PHOTO_UPLOAD_SUCCESS:
       return {
         ...state,
         bootcamp: action.payload,

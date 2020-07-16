@@ -1,14 +1,18 @@
 import Link from 'next/link';
 import Router from 'next/router';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadUser } from '../../../redux/actions/authActions';
 import {
+  bootcampPhotoUpload,
   deleteBootcamp,
   getOneBootcamp,
 } from '../../../redux/actions/bootcampActions';
 
 const manage = ({ bootcamp, id, token }) => {
   const dispatch = useDispatch();
+
+  const [photo, setPhoto] = useState(null);
 
   return (
     <section className='container mt-5'>
@@ -53,11 +57,20 @@ const manage = ({ bootcamp, id, token }) => {
                 <h3>loading...</h3>
               )}
 
-              <form className='mb-4'>
+              <form
+                className='mb-4'
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const data = new FormData();
+                  data.append('file', photo);
+                  console.log(photo);
+                  dispatch(bootcampPhotoUpload(id, token, photo));
+                }}>
                 <div className='form-group'>
                   <div className='custom-file'>
                     <input
                       type='file'
+                      onChange={(e) => setPhoto(e.target.files[0])}
                       name='photo'
                       className='custom-file-input'
                       id='photo'

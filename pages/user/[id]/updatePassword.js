@@ -1,4 +1,32 @@
 const updatePassword = () => {
+  // const [user, setUser] = useState({
+  //   name: '',
+  //   email: '',
+  // });
+  // const [isSubmit, setIsSubmit] = useState(false);
+  // const router = useRouter();
+  // const { id } = router.query;
+
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   if (isSubmit) {
+  //     dispatch(updateUser(id, user));
+  //   }
+  // }, [isSubmit]);
+
+  // const handelChange = (e) => {
+  //   setUser({
+  //     ...user,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
+  // const handelSubmit = (e) => {
+  //   e.preventDefault();
+  //   setIsSubmit(true);
+  // };
+
   return (
     <section className='container mt-5'>
       <div className='row'>

@@ -1,5 +1,8 @@
 import axios from 'axios';
 import {
+  BOOTCAMP_PHOTO_UPLOAD_ERROR,
+  BOOTCAMP_PHOTO_UPLOAD_REQUEST,
+  BOOTCAMP_PHOTO_UPLOAD_SUCCESS,
   CREATE_BOOTCAMP_ERROR,
   CREATE_BOOTCAMP_REQUEST,
   CREATE_BOOTCAMP_SUCCESS,
@@ -187,6 +190,35 @@ export const deleteBootcamp = (id, token) => async (dispatch) => {
     console.log(err);
     dispatch({
       type: DELETE_BOOTCAMP_ERROR,
+      payload: err,
+    });
+  }
+};
+
+// Bootcamp photo upload
+export const bootcampPhotoUpload = (id, token, photo) => async (dispatch) => {
+  dispatch({ type: BOOTCAMP_PHOTO_UPLOAD_REQUEST });
+
+  try {
+    const { data } = await axios.put(
+      `http://localhost:3000/api/v1/bootcamps/${id}/photo`,
+      photo,
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    dispatch({
+      type: BOOTCAMP_PHOTO_UPLOAD_SUCCESS,
+      payload: data,
+    });
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: BOOTCAMP_PHOTO_UPLOAD_ERROR,
       payload: err,
     });
   }
