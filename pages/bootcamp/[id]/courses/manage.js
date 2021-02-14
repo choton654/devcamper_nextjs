@@ -7,6 +7,7 @@ import {
   getOneBootcamp,
 } from '../../../../redux/actions/bootcampActions';
 import { deleteCourse } from '../../../../redux/actions/courseActions';
+import { BASE_URL } from '../../../../utils/baseurl';
 const SingleCourse = ({ userCourses, bootcamp, id, token }) => {
   console.log(userCourses, bootcamp, id);
 
@@ -164,13 +165,13 @@ SingleCourse.getInitialProps = async (ctx) => {
   // server side route protection
   if (!token && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000/login',
+      Location: `${BASE_URL}/login`,
     });
     ctx.res?.end();
     return;
   } else if (role !== 'admin' && role !== 'publisher' && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000',
+      Location: `${BASE_URL}/login`,
     });
     ctx.res?.end();
     return;

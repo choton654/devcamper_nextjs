@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_URL } from '../../utils/baseurl';
 import {
   BOOTCAMP_PHOTO_UPLOAD_ERROR,
   BOOTCAMP_PHOTO_UPLOAD_REQUEST,
@@ -31,8 +32,8 @@ export const getBootcamps = () => async (dispatch) => {
   dispatch({ type: GET_BOOTCAMP_REQUEST });
 
   try {
-    const { data } = await axios.get('http://localhost:3000/api/v1/bootcamps');
-
+    const { data } = await axios.get(`${BASE_URL}/api/v1/bootcamps`);
+    
     dispatch({
       type: GET_BOOTCAMP,
       payload: data,
@@ -51,9 +52,9 @@ export const getOneBootcamp = (id) => async (dispatch) => {
 
   try {
     const { data } = await axios.get(
-      `http://localhost:3000/api/v1/bootcamps/${id}`
+      `${BASE_URL}/api/v1/bootcamps/${id}`
     );
-
+    
     dispatch({
       type: GET_SINGLE_BOOTCAMP,
       payload: data,
@@ -72,9 +73,9 @@ export const getCoursesByBootcamp = (id) => async (dispatch) => {
 
   try {
     const { data } = await axios.get(
-      `http://localhost:3000/api/v1/bootcamps/${id}/courses`
+      `${BASE_URL}/api/v1/bootcamps/${id}/courses`
     );
-
+    
     dispatch({
       type: GET_SINGLE_BOOTCAMP_COURSE,
       payload: data,
@@ -93,9 +94,9 @@ export const getReviewsByBootcamp = (id) => async (dispatch) => {
 
   try {
     const { data } = await axios.get(
-      `http://localhost:3000/api/v1/bootcamps/${id}/reviews`
+      `${BASE_URL}/api/v1/bootcamps/${id}/reviews`
     );
-
+    
     dispatch({
       type: GET_SINGLE_BOOTCAMP_REVIEW,
       payload: data,
@@ -114,7 +115,7 @@ export const createBootcamp = (bootcamp, token) => async (dispatch) => {
 
   try {
     const { data } = await axios.post(
-      `http://localhost:3000/api/v1/bootcamps`,
+      `${BASE_URL}/api/v1/bootcamps`,
       bootcamp,
       {
         headers: {
@@ -143,7 +144,7 @@ export const updateBootcamp = (id, bootcamp, token) => async (dispatch) => {
 
   try {
     const { data } = await axios.put(
-      `http://localhost:3000/api/v1/bootcamps/${id}`,
+      `${BASE_URL}/api/v1/bootcamps/${id}`,
       bootcamp,
       {
         headers: {
@@ -172,8 +173,7 @@ export const deleteBootcamp = (id, token) => async (dispatch) => {
 
   try {
     const { data } = await axios.delete(
-      `http://localhost:3000/api/v1/bootcamps/${id}`,
-
+      `${BASE_URL}/api/v1/bootcamps/${id}`,
       {
         headers: {
           Authorization: 'Bearer ' + token,
@@ -201,7 +201,7 @@ export const bootcampPhotoUpload = (id, token, photo) => async (dispatch) => {
 
   try {
     const { data } = await axios.put(
-      `http://localhost:3000/api/v1/bootcamps/${id}/photo`,
+      `${BASE_URL}/api/v1/bootcamps/${id}/photo`,
       photo,
       {
         headers: {

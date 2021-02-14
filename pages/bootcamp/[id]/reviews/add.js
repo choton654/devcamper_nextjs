@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { loadUser } from '../../../../redux/actions/authActions';
 import { getOneBootcamp } from '../../../../redux/actions/bootcampActions';
 import { createReview } from '../../../../redux/actions/reviewActions';
+import { BASE_URL } from '../../../../utils/baseurl';
 const AddReview = ({ bootcamp, id, token }) => {
   const [review, setReview] = useState({
     title: '',
@@ -144,13 +145,13 @@ AddReview.getInitialProps = async (ctx) => {
   // server side route protection
   if (!token && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000/login',
+      Location: `${BASE_URL}/login`,
     });
     ctx.res?.end();
     return;
   } else if (role !== 'admin' && role !== 'user' && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000',
+      Location: `${BASE_URL}/login`,
     });
     ctx.res?.end();
     return;

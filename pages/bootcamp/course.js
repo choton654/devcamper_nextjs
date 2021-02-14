@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { loadUser } from '../../redux/actions/authActions';
 import { getCourses } from '../../redux/actions/courseActions';
+import { BASE_URL } from '../../utils/baseurl';
 
 const Course = ({ courses }) => {
   console.log(courses);
@@ -57,13 +58,13 @@ Course.getInitialProps = async (ctx) => {
   // server side route protection
   if (!token && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000/login',
+      Location: `${BASE_URL}/login`,
     });
     ctx.res?.end();
     return;
   } else if (role !== 'admin' && role !== 'publisher' && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000',
+      Location: `${BASE_URL}/login`,
     });
     ctx.res?.end();
     return;

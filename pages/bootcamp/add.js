@@ -7,6 +7,7 @@ import {
   createBootcamp,
   updateBootcamp,
 } from '../../redux/actions/bootcampActions';
+import { BASE_URL } from '../../utils/baseurl';
 
 const AddBootcamp = ({ token, id }) => {
   const [bootcamp, setBootcamp] = useState({
@@ -308,14 +309,14 @@ AddBootcamp.getInitialProps = async (ctx) => {
   // server side route protection
   if (!token && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000/login',
+      Location: `${BASE_URL}/login`,
     });
     ctx.res?.end();
     return;
   }
   if (role !== 'admin' && role !== 'publisher' && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000',
+      Location: `${BASE_URL}/login`,
     });
     ctx.res?.end();
     return;

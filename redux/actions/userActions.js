@@ -15,13 +15,14 @@ import {
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
 } from '../types/usertypes';
+import { BASE_URL } from '../../utils/baseurl';
 
 //  get all users
 const getUsers = (token) => async (dispatch) => {
   dispatch({ type: GET_USERS_REQUEST });
 
   try {
-    const { data } = await axios.get('http://localhost:3000/api/v1/users', {
+    const { data } = await axios.get(`${BASE_URL}/api/v1/users`, {
       headers: {
         Authorization: 'Bearer ' + token,
       },
@@ -44,7 +45,7 @@ const getOneUser = (id, token) => async (dispatch) => {
 
   try {
     const { data } = await axios.get(
-      `http://localhost:3000/api/v1/users/${id}`,
+      `${BASE_URL}/api/v1/users/${id}`,
       {
         headers: {
           Authorization: 'Bearer ' + token,
@@ -71,7 +72,7 @@ const createUser = (user) => async (dispatch) => {
     const token = Cookie.getJSON('userInfo');
 
     const { data } = await axios.post(
-      'http://localhost:3000/api/v1/users',
+      `${BASE_URL}/api/v1/users`,
       user,
       {
         headers: {
@@ -101,7 +102,7 @@ const updateUser = (id, user) => async (dispatch) => {
     const token = Cookie.getJSON('userInfo');
 
     const { data } = await axios.put(
-      `http://localhost:3000/api/v1/users/${id}`,
+      `${BASE_URL}/api/v1/users/${id}`,
       user,
       {
         headers: {

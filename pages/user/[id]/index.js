@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { loadUser } from '../../../redux/actions/authActions';
 import { getOneUser } from '../../../redux/actions/userActions';
+import { BASE_URL } from '../../../utils/baseurl';
 
 const OneUser = ({ user, id }) => {
   return (
@@ -46,13 +47,13 @@ OneUser.getInitialProps = async (ctx) => {
   // server side route protection
   if (!token && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000/login',
+      Location: `${BASE_URL}/login`,
     });
     ctx.res?.end();
     return;
   } else if (role !== 'admin' && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000',
+      Location: `${BASE_URL}/login`,
     });
     ctx.res?.end();
     return;

@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { BASE_URL } from '../../utils/baseurl';
 import {
   CREATE_COURSE_ERROR,
   CREATE_COURSE_REQUEST,
@@ -22,8 +23,7 @@ export const getCourses = () => async (dispatch) => {
   dispatch({ type: GET_COURSE_REQUEST });
 
   try {
-    const { data } = await Axios.get('http://localhost:3000/api/v1/courses');
-
+    const { data } = await Axios.get(`${BASE_URL}/api/v1/courses`);
     dispatch({
       type: GET_COURSE,
       payload: data,
@@ -41,9 +41,9 @@ export const getOneCourse = (id) => async (dispatch) => {
   dispatch({ type: GET_SINGLE_COURSE_REQUEST });
   try {
     const { data } = await Axios.get(
-      `http://localhost:3000/api/v1/courses/${id}`
+      `${BASE_URL}/api/v1/courses/${id}`
     );
-
+    
     dispatch({
       type: GET_SINGLE_COURSE,
       payload: data,
@@ -61,7 +61,7 @@ export const createCourse = (course, token, id) => async (dispatch) => {
   dispatch({ type: CREATE_COURSE_REQUEST });
   try {
     const { data } = await Axios.post(
-      `http://localhost:3000/api/v1/bootcamps/${id}/courses`,
+      `${BASE_URL}/api/v1/bootcamps/${id}/courses`,
       course,
       {
         headers: {
@@ -88,7 +88,7 @@ export const updateCourse = (course, token, courseId) => async (dispatch) => {
   dispatch({ type: UPDATE_COURSE_REQUEST });
   try {
     const { data } = await Axios.put(
-      `http://localhost:3000/api/v1/courses/${courseId}`,
+      `${BASE_URL}/api/v1/courses/${courseId}`,
       course,
       {
         headers: {
@@ -115,7 +115,7 @@ export const deleteCourse = (token, courseId) => async (dispatch) => {
   dispatch({ type: DELETE_COURSE_REQUEST });
   try {
     const { data } = await Axios.delete(
-      `http://localhost:3000/api/v1/courses/${courseId}`,
+      `${BASE_URL}/api/v1/courses/${courseId}`,
       {
         headers: {
           Authorization: 'Bearer ' + token,

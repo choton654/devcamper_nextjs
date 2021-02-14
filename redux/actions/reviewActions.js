@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_URL } from '../../utils/baseurl';
 import {
   CREATE_REVIEW_ERROR,
   CREATE_REVIEW_REQUEST,
@@ -16,7 +17,7 @@ export const getReviews = () => async (dispatch) => {
   dispatch({ type: GET_REVIEWS_REQUEST });
 
   try {
-    const { data } = await axios.get('http://localhost:3000/api/v1/reviews');
+    const { data } = await axios.get(`${BASE_URL}/api/v1/reviews`);
 
     dispatch({
       type: GET_REVIEWS_SUCCESS,
@@ -35,7 +36,7 @@ export const getOneReview = (id) => async (dispatch) => {
   dispatch({ type: GET_SINGLE_REVIEW_REQUEST });
   try {
     const { data } = await axios.get(
-      `http://localhost:3000/api/v1/reviews/${id}`
+      `${BASE_URL}/api/v1/reviews/${id}`
     );
 
     dispatch({
@@ -57,7 +58,7 @@ export const createReview = (id, review, token) => async (dispatch) => {
     // const token = Cookie.getJSON('userInfo');
 
     const { data } = await axios.post(
-      `http://localhost:3000/api/v1/bootcamps/${id}/reviews`,
+      `${BASE_URL}/api/v1/bootcamps/${id}/reviews`,
       review,
       {
         headers: {

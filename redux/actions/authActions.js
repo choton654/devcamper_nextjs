@@ -1,5 +1,6 @@
 import axios from 'axios';
 import router from 'next/router';
+import { BASE_URL } from '../../utils/baseurl';
 import {
   LOAD_USER_ERROR,
   LOAD_USER_REQUEST,
@@ -20,13 +21,13 @@ const loadUser = (token) => async (dispatch) => {
   dispatch({ type: LOAD_USER_REQUEST });
 
   try {
-    const { data } = await axios.get('http://localhost:3000/api/v1/auth/me', {
+    const { data } = await axios.get(`${BASE_URL}/api/v1/auth/me`, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
     });
-
+    
     // console.log(data);
 
     dispatch({
@@ -47,7 +48,7 @@ const loginUser = (user) => async (dispatch) => {
 
   try {
     const { data } = await axios.post(
-      'http://localhost:3000/api/v1/auth/login',
+      `${BASE_URL}/api/v1/auth/login`,
       user,
       {
         headers: {
@@ -75,7 +76,7 @@ const registerUser = (user) => async (dispatch) => {
 
   try {
     const { data } = await axios.post(
-      'http://localhost:3000/api/v1/auth/register',
+      `${BASE_URL}/api/v1/auth/register`,
       user,
       {
         headers: {
@@ -103,9 +104,9 @@ const logOut = () => async (dispatch) => {
 
   try {
     const { data } = await axios.get(
-      'http://localhost:3000/api/v1/auth/logout'
+      `${BASE_URL}/api/v1/auth/logout`
     );
-
+    
     dispatch({
       type: LOGOUT_SUCCESS,
       payload: data,
