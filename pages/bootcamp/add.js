@@ -291,7 +291,7 @@ AddBootcamp.getInitialProps = async (ctx) => {
   if (token) {
     // ****** need to sent token from server to api ******
     await ctx.store.dispatch(loadUser(token));
-    role = ctx.store.getState().Auth.user.data.role;
+    role = ctx.store.getState().Auth.user.role;
   }
 
   console.log(role);

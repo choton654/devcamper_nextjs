@@ -1,15 +1,11 @@
-import App from 'next/app';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import Layout from '../components/Layout';
-import { loadUser } from '../redux/actions/authActions';
-import { wrapper } from '../redux/store';
+import App from "next/app";
+import Layout from "../components/Layout";
+import { wrapper } from "../redux/store";
 
 function MyApp({ Component, pageProps, token }) {
-  newFunction(token);
   return (
     <Layout>
-      <script src='https://kit.fontawesome.com/3da1a747b2.js'></script>
+      <script src="https://kit.fontawesome.com/3da1a747b2.js"></script>
       <link
         rel='stylesheet'
         href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
@@ -31,15 +27,6 @@ function MyApp({ Component, pageProps, token }) {
         crossOrigin='anonymous'></script>
     </Layout>
   );
-
-  function newFunction(token) {
-    const dispatch = useDispatch();
-    useEffect(() => {
-      if (token) {
-        dispatch(loadUser(token));
-      }
-    }, [token]);
-  }
 }
 
 MyApp.getInitialProps = async (appContext) => {

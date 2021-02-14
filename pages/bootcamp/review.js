@@ -66,7 +66,7 @@ ManageReviews.getInitialProps = async (ctx) => {
     // ****** need to sent token from server to api ******
     await ctx.store.dispatch(loadUser(token));
     await ctx.store.dispatch(getReviews());
-    role = ctx.store.getState().Auth.user.data.role;
+    role = ctx.store.getState().Auth.user.role;
   }
 
   const { reviews } = ctx.store.getState().Reviews;

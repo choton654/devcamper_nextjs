@@ -198,7 +198,7 @@ SingleBootcamp.getInitialProps = async (ctx) => {
 
   function findUser(data, user) {
     data.find((review) => {
-      if (review.user._id === user.data._id) {
+      if (review.user._id === user._id) {
         userReviewed = true;
       }
     });

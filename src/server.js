@@ -29,7 +29,7 @@ app.prepare().then(() => {
   const server = express();
 
   // body parser
-  server.use(express.json());
+  server.use(express.json({limit:"50mb"}));
 
   server.use(cookieParser());
 

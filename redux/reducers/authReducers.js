@@ -11,14 +11,22 @@ import {
   REGISTER_ERROR,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
-} from '../types/authtypes';
+} from "../types/authtypes";
+
+let user;
+let token;
+
+if (typeof window !== "undefined") {
+  user = JSON.parse(localStorage.getItem("user"));
+  token = localStorage.getItem("token");
+}
 
 const initialState = {
-  user: null,
-  token: null,
+  user: user ? user : null,
+  token: token ? token : null,
   loading: false,
   error: null,
-  isAuthenticated: false,
+  isAuthenticated: user ? true : false,
 };
 
 export const authReducers = (state = initialState, action) => {
@@ -54,7 +62,7 @@ export const authReducers = (state = initialState, action) => {
       console.log(action.payload.data);
       return {
         ...state,
-        user: action.payload.data,
+        user: action.payload.data.data,
         token: action.payload.token,
         loading: false,
         isAuthenticated: true,

@@ -8,6 +8,8 @@ import {
 } from '../../../../redux/actions/bootcampActions';
 import { deleteCourse } from '../../../../redux/actions/courseActions';
 import { BASE_URL } from '../../../../utils/baseurl';
+
+
 const SingleCourse = ({ userCourses, bootcamp, id, token }) => {
   console.log(userCourses, bootcamp, id);
 
@@ -146,7 +148,7 @@ SingleCourse.getInitialProps = async (ctx) => {
     await ctx.store.dispatch(loadUser(token));
     await ctx.store.dispatch(getCoursesByBootcamp(id));
     await ctx.store.dispatch(getOneBootcamp(id));
-    role = ctx.store.getState().Auth.user.data.role;
+    role = ctx.store.getState().Auth.user.role;
   }
 
   console.log(role);

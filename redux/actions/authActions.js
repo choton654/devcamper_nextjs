@@ -1,6 +1,6 @@
-import axios from 'axios';
-import router from 'next/router';
-import { BASE_URL } from '../../utils/baseurl';
+import axios from "axios";
+import router from "next/router";
+import { BASE_URL } from "../../utils/baseurl";
 import {
   LOAD_USER_ERROR,
   LOAD_USER_REQUEST,
@@ -14,7 +14,7 @@ import {
   REGISTER_ERROR,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
-} from '../types/authtypes';
+} from "../types/authtypes";
 
 // load user via token
 const loadUser = (token) => async (dispatch) => {
@@ -23,17 +23,20 @@ const loadUser = (token) => async (dispatch) => {
   try {
     const { data } = await axios.get(`${BASE_URL}/api/v1/auth/me`, {
       headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'application/json',
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
       },
     });
-    
-    // console.log(data);
 
     dispatch({
       type: LOAD_USER_SUCCESS,
       payload: { data, token },
     });
+
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("user", JSON.stringify(data.data));
+      window.localStorage.setItem("token", token);
+    }
   } catch (err) {
     dispatch({
       type: LOAD_USER_ERROR,
@@ -47,21 +50,19 @@ const loginUser = (user) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
 
   try {
-    const { data } = await axios.post(
-      `${BASE_URL}/api/v1/auth/login`,
-      user,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const { data } = await axios.post(`${BASE_URL}/api/v1/auth/login`, user, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     dispatch({
       type: LOGIN_SUCCESS,
       payload: data,
     });
 
-    router.push('/');
+    dispatch(loadUser(data.token));
+
+    router.push("/");
   } catch (err) {
     dispatch({
       type: LOGIN_ERROR,
@@ -80,7 +81,7 @@ const registerUser = (user) => async (dispatch) => {
       user,
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -89,7 +90,9 @@ const registerUser = (user) => async (dispatch) => {
       payload: data,
     });
 
-    router.push('/');
+    dispatch(loadUser(data.token));
+
+    router.push("/");
   } catch (err) {
     dispatch({
       type: REGISTER_ERROR,
@@ -103,14 +106,17 @@ const logOut = () => async (dispatch) => {
   dispatch({ type: LOGOUT_REQUEST });
 
   try {
-    const { data } = await axios.get(
-      `${BASE_URL}/api/v1/auth/logout`
-    );
-    
+    const { data } = await axios.get(`${BASE_URL}/api/v1/auth/logout`);
+
     dispatch({
       type: LOGOUT_SUCCESS,
       payload: data,
     });
+
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+    }
   } catch (err) {
     dispatch({
       type: LOGOUT_ERROR,

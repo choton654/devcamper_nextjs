@@ -189,13 +189,13 @@ exports.bootcampPhotoUpload = asyncMiddleware(async (req, res, next) => {
       });
     }
 
-    await BootCamp.findByIdAndUpdate(req.params.id, {
+    const bootcamp = await BootCamp.findByIdAndUpdate(req.params.id, {
       photo: file.name,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      data: file.name,
+      data: bootcamp,
     });
   });
 });
