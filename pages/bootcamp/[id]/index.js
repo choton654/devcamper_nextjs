@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { loadUser } from "../../../redux/actions/authActions";
+import Router from 'next/router';
 import {
   getCoursesByBootcamp,
   getOneBootcamp,
   getReviewsByBootcamp,
 } from "../../../redux/actions/bootcampActions";
+import { BASE_URL } from "../../../utils/baseurl";
 
 const SingleBootcamp = ({ bootcamp, userCourses, id, userReviewed }) => {
   return (
@@ -162,12 +164,28 @@ SingleBootcamp.getInitialProps = async (ctx) => {
 
   const token = ctx.req?.cookies.token || ctx.store.getState().Auth.token;
 
-  if (token && id) {
+  if (token) {
     await store.dispatch(loadUser(token));
+  }
+  if (id) {
     await store.dispatch(getOneBootcamp(id));
     await store.dispatch(getCoursesByBootcamp(id));
     await store.dispatch(getReviewsByBootcamp(id));
   }
+
+  if (!token && !ctx.req) {
+    Router.replace('/login');
+    return {};
+  }
+
+  if (!token && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: `${BASE_URL}/login`,
+    });
+    ctx.res?.end();
+    return;
+  }
+
   const {
     bootcamp,
     userCourses,
