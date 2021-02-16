@@ -316,7 +316,7 @@ AddBootcamp.getInitialProps = async (ctx) => {
   }
   if (role !== 'admin' && role !== 'publisher' && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: `${BASE_URL}/login`,
+      Location: `${BASE_URL}`,
     });
     ctx.res?.end();
     return;

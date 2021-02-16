@@ -14,6 +14,7 @@ import {
   REGISTER_ERROR,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  CLEAR_ERROR
 } from "../types/authtypes";
 
 // load user via token
@@ -62,11 +63,11 @@ const loginUser = (user) => async (dispatch) => {
 
     dispatch(loadUser(data.token));
 
-    router.push("/");
+    router.push("/bootcamp");
   } catch (err) {
     dispatch({
       type: LOGIN_ERROR,
-      payload: err,
+      payload: err.response.data.err,
     });
   }
 };
@@ -92,11 +93,11 @@ const registerUser = (user) => async (dispatch) => {
 
     dispatch(loadUser(data.token));
 
-    router.push("/");
+    router.push("/bootcamp");
   } catch (err) {
     dispatch({
       type: REGISTER_ERROR,
-      payload: err,
+      payload: err.response.data.err,
     });
   }
 };
@@ -125,4 +126,10 @@ const logOut = () => async (dispatch) => {
   }
 };
 
-export { loadUser, loginUser, registerUser, logOut };
+const clearError = () => (dispatch) => {
+  dispatch({
+    type: CLEAR_ERROR
+  })
+}
+
+export { loadUser, loginUser, registerUser, logOut, clearError };

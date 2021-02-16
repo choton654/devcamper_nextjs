@@ -1,7 +1,10 @@
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import { getBootcamps } from "../../redux/actions/bootcampActions";
 
 const Bootcamp = ({ bootcamps }) => {
+  const { user } = useSelector((state) => state.Auth);
+
   return (
     <div>
       {/* <!-- Latest bootcamps --> */}
@@ -119,9 +122,23 @@ const Bootcamp = ({ bootcamps }) => {
                             <Link href={`/bootcamp/${bootcamp._id}`}>
                               <a>{bootcamp.name}</a>
                             </Link>
-                            <span className="float-right badge badge-success">
-                              8.8
-                            </span>
+                            {user ? (
+                              (user.role === "publisher" &&
+                                bootcamp.user === user._id) ||
+                              user.role === "admin" ? (
+                                <Link
+                                  key={bootcamp._id}
+                                  href="/bootcamp/[id]/manage"
+                                  as={`/bootcamp/${bootcamp._id}/manage`}
+                                >
+                                  <a>
+                                    <span className="float-right badge badge-success text-white">
+                                      <i className="fas fa-pencil-alt" />
+                                    </span>
+                                  </a>
+                                </Link>
+                              ) : null
+                            ) : null}
                           </h5>
                           <span className="badge badge-dark mb-2">
                             {bootcamp.location.city}

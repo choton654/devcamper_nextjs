@@ -1,34 +1,30 @@
-import Router from 'next/router';
-import { loadUser } from '../redux/actions/authActions';
-import { BASE_URL } from '../utils/baseurl';
+import Link from "next/link";
 
 const Home = ({ token }) => {
-  return <h1>Home</h1>;
-};
-
-Home.getInitialProps = async (ctx) => {
-  const token = ctx.req?.cookies.token || ctx.store.getState().Auth.token;
-
-  if (token) {
-    // ****** need to sent token from server to api ******
-    await ctx.store.dispatch(loadUser(token));
-  }
-
-  // client side route protection
-  if (!token && !ctx.req) {
-    Router.replace('/login');
-    return { token };
-  }
-  // server side route protection
-  if (!token && ctx.req) {
-    ctx.res?.writeHead(302, {
-      Location: `${BASE_URL}/login`,
-    });
-    ctx.res?.end();
-    return;
-  }
-
-  return { token };
+  return (
+    <div className="landing">
+      <div className="dark-overlay landing-inner text-light">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12 text-center">
+              <h1 className="display-3 mb-4">Devcamper Bootcamp</h1>
+              <p className="lead">
+                Transform your life through education, Get personal learning
+                recommendations
+              </p>
+              <hr />
+              <Link href="/register">
+                <a className="btn btn-lg btn-info mr-2">Sign Up</a>
+              </Link>
+              <Link href="/login">
+                <a className="btn btn-lg btn-light">Login</a>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Home;

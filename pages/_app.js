@@ -1,6 +1,7 @@
 import App from "next/app";
 import Layout from "../components/Layout";
 import { wrapper } from "../redux/store";
+import "../App.css";
 
 function MyApp({ Component, pageProps, token }) {
   return (

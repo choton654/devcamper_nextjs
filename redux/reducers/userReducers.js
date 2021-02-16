@@ -50,7 +50,7 @@ export const userReducer = (state = initialState, action) => {
     case UPDATE_USER_SUCCESS:
       return {
         ...state,
-        user: action.payload,
+        user: action.payload.data,
         loading: false,
       };
     default:

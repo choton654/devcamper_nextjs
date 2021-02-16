@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { loadUser } from "../../../redux/actions/authActions";
-import Router from 'next/router';
+import Router from "next/router";
 import {
   getCoursesByBootcamp,
   getOneBootcamp,
   getReviewsByBootcamp,
 } from "../../../redux/actions/bootcampActions";
 import { BASE_URL } from "../../../utils/baseurl";
+import { useSelector } from "react-redux";
 
 const SingleBootcamp = ({ bootcamp, userCourses, id, userReviewed }) => {
+  const { user } = useSelector((state) => state.Auth);
+
   return (
     <div>
       <section className="bootcamp mt-5">
@@ -31,9 +34,28 @@ const SingleBootcamp = ({ bootcamp, userCourses, id, userReviewed }) => {
                 userCourses.data.length ? (
                   userCourses.data.map((course) => (
                     <div className="card mb-3" key={course._id}>
-                      <h5 className="card-header bg-primary text-white">
-                        {course.title}
-                      </h5>
+                      <div className="d-flex justify-content-between align-items-center bg-primary">
+                        <h5 className="card-header bg-primary text-white">
+                          {course.title}
+                        </h5>
+                        {user ? (
+                          user._id === course.user || user.role === "admin" ? (
+                            <Link
+                              key={bootcamp.data._id}
+                              href="/bootcamp/[id]/courses/manage"
+                              as={`/bootcamp/${bootcamp.data._id}/courses/manage`}
+                            >
+                              <a>
+                                <div className="pr-3">
+                                  <span className="float-right badge badge-success text-white">
+                                    <i className="fas fa-pencil-alt" />
+                                  </span>
+                                </div>
+                              </a>
+                            </Link>
+                          ) : null
+                        ) : null}
+                      </div>
                       <div className="card-body">
                         <h5 className="card-title">
                           Duration: {course.weeks} Weeks
@@ -85,22 +107,26 @@ const SingleBootcamp = ({ bootcamp, userCourses, id, userReviewed }) => {
                 </a>
               </Link>
 
-              {userReviewed ? (
-                <input
-                  className="btn btn-danger btn-block my-3"
-                  type="button"
-                  value="you already reviewed this bootcamp"
-                />
-              ) : (
-                <Link
-                  href="/bootcamp/[id]/reviews/add"
-                  as={`/bootcamp/${id}/reviews/add`}
-                >
-                  <a className="btn btn-light btn-block my-3">
-                    <i className="fas fa-pencil-alt"></i> Write a Review
-                  </a>
-                </Link>
-              )}
+              {user ? (
+                user.role !== "publisher" ? (
+                  userReviewed ? (
+                    <input
+                      className="btn btn-danger btn-block my-3"
+                      type="button"
+                      value="you already reviewed this bootcamp"
+                    />
+                  ) : (
+                    <Link
+                      href="/bootcamp/[id]/reviews/add"
+                      as={`/bootcamp/${id}/reviews/add`}
+                    >
+                      <a className="btn btn-light btn-block my-3">
+                        <i className="fas fa-pencil-alt"></i> Write a Review
+                      </a>
+                    </Link>
+                  )
+                ) : null
+              ) : null}
 
               <a target="_blank" className="btn btn-secondary btn-block my-3">
                 <i className="fas fa-globe"></i> Visit Website
@@ -174,7 +200,7 @@ SingleBootcamp.getInitialProps = async (ctx) => {
   }
 
   if (!token && !ctx.req) {
-    Router.replace('/login');
+    Router.replace("/login");
     return {};
   }
 

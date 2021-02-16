@@ -11,7 +11,9 @@ import {
   REGISTER_ERROR,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  CLEAR_ERROR
 } from "../types/authtypes";
+import { UPDATE_USER_SUCCESS } from "../types/usertypes";
 
 let user;
 let token;
@@ -59,7 +61,6 @@ export const authReducers = (state = initialState, action) => {
         isAuthenticated: false,
       };
     case LOAD_USER_SUCCESS:
-      console.log(action.payload.data);
       return {
         ...state,
         user: action.payload.data.data,
@@ -74,6 +75,16 @@ export const authReducers = (state = initialState, action) => {
         loading: false,
         token: null,
         user: null,
+      };
+    case UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        user: action.payload.data,
+      };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: null
       };
     default:
       return state;

@@ -1,13 +1,42 @@
-const asyncMiddleware = require('../middleware/async');
-const User = require('../model/User');
-const sendEmail = require('../utils/sendEmail');
-const crypto = require('crypto');
-const cookie = require('cookie');
+const asyncMiddleware = require("../middleware/async");
+const User = require("../model/User");
+const sendEmail = require("../utils/sendEmail");
+const crypto = require("crypto");
+const cookie = require("cookie");
+
 // @desc   register a user
 // route   POST /api/v1/auth/register
 // access  public
 exports.register = asyncMiddleware(async (req, res, next) => {
-  const { name, email, role, password } = req.body;
+  const { name, email, role, password, confirmPassword } = req.body;
+
+  if (name.trim() === "") {
+    return res.status(400).json({
+      success: false,
+      err: "Please add a name",
+    });
+  }
+
+  if (name.trim() === "") {
+    return res.status(400).json({
+      success: false,
+      err: "Please add an email",
+    });
+  }
+
+  if (password.trim().length < 6) {
+    return res.status(400).json({
+      success: false,
+      err: "password must have 6 letters",
+    });
+  }
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({
+      success: false,
+      err: "password does not match",
+    });
+  }
 
   const user = await User.create({
     name,
@@ -28,16 +57,16 @@ exports.login = asyncMiddleware(async (req, res, next) => {
   if (!email || !password) {
     return res.status(400).json({
       success: false,
-      err: 'please provide a email and password',
+      err: "please provide a email and password",
     });
   }
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
     return res.status(401).json({
       success: false,
-      err: 'invalid credentials',
+      err: "invalid credentials",
     });
   }
 
@@ -46,7 +75,7 @@ exports.login = asyncMiddleware(async (req, res, next) => {
   if (!isMatch) {
     return res.status(401).json({
       success: false,
-      err: 'invalid credentials',
+      err: "invalid credentials",
     });
   }
 
@@ -57,7 +86,7 @@ exports.login = asyncMiddleware(async (req, res, next) => {
 // route   GET /api/v1/auth/logout
 // access  private
 exports.logout = asyncMiddleware(async (req, res, next) => {
-  res.cookie('token', 'none', {
+  res.cookie("token", "none", {
     expires: new Date(Date.now() + 0 * 0),
     httpOnly: true,
   });
@@ -95,13 +124,19 @@ exports.updateDetails = asyncMiddleware(async (req, res, next) => {
 // route   PUT /api/v1/auth/updatepassword
 // access  private
 exports.updatePassword = asyncMiddleware(async (req, res, next) => {
-  const user = await User.findById(req.user.id).select('+password');
+  const user = await User.findById(req.user.id).select("+password");
 
   // check current password
   if (!(await user.matchPassword(req.body.currentPassword))) {
     return res
       .status(401)
-      .json({ success: false, err: 'password is incorrect' });
+      .json({ success: false, err: "password is incorrect" });
+  }
+
+  if (user.role === "admin") {
+    return res
+      .status(401)
+      .json({ success: false, err: "admin password can not be changed" });
   }
 
   user.password = req.body.newPassword;
@@ -119,7 +154,7 @@ exports.forgotPassword = asyncMiddleware(async (req, res, next) => {
   if (!user) {
     return res.status(404).json({
       success: false,
-      err: 'there is no user with that email',
+      err: "there is no user with that email",
     });
   }
 
@@ -130,7 +165,7 @@ exports.forgotPassword = asyncMiddleware(async (req, res, next) => {
 
   // Create reset url
   const resetUrl = `${req.protocol}://${req.get(
-    'host'
+    "host"
   )}/api/v1/auth/resetpassword/${resetToken}`;
 
   const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
@@ -138,11 +173,11 @@ exports.forgotPassword = asyncMiddleware(async (req, res, next) => {
   try {
     await sendEmail({
       email: user.email,
-      subject: 'Password reset token',
+      subject: "Password reset token",
       message,
     });
 
-    res.status(200).json({ success: true, data: 'Email sent' });
+    res.status(200).json({ success: true, data: "Email sent" });
   } catch (err) {
     console.log(err);
     user.resetPasswordToken = undefined;
@@ -152,7 +187,7 @@ exports.forgotPassword = asyncMiddleware(async (req, res, next) => {
 
     return res
       .status(500)
-      .json({ success: false, err: 'Email could not be send' });
+      .json({ success: false, err: "Email could not be send" });
   }
 
   res.status(200).json({ success: true, data: user });
@@ -164,9 +199,9 @@ exports.forgotPassword = asyncMiddleware(async (req, res, next) => {
 exports.resetPassword = asyncMiddleware(async (req, res, next) => {
   // Get hashed token
   const resetPasswordToken = crypto
-    .createHash('sha256')
+    .createHash("sha256")
     .update(req.params.resettoken)
-    .digest('hex');
+    .digest("hex");
 
   const user = await User.findOne({
     resetPasswordToken,
@@ -174,7 +209,7 @@ exports.resetPassword = asyncMiddleware(async (req, res, next) => {
   });
 
   if (!user) {
-    return res.status(400).json({ sucess: false, err: 'Invalid token' });
+    return res.status(400).json({ sucess: false, err: "Invalid token" });
   }
 
   // Set new password
@@ -195,15 +230,15 @@ const sendTokenResponse = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    path: '/',
+    path: "/",
   };
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === "production") {
     options.secure = true;
   }
 
   res
     .status(200)
-    .cookie('token', token, options)
+    .cookie("token", token, options)
     .json({ success: true, token, user });
 };

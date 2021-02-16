@@ -138,23 +138,23 @@ AddReview.getInitialProps = async (ctx) => {
     Router.replace('/login');
     return {};
   } else if (role !== 'admin' && role !== 'user' && !ctx.req) {
-    Router.replace('/');
+    // Router.replace('/');
     return {};
   }
 
   // server side route protection
   if (!token && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: `${BASE_URL}/login`,
+      Location: `${BASE_URL}`,
     });
     ctx.res?.end();
     return;
   } else if (role !== 'admin' && role !== 'user' && ctx.req) {
     ctx.res?.writeHead(302, {
-      Location: `${BASE_URL}/login`,
+      Location: `${BASE_URL}`,
     });
     ctx.res?.end();
-    return;
+    return {};
   }
 
   return { bootcamp, id, token };

@@ -12,7 +12,7 @@ const Navbar = () => {
         <Link href="/">
           <a className="navbar-brand">
             <i className="fas fa-laptop-code" />
-            {user ? ` ${user.name}` : " Devcamper"}
+            Devcamper
           </a>
         </Link>
         <button
@@ -37,34 +37,28 @@ const Navbar = () => {
                 role="button"
                 data-toggle="dropdown"
               >
-                <i className="fas fa-user"></i> Account
+                <i className="fas fa-user"></i>
+                {user ? ` ${user.name}` : " Account"}
               </a>
               <div className="dropdown-menu">
-                {user && user.role === "publisher" && (
+                {user && (
                   <>
-                    <Link href="/bootcamp/manage">
-                      <a className="dropdown-item">Manage Bootcamps</a>
-                    </Link>
-                    <Link href="/bootcamp/course">
-                      <a className="dropdown-item">Manage Courses</a>
+                    <Link href={`/user/${user._id}/update`}>
+                      <a className="dropdown-item">Manage Account</a>
                     </Link>
                   </>
                 )}
-                {user && user.role === "user" && (
-                  <Link href="/bootcamp/review">
-                    <a className="dropdown-item">Manage Reviews</a>
-                  </Link>
+                {user && user.role === "publisher" && (
+                  <>
+                    <Link href="/bootcamp/add">
+                      <a className="dropdown-item">Add Bootcamps</a>
+                    </Link>
+                  </>
                 )}
                 {user && user.role === "admin" && (
                   <>
-                    <Link href="/bootcamp/manage">
-                      <a className="dropdown-item">Manage Bootcamps</a>
-                    </Link>
-                    <Link href="/bootcamp/course">
-                      <a className="dropdown-item">Manage Courses</a>
-                    </Link>
-                    <Link href="/bootcamp/review">
-                      <a className="dropdown-item">Manage Reviews</a>
+                    <Link href="/bootcamp/add">
+                      <a className="dropdown-item">Add Bootcamps</a>
                     </Link>
                     <Link href="/user">
                       <a className="dropdown-item">Manage Users</a>
@@ -81,25 +75,7 @@ const Navbar = () => {
                 <a className="nav-link">Browse Bootcamp</a>
               </Link>
             </li>
-            <li className="nav-item">
-              <Link href="/about">
-                <a className="nav-link">About</a>
-              </Link>
-            </li>
-            {!isAuthenticated ? (
-              <>
-                <li className="nav-item">
-                  <Link href="/register">
-                    <a className="nav-link">Sign Up</a>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link href="/login">
-                    <a className="nav-link">Sign In</a>
-                  </Link>
-                </li>
-              </>
-            ) : (
+            {isAuthenticated && (
               <li className="nav-item">
                 <Link href="/login">
                   <a onClick={() => dispatch(logOut())} className="nav-link">

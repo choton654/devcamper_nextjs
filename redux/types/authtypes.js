@@ -10,3 +10,4 @@ export const LOAD_USER_ERROR = 'LOAD_USER_ERROR';
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_ERROR = 'LOGOUT_ERROR';
+export const CLEAR_ERROR = 'CLEAR_ERROR';
