@@ -3,6 +3,7 @@ const User = require("../model/User");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cookie = require("cookie");
+// const BASE_URL = require("../utils/baseurl");
 
 // @desc   register a user
 // route   POST /api/v1/auth/register
@@ -168,7 +169,9 @@ exports.forgotPassword = asyncMiddleware(async (req, res, next) => {
     "host"
   )}/api/v1/auth/resetpassword/${resetToken}`;
 
-  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+  // const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+
+  const message = `<a href='${process.env.BASE_URL}/user/change-password/${resetToken}'>reset password</a>`;
 
   try {
     await sendEmail({
@@ -177,7 +180,7 @@ exports.forgotPassword = asyncMiddleware(async (req, res, next) => {
       message,
     });
 
-    res.status(200).json({ success: true, data: "Email sent" });
+    return res.status(200).json({ success: true, data: "Email sent" });
   } catch (err) {
     console.log(err);
     user.resetPasswordToken = undefined;
@@ -190,7 +193,7 @@ exports.forgotPassword = asyncMiddleware(async (req, res, next) => {
       .json({ success: false, err: "Email could not be send" });
   }
 
-  res.status(200).json({ success: true, data: user });
+  // res.status(200).json({ success: true, data: user });
 });
 
 // @desc      Reset password
@@ -211,6 +214,8 @@ exports.resetPassword = asyncMiddleware(async (req, res, next) => {
   if (!user) {
     return res.status(400).json({ sucess: false, err: "Invalid token" });
   }
+
+  console.log("user", user);
 
   // Set new password
   user.password = req.body.password;

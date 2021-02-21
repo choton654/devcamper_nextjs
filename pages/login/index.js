@@ -81,7 +81,7 @@ const Login = () => {
 
                 <p>
                   {" "}
-                  Forgot Password? <a href="/login">Reset Password</a>
+                  Forgot Password? <a href="/user/change-password">Reset Password</a>
                 </p>
                 <p>
                   {" "}
