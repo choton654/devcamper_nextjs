@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { getBootcamps } from "../../redux/actions/bootcampActions";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
-const Bootcamp = ({ bootcamps }) => {
+const Bootcamp = ({ bootcamps, page, np }) => {
   const { user } = useSelector((state) => state.Auth);
 
   return (
@@ -153,6 +155,8 @@ const Bootcamp = ({ bootcamps }) => {
                     </div>
                   </div>
                 ))
+              ) : np ? (
+                <p>No bootcamp found</p>
               ) : (
                 <h2>loading...</h2>
               )}
@@ -161,27 +165,35 @@ const Bootcamp = ({ bootcamps }) => {
               <nav aria-label="Page navigation example">
                 <ul className="pagination">
                   <li className="page-item">
-                    <a className="page-link" href="#">
+                    <a
+                      className="page-link"
+                      href={`/bootcamp?limit=2&page=${
+                        page !== 1 ? page - 1 : 1
+                      }`}
+                    >
                       Previous
                     </a>
                   </li>
                   <li className="page-item">
-                    <a className="page-link" href="#">
+                    <a className="page-link" href="/bootcamp?limit=2&page=1">
                       1
                     </a>
                   </li>
                   <li className="page-item">
-                    <a className="page-link" href="#">
+                    <a className="page-link" href="/bootcamp?limit=2&page=2">
                       2
                     </a>
                   </li>
                   <li className="page-item">
-                    <a className="page-link" href="#">
+                    <a className="page-link" href="/bootcamp?limit=2&page=3">
                       3
                     </a>
                   </li>
                   <li className="page-item">
-                    <a className="page-link" href="#">
+                    <a
+                      className="page-link"
+                      href={`/bootcamp?limit=2&page=${page && page + 1}`}
+                    >
                       Next
                     </a>
                   </li>
@@ -196,9 +208,20 @@ const Bootcamp = ({ bootcamps }) => {
 };
 
 Bootcamp.getInitialProps = async (ctx) => {
-  await ctx.store.dispatch(getBootcamps());
+  console.log(ctx.query);
+
+  const { limit, page } = ctx.query;
+
+  await ctx.store.dispatch(getBootcamps(limit, page));
   const { bootcamps } = ctx.store.getState().Bootcamps;
-  return { bootcamps };
+
+  return {
+    bootcamps,
+    page: bootcamps.data.length === 0 ? 1 : page ? parseInt(page) : 1,
+    np: bootcamps.data.length === 0
+  };
 };
 
 export default Bootcamp;
+
+

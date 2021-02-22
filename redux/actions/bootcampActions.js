@@ -28,11 +28,13 @@ import {
 } from "../types/bootcamptypes";
 
 // get all Bootcamps
-export const getBootcamps = () => async (dispatch) => {
+export const getBootcamps = (limit, page) => async (dispatch) => {
   dispatch({ type: GET_BOOTCAMP_REQUEST });
 
   try {
-    const { data } = await axios.get(`${BASE_URL}/api/v1/bootcamps`);
+    const { data } = await axios.get(
+      `${BASE_URL}/api/v1/bootcamps?limit=${limit ? limit : 2}&page=${page ? page : 1}`
+    );
 
     dispatch({
       type: GET_BOOTCAMP,
@@ -209,7 +211,6 @@ export const bootcampPhotoUpload = (id, token, photo) => async (dispatch) => {
       type: BOOTCAMP_PHOTO_UPLOAD_SUCCESS,
       payload: data,
     });
-    
   } catch (err) {
     console.log(err);
     dispatch({

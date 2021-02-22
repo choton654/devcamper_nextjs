@@ -37,7 +37,7 @@ const SingleCourse = ({ userCourses, bootcamp, id, token }) => {
                         <div className='card-body'>
                           <div className='col-md-4'>
                             <img
-                              src={bootcamp.data.photo}
+                              src={`/uploads/${bootcamp.data.photo}`}
                               className='card-img-top'
                               alt='...'
                             />
